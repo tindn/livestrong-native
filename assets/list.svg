@@ -1,0 +1,8 @@
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>list</title>
+    <g id="Navicon" fill="#000">
+        <polygon id="Line-1" points="5 14 59 14 59 22 5 22"></polygon>
+        <polygon id="Line-2" points="5 28 59 28 59 36 5 36"></polygon>
+        <polygon id="Line-3" points="5 42 59 42 59 50 5 50"></polygon>
+    </g>
+</svg>
