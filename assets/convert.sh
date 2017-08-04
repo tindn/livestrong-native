@@ -1,0 +1,1 @@
+rsvg-convert pencil.svg > pencil@2x.png

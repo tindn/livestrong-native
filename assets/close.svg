@@ -1,0 +1,8 @@
+
+ <svg width="64px" height="64px" viewBox="-2 -2 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>close</title>
+    <g id="Icon-Close" fill="#000">
+        <polyline id="Fill-16" points="1.657 27.658 0.343 26.342 26.343 0.342 27.657 1.658 1.657 27.658"></polyline>
+        <polyline id="Fill-17" points="26.343 27.658 0.343 1.658 1.657 0.342 27.657 26.342 26.343 27.658"></polyline>
+    </g>
+</svg>

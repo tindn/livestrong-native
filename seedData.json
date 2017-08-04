@@ -1,0 +1,235 @@
+[
+	{
+		"key": "exercise.158faa1e-5d45-5b39-9b31-22e487692ae3",
+		"value": {
+			"id": "158faa1e-5d45-5b39-9b31-22e487692ae3",
+			"name": "lat_pull_down",
+			"displayName": "Lat Pull Down",
+			"type": "resistance",
+			"tags": ["lat, back"]
+		}
+	},
+	{
+		"key": "exercise.1be698f4-4dbd-5c6e-b1e0-606d69cc5f8a",
+		"value": {
+			"id": "1be698f4-4dbd-5c6e-b1e0-606d69cc5f8a",
+			"name": "db_incline_bench_press",
+			"displayName": "DB Incline Bench Press",
+			"type": "resistance",
+			"tags": ["chest", "triceps"]
+		}
+	},
+	{
+		"key": "exercise.30f52db7-1765-5a38-bd46-4a1139b8a63c",
+		"value": {
+			"id": "30f52db7-1765-5a38-bd46-4a1139b8a63c",
+			"name": "bb_bench_press",
+			"displayName": "BB Bench Press",
+			"type": "resistance",
+			"tags": ["chest", "triceps"]
+		}
+	},
+	{
+		"key": "exercise.46a6b800-ef2f-52c7-aff9-6b980418287d",
+		"value": {
+			"id": "46a6b800-ef2f-52c7-aff9-6b980418287d",
+			"name": "bb_curl",
+			"displayName": "BB Curl",
+			"type": "resistance",
+			"tags": ["bicep"]
+		}
+	},
+	{
+		"key": "exercise.4f74d033-1fc9-5ceb-a51c-d5f179bf0f9a",
+		"value": {
+			"id": "4f74d033-1fc9-5ceb-a51c-d5f179bf0f9a",
+			"name": "skullcrusher",
+			"displayName": "Skullcrusher",
+			"type": "resistance",
+			"tags": ["triceps"]
+		}
+	},
+	{
+		"key": "exercise.52dc9595-d119-552e-9d0b-0c0a506068d7",
+		"value": {
+			"id": "52dc9595-d119-552e-9d0b-0c0a506068d7",
+			"name": "run",
+			"displayName": "Run",
+			"type": "cardio"
+		}
+	},
+	{
+		"key": "exercise.5f1eaa2b-7f36-51b5-8979-8dd5c3462c1a",
+		"value": {
+			"id": "5f1eaa2b-7f36-51b5-8979-8dd5c3462c1a",
+			"name": "cable_row",
+			"displayName": "Cable Row",
+			"type": "resistance",
+			"tags": ["back"]
+		}
+	},
+	{
+		"key": "exercise.6807c369-c73c-59c2-8607-376d6b3bdfd9",
+		"value": {
+			"id": "6807c369-c73c-59c2-8607-376d6b3bdfd9",
+			"name": "db_fly",
+			"displayName": "DB Fly",
+			"type": "resistance",
+			"tags": ["chest"]
+		}
+	},
+	{
+		"key": "exercise.a52f139c-b4f1-5bf2-99a7-74abf2bfd47a",
+		"value": {
+			"name": "bent_over_row",
+			"displayName": "Bent Over Row",
+			"id": "a52f139c-b4f1-5bf2-99a7-74abf2bfd47a"
+		}
+	},
+	{
+		"key": "exercise.b68908a4-6193-5a6e-921a-d42004fa635f",
+		"value": {
+			"id": "b68908a4-6193-5a6e-921a-d42004fa635f",
+			"name": "lateral_raise",
+			"displayName": "Lateral Raise",
+			"type": "resistance",
+			"tags": ["shoulder"]
+		}
+	},
+	{
+		"key": "exercise.bd7d711c-561f-561a-b5ab-c5f962b16417",
+		"value": {
+			"id": "bd7d711c-561f-561a-b5ab-c5f962b16417",
+			"name": "squat",
+			"displayName": "Squat",
+			"type": "resistance",
+			"tags": ["legs"]
+		}
+	},
+	{
+		"key": "exercise.bf198096-2121-5dca-b745-fe0070411f34",
+		"value": {
+			"id": "bf198096-2121-5dca-b745-fe0070411f34",
+			"name": "calf_extension",
+			"displayName": "Calf extension",
+			"type": "resistance",
+			"tags": ["legs"]
+		}
+	},
+	{
+		"key": "exercise.c58f0487-b5ab-5902-b3be-bff6ba0b430f",
+		"value": {
+			"id": "c58f0487-b5ab-5902-b3be-bff6ba0b430f",
+			"name": "deadlift",
+			"displayName": "Deadlift",
+			"type": "resistance",
+			"tags": ["legs"]
+		}
+	},
+	{
+		"key": "exercise.ced3aaee-f30d-524c-a70a-8c120857b471",
+		"value": {
+			"id": "ced3aaee-f30d-524c-a70a-8c120857b471",
+			"name": "leg_press",
+			"displayName": "Leg Press",
+			"type": "resistance",
+			"tags": ["legs"]
+		}
+	},
+	{
+		"key": "exercise.dcc3af9a-2145-58c0-833e-585efd422371",
+		"value": {
+			"id": "dcc3af9a-2145-58c0-833e-585efd422371",
+			"name": "front_raise",
+			"displayName": "Front Raise",
+			"type": "resistance",
+			"tags": ["shoulder"]
+		}
+	},
+	{
+		"key": "exercise.e3485d14-6ec0-5baf-a394-2039b3034ffa",
+		"value": {
+			"id": "e3485d14-6ec0-5baf-a394-2039b3034ffa",
+			"name": "overhead_press",
+			"displayName": "Overhead Press",
+			"type": "resistance",
+			"tags": ["shoulder", "triceps"]
+		}
+	},
+	{
+		"key": "exercise.f65f9c3f-8447-50da-8c8d-d15639dde847",
+		"value": {
+			"id": "f65f9c3f-8447-50da-8c8d-d15639dde847",
+			"name": "cable_tricep_extension",
+			"displayName": "Cable Tricep Extension",
+			"type": "resistance",
+			"tags": ["triceps"]
+		}
+	},
+	{
+		"key": "plan.a17f88df-2659-5604-bbc3-fe5a7829caac",
+		"value": {
+			"id": "a17f88df-2659-5604-bbc3-fe5a7829caac",
+			"name": "plan_2",
+			"displayName": "Plan 2",
+			"days": [
+				{
+					"exercises": [
+						{
+							"exerciseId": "f65f9c3f-8447-50da-8c8d-d15639dde847",
+							"sets": 3,
+							"reps": 8
+						},
+						{
+							"exerciseId": "e3485d14-6ec0-5baf-a394-2039b3034ffa",
+							"sets": 3,
+							"reps": 8
+						},
+						{
+							"exerciseId": "dcc3af9a-2145-58c0-833e-585efd422371",
+							"sets": 3,
+							"reps": 15
+						}
+					]
+				},
+				{
+					"exercises": [
+						{
+							"exerciseId": "ced3aaee-f30d-524c-a70a-8c120857b471",
+							"sets": 3,
+							"reps": 8
+						},
+						{
+							"exerciseId": "e3485d14-6ec0-5baf-a394-2039b3034ffa",
+							"sets": 4,
+							"reps": 8
+						},
+						{
+							"exerciseId": "dcc3af9a-2145-58c0-833e-585efd422371",
+							"sets": 3,
+							"reps": 15
+						}
+					]
+				}
+			]
+		}
+	},
+	{
+		"key": "plan.c8d9932a-eb9a-50bf-a30a-4f052f41ed7d",
+		"value": {
+			"id": "c8d9932a-eb9a-50bf-a30a-4f052f41ed7d",
+			"displayName": "Plan 1",
+			"name": "plan_1",
+			"days": []
+		}
+	},
+	{
+		"key": "user",
+		"value": {
+			"userId": 1,
+			"username": "tinnguyen",
+			"firstName": "Tin",
+			"lastName": "Nguyen"
+		}
+	}
+]
