@@ -27,7 +27,6 @@ export default class Plan extends React.Component {
 		this._deletePlan = this._deletePlan.bind(this);
 		this._addDay = this._addDay.bind(this);
 		this._removeDay = this._removeDay.bind(this);
-		this._setActivePlan = this._setActivePlan.bind(this);
 	}
 
 	render() {
@@ -50,9 +49,6 @@ export default class Plan extends React.Component {
 				<View style={styles.buttons}>
 					<View style={firstButtonStyle}>
 						<Button title="Add Day" onPress={this._addDay} />
-					</View>
-					<View style={styles.button}>
-						<Button title="Set as Active Plan" onPress={this._setActivePlan} />
 					</View>
 					<View style={styles.button}>
 						<Button
@@ -173,12 +169,6 @@ export default class Plan extends React.Component {
 		this.setState((prevState, props) => {
 			prevState.plan.days.splice(dayIndex, 1);
 			return prevState;
-		});
-	}
-
-	_setActivePlan() {
-		localData.setItem('activePlan', `plan.${this.state.plan.id}`).then(() => {
-			this.props.navigator.pop();
 		});
 	}
 }

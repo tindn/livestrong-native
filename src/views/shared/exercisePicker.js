@@ -1,16 +1,49 @@
 import React from 'react';
 import { View, Text, Button, Picker, StyleSheet } from 'react-native';
+import localData from '../../utils/localData';
+import { sortByDisplayName } from '../../utils/sorts';
 
 export default class ExercisePicker extends React.Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
-			selectedValue: '-1'
+			selectedValue: '-1',
+			allExercises: []
 		};
 		this._updateSelectedValue = this._updateSelectedValue.bind(this);
 		this._addExercise = this._addExercise.bind(this);
+		if (!this.props.allExercises) {
+			localData.getAllExercises().then(exercises => {
+				this.setState({
+					allExercises: exercises.sort(sortByDisplayName)
+				});
+			});
+		} else {
+			this.setState(prevState => {
+				prevState.allExercises = this.props.allExercises;
+				return prevState;
+			});
+		}
 	}
 	render() {
+		let cancelButton = null;
+		if (this.props.cancelPicker) {
+			cancelButton = (
+				<Button title="Cancel" onPress={this.props.cancelPicker} color="red" />
+			);
+		}
+		let addButton = null;
+		if (this.props.addExercise) {
+			addButton = (
+				<Button
+					title="Add Exercise"
+					onPress={this._addExercise}
+					disabled={this.state.selectedValue === '-1'}
+					style={styles.addButton}
+				/>
+			);
+		}
 		return (
 			<View>
 				<Picker
@@ -19,7 +52,7 @@ export default class ExercisePicker extends React.Component {
 					style={styles.exercisePicker}
 				>
 					<Picker.Item key={-1} label="" value="-1" />
-					{this.props.allExercises.map(function(exercise, index) {
+					{this.state.allExercises.map(function(exercise, index) {
 						return (
 							<Picker.Item
 								key={index}
@@ -30,23 +63,14 @@ export default class ExercisePicker extends React.Component {
 					})}
 				</Picker>
 				<View style={styles.actionButtons}>
-					<Button
-						title="Cancel"
-						onPress={this.props.cancelPicker}
-						color="red"
-					/>
-					<Button
-						title="Add Exercise"
-						onPress={this._addExercise}
-						disabled={this.state.selectedValue === '-1'}
-					/>
+					{cancelButton}
+					{addButton}
 				</View>
 			</View>
 		);
 	}
 
 	_updateSelectedValue(value, position) {
-		console.log(value);
 		this.setState({
 			selectedValue: value
 		});
@@ -56,7 +80,7 @@ export default class ExercisePicker extends React.Component {
 		if (this.state.selectedValue === '-1') {
 			return;
 		}
-		this.props.addExercise(this.props.allExercises[this.state.selectedValue]);
+		this.props.addExercise(this.state.allExercises[this.state.selectedValue]);
 	}
 }
 

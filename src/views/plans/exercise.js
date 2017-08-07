@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
 		width: 25
 	},
 	detailLabel: {
-		width: 40
+		width: 40,
+		fontSize: 16
 	},
 	deleteButton: {
 		width: '10%',

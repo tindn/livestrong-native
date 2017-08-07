@@ -4,6 +4,7 @@ import ExercisesView from './views/exercises/exercises';
 import SettingsView from './views/settings/settings';
 import PlansView from './views/plans/plans';
 import WorkoutView from './views/workout/workout';
+import WorkoutsView from './views/workouts/workouts';
 
 export default class LivestrongNative extends React.Component {
 	constructor() {
@@ -51,14 +52,12 @@ export default class LivestrongNative extends React.Component {
 					<WorkoutView />
 				</TabBarIOS.Item>
 				<TabBarIOS.Item
-					title="Chart"
+					title="Workouts"
 					icon={require('../assets/chart.png')}
-					selected={this.state.selectedTab === 'Chart'}
-					onPress={() => this._selectTab('Chart')}
+					selected={this.state.selectedTab === 'Workouts'}
+					onPress={() => this._selectTab('Workouts')}
 				>
-					<View>
-						<Text>Chart</Text>
-					</View>
+					<WorkoutsView />
 				</TabBarIOS.Item>
 				<TabBarIOS.Item
 					title="Settings"

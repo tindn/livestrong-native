@@ -1,11 +1,14 @@
 import React from 'react';
 import {
-	View,
+	H1,
+	ListItem,
 	ListView,
+	NavigatorIOS,
+	SectionList,
 	StyleSheet,
 	Text,
 	TouchableHighlight,
-	NavigatorIOS
+	View
 } from 'react-native';
 import Exercise from './exercise';
 import localData from '../../utils/localData';

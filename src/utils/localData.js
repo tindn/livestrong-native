@@ -36,10 +36,7 @@ function getExercise(exerciseId) {
 function saveExercise(exercise) {
 	if (exercise.id === undefined) {
 		exercise.id = uuid(exercise.name, secrets.NS);
-		return AsyncStorage.setItem(
-			'exercise.' + exercise.id,
-			JSON.stringify(exercise)
-		).then(() => _udpateTimestamp());
+		return setItem('exercise.' + exercise.id, JSON.stringify(exercise));
 	} else {
 		return AsyncStorage.mergeItem(
 			'exercise.' + exercise.id,
@@ -88,10 +85,7 @@ function getAllPlans() {
 function savePlan(plan) {
 	if (plan.id === undefined) {
 		plan.id = uuid(plan.name, secrets.NS);
-		return AsyncStorage.setItem(
-			'plan.' + plan.id,
-			JSON.stringify(plan)
-		).then(() => _udpateTimestamp());
+		return setItem('plan.' + plan.id, JSON.stringify(plan));
 	} else {
 		return AsyncStorage.mergeItem(
 			'plan.' + plan.id,
@@ -105,6 +99,21 @@ function deletePlan(plan) {
 		return;
 	}
 	AsyncStorage.removeItem('plan.' + plan.id).then(() => _udpateTimestamp());
+}
+
+function saveWorkout(workout) {
+	if (workout.id === undefined) {
+		workout.id = uuid(workout.startTimestamp, secrets.NS);
+	}
+	return setItem('workout.' + workout.id, JSON.stringify(workout)).then(() => {
+		return workout;
+	});
+}
+
+function getAllWorkouts() {
+	return _getKeys(function(key) {
+		return key.substring(0, 7) === 'workout';
+	}).then(getValues);
 }
 
 function flushGetRequests() {
@@ -125,7 +134,7 @@ function getItem(key) {
 }
 
 function setItem(key, value) {
-	return AsyncStorage.setItem(key, value);
+	return AsyncStorage.setItem(key, value).then(() => _udpateTimestamp());
 }
 
 module.exports = {
@@ -139,6 +148,8 @@ module.exports = {
 	getAllPlans,
 	savePlan,
 	deletePlan,
+	saveWorkout,
+	getAllWorkouts,
 	getItem,
 	setItem,
 	getValues
