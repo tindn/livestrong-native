@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-	View,
 	ListView,
+	FlatList,
+	NavigatorIOS,
 	StyleSheet,
 	Text,
 	TouchableHighlight,
-	NavigatorIOS
+	View
 } from 'react-native';
 import localData from '../../utils/localData';
 import Plan from './plan';
@@ -41,20 +42,25 @@ export default class PlansView extends React.Component {
 class PlanList extends React.Component {
 	constructor(props) {
 		super(props);
-		this.ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 !== r2
-		});
 		this.state = {
-			dataSource: this.ds.cloneWithRows([])
+			allPlans: [],
+			refreshing: false
 		};
 		this._planPressed = this._planPressed.bind(this);
 	}
 
 	_updateList() {
+		this.setState({ refreshing: true });
 		localData.getAllPlans().then(plans => {
+			plans = plans.map((plan, index) => {
+				plan.key = index;
+				return plan;
+			});
 			plans = plans.sort(sortByDisplayName);
-			this.setState({
-				dataSource: this.ds.cloneWithRows(plans)
+			this.setState(prevState => {
+				prevState.allPlans = plans;
+				prevState.refreshing = false;
+				return prevState;
 			});
 		});
 	}
@@ -69,11 +75,11 @@ class PlanList extends React.Component {
 
 	render() {
 		return (
-			<ListView
-				dataSource={this.state.dataSource}
-				renderRow={plan => this.renderPlan(plan)}
-				contentInset={{ bottom: 49 }}
-				enableEmptySections={true}
+			<FlatList
+				data={this.state.allPlans}
+				renderItem={({ item }) => this.renderPlan(item)}
+				refreshing={this.state.refreshing}
+				onRefresh={this._updateList.bind(this)}
 			/>
 		);
 	}
@@ -116,12 +122,12 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#B5B9C2',
 		borderBottomWidth: 0.5,
 		paddingLeft: 7,
-		paddingBottom: 12,
-		paddingTop: 15,
+		paddingBottom: 15,
+		paddingTop: 20,
 		marginLeft: 10
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 18,
 		// color: '#4B4C4B',
 		marginBottom: 5
 	}

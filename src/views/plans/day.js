@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+	Button,
 	Text,
 	View,
 	StyleSheet,
@@ -24,6 +25,8 @@ export default class Day extends React.Component {
 		this._toggleExercisePicker = this._toggleExercisePicker.bind(this);
 		this._addExercise = this._addExercise.bind(this);
 		this._updateDayName = this._updateDayName.bind(this);
+		this._orderUp = this._orderUp.bind(this);
+		this._orderDown = this._orderDown.bind(this);
 	}
 
 	_updateExercises(exercises) {
@@ -43,30 +46,6 @@ export default class Day extends React.Component {
 	}
 
 	render() {
-		let exercisePicker = null;
-		if (this.state.showExercisePicker) {
-			exercisePicker = (
-				<ExercisePicker
-					allExercises={this.state.allExercises}
-					addExercise={this._addExercise}
-					cancelPicker={this._toggleExercisePicker}
-				/>
-			);
-		}
-		let addExerciseIcon = null;
-		if (!this.state.showExercisePicker) {
-			addExerciseIcon = (
-				<TouchableHighlight
-					onPress={this._toggleExercisePicker}
-					style={styles.addButton}
-				>
-					<Image
-						source={require('../../../assets/plus.png')}
-						style={styles.addImage}
-					/>
-				</TouchableHighlight>
-			);
-		}
 		return (
 			<View style={styles.day}>
 				<View style={styles.header}>
@@ -82,11 +61,21 @@ export default class Day extends React.Component {
 						<Text style={styles.removeDay}>Remove</Text>
 					</TouchableHighlight>
 				</View>
-				<View style={styles.content}>
+				<View>
 					{this._renderExercises(this.state.day.exercises)}
 				</View>
-				{addExerciseIcon}
-				{exercisePicker}
+				{this.state.showExercisePicker
+					? <ExercisePicker
+							allExercises={this.state.allExercises}
+							addExercise={this._addExercise}
+							cancelPicker={this._toggleExercisePicker}
+						/>
+					: <TouchableHighlight
+							onPress={this._toggleExercisePicker}
+							style={styles.addButton}
+						>
+							<Text style={styles.addText}>Add Exercise</Text>
+						</TouchableHighlight>}
 			</View>
 		);
 	}
@@ -102,6 +91,8 @@ export default class Day extends React.Component {
 						exercise={exercise}
 						updateExercise={this.props.updateExercise}
 						deleteExercise={this.props.deleteExercise}
+						orderUp={this._orderUp}
+						orderDown={this._orderDown}
 					/>
 				);
 			}.bind(this)
@@ -129,11 +120,13 @@ export default class Day extends React.Component {
 	_addExercise(exercise) {
 		this.setState(
 			prevState => {
-				prevState.day.exercises.push({
-					exerciseId: exercise.id,
-					sets: 3,
-					reps: 8
-				});
+				prevState.day.exercises.push(
+					Object.assign(exercise, {
+						exerciseId: exercise.id,
+						sets: 3,
+						reps: 8
+					})
+				);
 				return prevState;
 			},
 			() => {
@@ -154,35 +147,71 @@ export default class Day extends React.Component {
 			}
 		);
 	}
+
+	_orderUp(exerciseIndex) {
+		if (exerciseIndex === 0) {
+			return;
+		}
+		let replaced = this.state.day.exercises[exerciseIndex - 1];
+		let replacing = this.state.day.exercises[exerciseIndex];
+		this.setState(
+			prevState => {
+				prevState.day.exercises[exerciseIndex] = replaced;
+				prevState.day.exercises[exerciseIndex - 1] = replacing;
+				return prevState;
+			},
+			() => {
+				this.props.updateDay(this.state.day, this.props.dayIndex);
+			}
+		);
+	}
+
+	_orderDown(exerciseIndex) {
+		if (exerciseIndex === this.state.day.exercises.length - 1) {
+			return;
+		}
+		let replaced = this.state.day.exercises[exerciseIndex + 1];
+		let replacing = this.state.day.exercises[exerciseIndex];
+		this.setState(
+			prevState => {
+				prevState.day.exercises[exerciseIndex] = replaced;
+				prevState.day.exercises[exerciseIndex + 1] = replacing;
+				return prevState;
+			},
+			() => {
+				this.props.updateDay(this.state.day, this.props.dayIndex);
+			}
+		);
+	}
 }
 
 const styles = StyleSheet.create({
 	day: {
-		marginBottom: 20
+		marginBottom: 30
 	},
 	header: {
 		flexDirection: 'row',
-		backgroundColor: '#e9e9e9',
-		paddingTop: 10,
-		paddingBottom: 10,
+		paddingTop: 7,
+		paddingBottom: 7,
 		paddingLeft: 10
 	},
 	dayTitle: {
 		flex: 1,
-		fontSize: 18
+		fontSize: 18,
+		fontWeight: 'bold'
 	},
 	removeDay: {
 		width: 60,
-		fontSize: 15,
+		fontSize: 16,
 		color: 'red'
-	},
-	content: {
-		paddingLeft: 10,
-		paddingTop: 5
 	},
 	addButton: {
 		alignSelf: 'center',
-		marginTop: 10
+		marginTop: 20
+	},
+	addText: {
+		color: '#007AFF',
+		fontSize: 18
 	},
 	addImage: {
 		tintColor: '#007AFF',

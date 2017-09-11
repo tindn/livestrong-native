@@ -1,10 +1,7 @@
 import React from 'react';
 import {
-	H1,
-	ListItem,
-	ListView,
+	FlatList,
 	NavigatorIOS,
-	SectionList,
 	StyleSheet,
 	Text,
 	TouchableHighlight,
@@ -15,9 +12,6 @@ import localData from '../../utils/localData';
 import { sortByDisplayName } from '../../utils/sorts';
 
 export default class ExercisesView extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 	render() {
 		return (
 			<NavigatorIOS
@@ -44,22 +38,24 @@ export default class ExercisesView extends React.Component {
 class ExerciseList extends React.Component {
 	constructor(props) {
 		super(props);
-		this.ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 !== r2
-		});
 		this.state = {
 			exercises: [],
-			listViewDataSource: this.ds.cloneWithRows([])
+			refreshing: false
 		};
 		this._exercisePressed = this._exercisePressed.bind(this);
 	}
 
 	_updateList() {
+		this.setState({ refreshing: true });
 		localData.getAllExercises().then(exercises => {
+			exercises = exercises.map((exercise, index) => {
+				exercise.key = index;
+				return exercise;
+			});
 			let sortedExercises = exercises.sort(sortByDisplayName);
 			this.setState(prevState => {
 				prevState.exercises = exercises;
-				prevState.listViewDataSource = this.ds.cloneWithRows(sortedExercises);
+				prevState.refreshing = false;
 				return prevState;
 			});
 		});
@@ -75,11 +71,11 @@ class ExerciseList extends React.Component {
 
 	render() {
 		return (
-			<ListView
-				dataSource={this.state.listViewDataSource}
-				renderRow={exercise => this.renderExercise(exercise)}
-				contentInset={{ bottom: 49 }}
-				enableEmptySections={true}
+			<FlatList
+				data={this.state.exercises}
+				renderItem={({ item }) => this.renderExercise(item)}
+				refreshing={this.state.refreshing}
+				onRefresh={this._updateList.bind(this)}
 			/>
 		);
 	}
@@ -119,15 +115,15 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	exercise: {
-		borderBottomColor: '#B5B9C2',
+		borderColor: '#B5B9C2',
 		borderBottomWidth: 0.5,
 		paddingLeft: 7,
-		paddingBottom: 12,
-		paddingTop: 15,
+		paddingBottom: 15,
+		paddingTop: 20,
 		marginLeft: 10
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 18,
 		// color: '#4B4C4B',
 		marginBottom: 5
 	}

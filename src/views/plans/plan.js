@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
 		marginBottom: 10
 	},
 	buttons: {
-		marginTop: 30
+		marginTop: 50
 	},
 	button: {
 		borderColor: '#B5B9C2',

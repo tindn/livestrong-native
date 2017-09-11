@@ -7,4 +7,8 @@ function sortByDisplayName(obj1, obj2) {
 	return 0;
 }
 
-export { sortByDisplayName };
+function sortByStartTimestamp(obj1, obj2) {
+	return parseInt(obj2.startTimestamp) - parseInt(obj1.startTimestamp);
+}
+
+export { sortByDisplayName, sortByStartTimestamp };

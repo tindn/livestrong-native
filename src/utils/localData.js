@@ -13,6 +13,12 @@ function seedData() {
 	}, this);
 }
 
+function restoreData(data) {
+	data.forEach(function(element) {
+		AsyncStorage.setItem(element[0], element[1]);
+	}, this);
+}
+
 function getAllData() {
 	return AsyncStorage.getAllKeys().then(function(keys) {
 		return AsyncStorage.multiGet(keys);
@@ -137,6 +143,10 @@ function setItem(key, value) {
 	return AsyncStorage.setItem(key, value).then(() => _udpateTimestamp());
 }
 
+function mergeItem(key, value) {
+	return AsyncStorage.mergeItem(key, value).then(() => _udpateTimestamp());
+}
+
 module.exports = {
 	dangerouslyClearEverything,
 	seedData,
@@ -152,5 +162,7 @@ module.exports = {
 	getAllWorkouts,
 	getItem,
 	setItem,
-	getValues
+	getValues,
+	restoreData,
+	mergeItem
 };

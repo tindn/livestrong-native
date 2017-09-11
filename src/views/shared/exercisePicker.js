@@ -6,17 +6,20 @@ import { sortByDisplayName } from '../../utils/sorts';
 export default class ExercisePicker extends React.Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			selectedValue: '-1',
 			allExercises: []
 		};
 		this._updateSelectedValue = this._updateSelectedValue.bind(this);
 		this._addExercise = this._addExercise.bind(this);
+	}
+
+	componentDidMount() {
 		if (!this.props.allExercises) {
 			localData.getAllExercises().then(exercises => {
-				this.setState({
-					allExercises: exercises.sort(sortByDisplayName)
+				this.setState(prevState => {
+					prevState.allExercises = exercises.sort(sortByDisplayName);
+					return prevState;
 				});
 			});
 		} else {
@@ -26,6 +29,7 @@ export default class ExercisePicker extends React.Component {
 			});
 		}
 	}
+
 	render() {
 		let cancelButton = null;
 		if (this.props.cancelPicker) {

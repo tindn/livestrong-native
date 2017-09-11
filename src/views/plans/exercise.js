@@ -11,6 +11,26 @@ import {
 export default (Exercise = props => {
 	return (
 		<View style={styles.exercise}>
+			<View style={styles.ordering}>
+				<TouchableHighlight
+					onPress={() => props.orderUp(props.exerciseIndex)}
+					style={styles.orderUp}
+				>
+					<Image
+						source={require('../../../assets/chevron-up.png')}
+						style={styles.chevronUp}
+					/>
+				</TouchableHighlight>
+				<TouchableHighlight
+					onPress={() => props.orderDown(props.exerciseIndex)}
+					style={styles.orderDown}
+				>
+					<Image
+						source={require('../../../assets/chevron-down.png')}
+						style={styles.chevronUp}
+					/>
+				</TouchableHighlight>
+			</View>
 			<View style={styles.exerciseInformation}>
 				<Text style={styles.exerciseName}>
 					{props.exercise.displayName}
@@ -24,7 +44,9 @@ export default (Exercise = props => {
 						selectTextOnFocus={true}
 					/>
 					<Text style={styles.detailLabel}>sets</Text>
-					<Text>x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+					<Text style={styles.detailLabel}>
+						&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</Text>
 					<TextInput
 						style={styles.detailInput}
 						defaultValue={props.exercise.reps.toString()}
@@ -35,6 +57,7 @@ export default (Exercise = props => {
 					<Text style={styles.detailLabel}>reps</Text>
 				</View>
 			</View>
+
 			<TouchableHighlight
 				style={styles.deleteButton}
 				onPress={() => _deleteExercise(props)}
@@ -61,38 +84,63 @@ const _updateValue = (key, value, props) => {
 const _deleteExercise = props => {
 	props.deleteExercise(props.exerciseIndex, props.dayIndex);
 };
+
 const styles = StyleSheet.create({
 	exercise: {
-		marginBottom: 10,
-		flexDirection: 'row'
+		paddingBottom: 5,
+		marginLeft: 15,
+		paddingTop: 15,
+		flexDirection: 'row',
+		borderColor: '#B5B9C2',
+		borderTopWidth: 0.5
 	},
 	exerciseInformation: {
-		width: '90%'
+		// width: '82%'
+		flex: 8
 	},
 	exerciseName: {
-		fontWeight: 'bold',
-		fontSize: 15,
-		marginTop: 5,
-		marginBottom: 5
+		fontSize: 18,
+		marginBottom: 15
 	},
 	details: {
 		flexDirection: 'row'
 	},
 	detailInput: {
 		height: 20,
-		fontSize: 16,
+		fontSize: 18,
 		width: 25
 	},
 	detailLabel: {
 		width: 40,
-		fontSize: 16
+		fontSize: 18
 	},
 	deleteButton: {
-		width: '10%',
+		// width: '10%',
+		flex: 1,
 		marginTop: 10
 	},
 	deleteImage: {
 		tintColor: 'red',
+		width: 18,
+		height: 18
+	},
+	ordering: {
+		flex: 1,
+		flexDirection: 'column'
+	},
+	orderUp: {
+		flex: 1
+	},
+	orderDown: {
+		flex: 1
+	},
+	chevronUp: {
+		tintColor: '#007AFF',
+		width: 18,
+		height: 18
+	},
+	chevronDown: {
+		tintColor: '#007AFF',
 		width: 18,
 		height: 18
 	}

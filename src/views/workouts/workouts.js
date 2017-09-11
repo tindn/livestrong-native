@@ -1,13 +1,15 @@
 import React from 'react';
 import {
-	View,
-	ListView,
-	StyleSheet,
+	FlatList,
+	NavigatorIOS,
 	Text,
+	StyleSheet,
 	TouchableHighlight,
-	NavigatorIOS
+	View
 } from 'react-native';
 import localData from '../../utils/localData';
+import WorkoutView from './workoutView';
+import { sortByStartTimestamp } from '../../utils/sorts';
 
 export default class WorkoutsView extends React.Component {
 	render() {
@@ -18,7 +20,7 @@ export default class WorkoutsView extends React.Component {
 					component: WorkoutList,
 					title: 'Workouts'
 				}}
-				style={{ flex: 1 }}
+				style={styles.workoutsView}
 			/>
 		);
 	}
@@ -27,19 +29,24 @@ export default class WorkoutsView extends React.Component {
 class WorkoutList extends React.Component {
 	constructor(props) {
 		super(props);
-		this.ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 !== r2
-		});
 		this.state = {
-			dataSource: this.ds.cloneWithRows([])
+			workouts: [],
+			refreshing: false
 		};
 	}
 
 	_updateList() {
+		this.setState({ refreshing: true });
 		localData.getAllWorkouts().then(workouts => {
-			this.setState({
-				dataSource: this.ds.cloneWithRows(workouts)
+			workouts = workouts.map((workout, index) => {
+				workout.key = index;
+				return workout;
 			});
+			let sortedWorkouts = workouts.sort(sortByStartTimestamp);
+			this.setState(prevState => {
+				prevState.workouts = sortedWorkouts;
+				return prevState;
+			}, this.setState({ refreshing: false }));
 		});
 	}
 
@@ -53,22 +60,51 @@ class WorkoutList extends React.Component {
 
 	render() {
 		return (
-			<ListView
-				dataSource={this.state.dataSource}
-				renderRow={workout => this.renderWorkout(workout)}
-				contentInset={{ bottom: 49 }}
-				enableEmptySections={true}
+			<FlatList
+				data={this.state.workouts}
+				renderItem={({ item }) => this.renderWorkout(item)}
+				refreshing={this.state.refreshing}
+				onRefresh={this._updateList.bind(this)}
 			/>
 		);
 	}
 
 	renderWorkout(workout) {
 		return (
-			<View>
-				<Text>
-					{new Date(parseInt(workout.startTimestamp)).toString()}
-				</Text>
-			</View>
+			<TouchableHighlight
+				onPress={() => this._workoutPressed(workout)}
+				underlayColor="#e2e2e2"
+			>
+				<View style={styles.workout}>
+					<Text>
+						{new Date(parseInt(workout.startTimestamp)).toString()}
+					</Text>
+				</View>
+			</TouchableHighlight>
 		);
 	}
+
+	_workoutPressed(workout) {
+		this.props.navigator.push({
+			title: 'Workout',
+			component: WorkoutView,
+			passProps: {
+				workout: workout
+			}
+		});
+	}
 }
+
+const styles = StyleSheet.create({
+	workoutsView: {
+		flex: 1
+	},
+	workout: {
+		borderColor: '#B5B9C2',
+		borderBottomWidth: 0.5,
+		paddingLeft: 7,
+		paddingBottom: 15,
+		paddingTop: 20,
+		marginLeft: 10
+	}
+});

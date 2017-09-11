@@ -1,12 +1,14 @@
 import React from 'react';
 import {
-	View,
+	ActionSheetIOS,
+	Alert,
+	Button,
+	Image,
+	StyleSheet,
 	Text,
 	TextInput,
-	Button,
-	StyleSheet,
-	ActionSheetIOS,
-	Alert
+	TouchableHighlight,
+	View
 } from 'react-native';
 import localData from '../../utils/localData';
 import TextInputGroup from '../shared/textinputgroup';
@@ -20,6 +22,7 @@ export default class Exercise extends React.Component {
 		this._updateName = this._updateName.bind(this);
 		this._updateExercise = this._updateExercise.bind(this);
 		this._deleteExercise = this._deleteExercise.bind(this);
+		this._createExercise = this._createExercise.bind(this);
 	}
 
 	_updateName(name) {
@@ -49,7 +52,9 @@ export default class Exercise extends React.Component {
 			);
 			return;
 		}
-		localData.saveExercise(this.state.exercise);
+		if (this.state.exercise.id !== undefined) {
+			localData.saveExercise(this.state.exercise);
+		}
 	}
 
 	_deleteExercise() {
@@ -69,6 +74,17 @@ export default class Exercise extends React.Component {
 		);
 	}
 
+	_createExercise() {
+		localData.saveExercise(this.state.exercise);
+		this.props.navigator.pop();
+	}
+
+	_updateType(type) {
+		this.setState(prevState => {
+			prevState.exercise.type = type;
+			return prevState;
+		}, this._updateExercise);
+	}
 	render() {
 		return (
 			<View style={styles.exerciseView}>
@@ -81,8 +97,37 @@ export default class Exercise extends React.Component {
 						autoFocus={true}
 					/>
 				</View>
-				<View style={styles.divider} />
-				<View>
+				<View style={styles.selectList}>
+					<View style={styles.selectItem}>
+						<TouchableHighlight onPress={() => this._updateType('resistance')}>
+							<Text>Resistance</Text>
+							<Image
+								source={require('../../../assets/check.png')}
+								style={styles.selectCheck}
+							/>
+						</TouchableHighlight>
+					</View>
+					<View style={styles.selectItem}>
+						<TouchableHighlight onPress={() => this._updateType('cardio')}>
+							<Text>Cardio</Text>
+						</TouchableHighlight>
+					</View>
+				</View>
+				{this.state.exercise.heaviestSet
+					? <View>
+							<Text>Heaviest Set</Text>
+							<Text
+							>{`${this.state.exercise.heaviestSet.reps.toString()} reps at ${this.state.exercise.heaviestSet.weight.toString()} ${this
+								.state.exercise.heaviestSet.weightUnit}`}</Text>
+						</View>
+					: null}
+				<View style={styles.actions} />
+				{this.state.exercise.id === undefined
+					? <View style={styles.actionButton}>
+							<Button title="Create Exercise" onPress={this._createExercise} />
+						</View>
+					: null}
+				<View style={styles.actionButton}>
 					<Button
 						title="Delete Exercise"
 						onPress={this._deleteExercise}
@@ -104,11 +149,27 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		marginBottom: 40
 	},
-	divider: {
-		marginLeft: 20,
-		marginRight: 20,
+	actions: {
+		marginTop: 50
+	},
+	actionButton: {
 		borderColor: '#B5B9C2',
-		borderBottomWidth: 0.4,
-		marginBottom: 20
+		borderTopWidth: 0.5,
+		paddingTop: 10,
+		paddingBottom: 10
+	},
+	selectList: {
+		borderColor: '#B5B9C2',
+		borderBottomWidth: 0.5
+	},
+	selectItem: {
+		borderColor: '#B5B9C2',
+		borderTopWidth: 0.5,
+		paddingTop: 15,
+		paddingBottom: 15
+	},
+	selectCheck: {
+		width: 15,
+		height: 15
 	}
 });

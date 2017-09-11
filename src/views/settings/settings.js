@@ -1,14 +1,42 @@
 import React from 'react';
-import { View, Text, Button, ScrollView } from 'react-native';
+import {
+	Button,
+	FlatList,
+	NavigatorIOS,
+	ScrollView,
+	StyleSheet,
+	Text,
+	TouchableHighlight,
+	View
+} from 'react-native';
 import localData from '../../utils/localData';
 import DeviceInfo from 'react-native-device-info';
+import DeviceInformation from './deviceInformation';
+import DeviceData from './deviceData';
+import BackedupData from './backedupData';
 
 export default class SettingsView extends React.Component {
+	render() {
+		return (
+			<NavigatorIOS
+				ref="nav"
+				initialRoute={{
+					component: Settings,
+					title: 'Settings'
+				}}
+				style={styles.settingsView}
+			/>
+		);
+	}
+}
+
+class Settings extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			data: '',
-			backupStatus: []
+			backupStatus: [],
+			refreshing: false
 		};
 		this._showData = this._showData.bind(this);
 		this._clearData = this._clearData.bind(this);
@@ -17,67 +45,75 @@ export default class SettingsView extends React.Component {
 
 	render() {
 		let dataView = null;
-		if (this.state.data !== '') {
-			dataView = this.state.data.map(function(obj, index) {
-				return (
-					<View
-						key={index}
-						style={{
-							paddingTop: 10,
-							paddingBottom: 10,
-							paddingLeft: 10,
-							paddingRight: 5,
-							borderBottomColor: '#B5B9C2',
-							borderBottomWidth: 0.5
-						}}
-					>
-						<Text
-							style={{
-								fontWeight: 'bold'
-							}}
-						>
-							{obj.key}
-						</Text>
-						<Text
-							style={{
-								paddingTop: 5
-							}}
-						>
-							{JSON.stringify(obj.value)}
-						</Text>
-					</View>
-				);
-			});
-		}
 
 		let backupStatusView = null;
-		if (this.state.backupStatus.length > 0) {
-			backupStatusView = (
-				<View>
-					<Text>Backup status:</Text>
-					{this.state.backupStatus.map((status, index) => {
-						return (
-							<Text key={index}>
-								{status}
-							</Text>
-						);
-					})}
-				</View>
-			);
-		}
+
 		return (
-			<ScrollView style={{ flex: 1, marginTop: 65 }}>
-				<Text>
-					UniqueId: {DeviceInfo.getUniqueID()}
-				</Text>
-				<Text>
-					{DeviceInfo.isEmulator() ? 'Emulator' : 'Physical Device'}
-				</Text>
-				<Button onPress={this._reseedData} title="Reseed Data" />
-				<Button onPress={this._showData} title="Show Data" />
-				<Button onPress={this._clearData} title="Clear Data" />
-				{dataView}
-				<Button onPress={this._backupData} title="Backup Data" />
+			<ScrollView style={{ flex: 1 }}>
+				<View style={styles.button}>
+					<Button
+						onPress={() => {
+							this.props.navigator.push({
+								title: 'Device Information',
+								component: DeviceInformation
+							});
+						}}
+						title="Device Information"
+						color="black"
+					/>
+				</View>
+				<View style={styles.button}>
+					<Button
+						onPress={() => {
+							this.props.navigator.push({
+								title: 'Device Data',
+								component: DeviceData
+							});
+						}}
+						title="Device Data"
+						color="black"
+					/>
+				</View>
+				<View style={styles.button}>
+					<Button
+						onPress={() => {
+							this.props.navigator.push({
+								title: 'Backedup Data',
+								component: BackedupData
+							});
+						}}
+						title="Backedup Data"
+						color="black"
+					/>
+				</View>
+				{/* <View style={styles.button}>
+					<Button onPress={this._reseedData} title="Reseed Data" />
+				</View> */}
+				<View style={styles.button}>
+					<Button onPress={this._backupData} title="Backup Data" />
+				</View>
+				{this.state.backupStatus.length > 0
+					? <View>
+							<Text style={styles.backupStatusLabel}>Backup status:</Text>
+							{this.state.backupStatus.map((status, index) => {
+								return (
+									<Text key={index} style={styles.backupStatus}>
+										{status}
+									</Text>
+								);
+							})}
+							<TouchableHighlight
+								onPress={() => {
+									this.setState(prevState => {
+										prevState.backupStatus = [];
+										return prevState;
+									});
+								}}
+							>
+								<Text style={styles.clearBackupStatus}>Clear</Text>
+							</TouchableHighlight>
+						</View>
+					: null}
 				{backupStatusView}
 			</ScrollView>
 		);
@@ -194,7 +230,6 @@ export default class SettingsView extends React.Component {
 							});
 						});
 					} else {
-						console.log(error);
 						this.setState((prevState, props) => {
 							prevState.backupStatus.push(`Backup failed.`);
 							return prevState;
@@ -204,3 +239,32 @@ export default class SettingsView extends React.Component {
 			);
 	}
 }
+
+const styles = StyleSheet.create({
+	settingsView: {
+		flex: 1
+	},
+	button: {
+		borderColor: '#B5B9C2',
+		borderTopWidth: 0.5,
+		paddingLeft: 7,
+		paddingBottom: 15,
+		paddingTop: 20,
+		marginLeft: 10
+	},
+	backupStatusLabel: {
+		fontWeight: 'bold',
+		textAlign: 'center',
+		marginBottom: 10
+	},
+	backupStatus: {
+		paddingLeft: 10,
+		marginBottom: 5
+	},
+	clearBackupStatus: {
+		color: '#007AFF',
+		fontSize: 16,
+		textAlign: 'center',
+		marginTop: 10
+	}
+});
