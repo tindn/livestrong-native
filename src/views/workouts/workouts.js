@@ -3,13 +3,13 @@ import {
 	FlatList,
 	NavigatorIOS,
 	Text,
-	StyleSheet,
 	TouchableHighlight,
 	View
 } from 'react-native';
 import localData from '../../utils/localData';
 import WorkoutView from './workoutView';
 import { sortByStartTimestamp } from '../../utils/sorts';
+import { FlatListStyles } from '../../styles';
 
 export default class WorkoutsView extends React.Component {
 	render() {
@@ -20,7 +20,7 @@ export default class WorkoutsView extends React.Component {
 					component: WorkoutList,
 					title: 'Workouts'
 				}}
-				style={styles.workoutsView}
+				style={FlatListStyles.listView}
 			/>
 		);
 	}
@@ -75,10 +75,8 @@ class WorkoutList extends React.Component {
 				onPress={() => this._workoutPressed(workout)}
 				underlayColor="#e2e2e2"
 			>
-				<View style={styles.workout}>
-					<Text>
-						{new Date(parseInt(workout.startTimestamp)).toString()}
-					</Text>
+				<View style={FlatListStyles.listItem}>
+					<Text>{new Date(parseInt(workout.startTimestamp)).toString()}</Text>
 				</View>
 			</TouchableHighlight>
 		);
@@ -94,17 +92,3 @@ class WorkoutList extends React.Component {
 		});
 	}
 }
-
-const styles = StyleSheet.create({
-	workoutsView: {
-		flex: 1
-	},
-	workout: {
-		borderColor: '#B5B9C2',
-		borderBottomWidth: 0.5,
-		paddingLeft: 7,
-		paddingBottom: 15,
-		paddingTop: 20,
-		marginLeft: 10
-	}
-});
