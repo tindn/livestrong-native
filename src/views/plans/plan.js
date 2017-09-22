@@ -12,6 +12,7 @@ import {
 import localData from '../../utils/localData';
 import Day from './day';
 import TextInputGroup from '../shared/textinputgroup';
+import { TextInputGroupStyles, ActionButtonsStyles } from '../../styles';
 
 export default class Plan extends React.Component {
 	constructor(props) {
@@ -35,7 +36,7 @@ export default class Plan extends React.Component {
 				style={styles.planView}
 				automaticallyAdjustContentInsets={true}
 			>
-				<View style={styles.nameInput}>
+				<View style={TextInputGroupStyles.input}>
 					<TextInputGroup
 						labelText="Name"
 						inputValue={this.state.plan.displayName}
@@ -43,14 +44,12 @@ export default class Plan extends React.Component {
 						placeholderText="Fail to plan, and you are planning to fail!"
 					/>
 				</View>
-				<View>
-					{this._renderDays(this.state.plan.days)}
-				</View>
-				<View style={styles.buttons}>
-					<View style={firstButtonStyle}>
+				<View>{this._renderDays(this.state.plan.days)}</View>
+				<View style={ActionButtonsStyles.group}>
+					<View style={ActionButtonsStyles.button}>
 						<Button title="Add Day" onPress={this._addDay} />
 					</View>
-					<View style={styles.button}>
+					<View style={ActionButtonsStyles.lastButton}>
 						<Button
 							title="Delete Plan"
 							onPress={this._deletePlan}
@@ -176,23 +175,5 @@ export default class Plan extends React.Component {
 const styles = StyleSheet.create({
 	planView: {
 		flex: 1
-	},
-	nameInput: {
-		marginTop: 10,
-		marginBottom: 10
-	},
-	buttons: {
-		marginTop: 50
-	},
-	button: {
-		borderColor: '#B5B9C2',
-		borderBottomWidth: 0.4,
-		paddingTop: 10,
-		paddingBottom: 10
 	}
 });
-
-const firstButtonStyle = StyleSheet.flatten([
-	styles.button,
-	{ borderTopWidth: 0.5 }
-]);

@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import localData from '../../utils/localData';
 import TextInputGroup from '../shared/textinputgroup';
+import { TextInputGroupStyles, ActionButtonsStyles } from '../../styles';
 
 export default class Exercise extends React.Component {
 	constructor(props) {
@@ -89,7 +90,7 @@ export default class Exercise extends React.Component {
 	render() {
 		return (
 			<View style={styles.exerciseView}>
-				<View style={styles.nameInput}>
+				<View style={TextInputGroupStyles.input}>
 					<TextInputGroup
 						labelText="Name"
 						inputValue={this.state.exercise.displayName}
@@ -137,13 +138,13 @@ export default class Exercise extends React.Component {
 							.state.exercise.heaviestSet.weightUnit}`}</Text>
 					</View>
 				) : null}
-				<View style={styles.actions} />
+				<View style={ActionButtonsStyles.group} />
 				{this.state.exercise.id === undefined ? (
-					<View style={styles.actionButton}>
+					<View style={ActionButtonsStyles.button}>
 						<Button title="Create Exercise" onPress={this._createExercise} />
 					</View>
 				) : null}
-				<View style={styles.actionButton}>
+				<View style={ActionButtonsStyles.button}>
 					<Button
 						title="Delete Exercise"
 						onPress={this._deleteExercise}
@@ -160,19 +161,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		paddingTop: 64
-	},
-	nameInput: {
-		marginTop: 10,
-		marginBottom: 40
-	},
-	actions: {
-		marginTop: 50
-	},
-	actionButton: {
-		borderColor: '#B5B9C2',
-		borderTopWidth: 0.5,
-		paddingTop: 10,
-		paddingBottom: 10
 	},
 	selectList: {
 		borderColor: '#B5B9C2',
