@@ -9,7 +9,7 @@ import {
 import Exercise from './exercise';
 import localData from '../../utils/localData';
 import { sortByDisplayName } from '../../utils/sorts';
-import { FlatListStyles } from '../../styles';
+import { ListStyles } from '../../styles';
 
 export default class ExercisesView extends React.Component {
 	render() {
@@ -22,7 +22,7 @@ export default class ExercisesView extends React.Component {
 					rightButtonTitle: 'New',
 					onRightButtonPress: () => this._newExerciseButtonPressed()
 				}}
-				style={FlatListStyles.listView}
+				style={ListStyles.listView}
 			/>
 		);
 	}
@@ -86,8 +86,8 @@ class ExerciseList extends React.Component {
 				onPress={() => this._exercisePressed(exercise)}
 				underlayColor="#e2e2e2"
 			>
-				<View style={FlatListStyles.listItem}>
-					<Text style={FlatListStyles.itemTitle}>{exercise.displayName}</Text>
+				<View style={ListStyles.listItem}>
+					<Text style={ListStyles.itemTitle}>{exercise.displayName}</Text>
 				</View>
 			</TouchableHighlight>
 		);

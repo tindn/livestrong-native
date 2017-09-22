@@ -14,6 +14,7 @@ import DeviceInfo from 'react-native-device-info';
 import DeviceInformation from './deviceInformation';
 import DeviceData from './deviceData';
 import BackedupData from './backedupData';
+import { ListStyles } from '../../styles';
 
 export default class SettingsView extends React.Component {
 	render() {
@@ -24,7 +25,7 @@ export default class SettingsView extends React.Component {
 					component: Settings,
 					title: 'Settings'
 				}}
-				style={styles.settingsView}
+				style={ListStyles.listView}
 			/>
 		);
 	}
@@ -50,7 +51,7 @@ class Settings extends React.Component {
 
 		return (
 			<ScrollView style={{ flex: 1 }}>
-				<View style={styles.button}>
+				<View style={ListStyles.listItem}>
 					<Button
 						onPress={() => {
 							this.props.navigator.push({
@@ -62,7 +63,7 @@ class Settings extends React.Component {
 						color="black"
 					/>
 				</View>
-				<View style={styles.button}>
+				<View style={ListStyles.listItem}>
 					<Button
 						onPress={() => {
 							this.props.navigator.push({
@@ -74,7 +75,7 @@ class Settings extends React.Component {
 						color="black"
 					/>
 				</View>
-				<View style={styles.button}>
+				<View style={ListStyles.listItem}>
 					<Button
 						onPress={() => {
 							this.props.navigator.push({
@@ -86,10 +87,10 @@ class Settings extends React.Component {
 						color="black"
 					/>
 				</View>
-				<View style={styles.button}>
+				<View style={ListStyles.listItem}>
 					<Button onPress={this._reseedData} title="Reseed Data" />
 				</View>
-				<View style={styles.button}>
+				<View style={ListStyles.listItem}>
 					<Button onPress={this._backupData} title="Backup Data" />
 				</View>
 				{this.state.backupStatus.length > 0 ? (
@@ -241,17 +242,6 @@ class Settings extends React.Component {
 }
 
 const styles = StyleSheet.create({
-	settingsView: {
-		flex: 1
-	},
-	button: {
-		borderColor: '#B5B9C2',
-		borderTopWidth: 0.5,
-		paddingLeft: 7,
-		paddingBottom: 15,
-		paddingTop: 20,
-		marginLeft: 10
-	},
 	backupStatusLabel: {
 		fontWeight: 'bold',
 		textAlign: 'center',

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const FlatListStyles = StyleSheet.create({
+export const ListStyles = StyleSheet.create({
 	listView: {
 		flex: 1
 	},

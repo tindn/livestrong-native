@@ -11,7 +11,7 @@ import {
 import localData from '../../utils/localData';
 import Plan from './plan';
 import { sortByDisplayName } from '../../utils/sorts';
-import { FlatListStyles } from '../../styles';
+import { ListStyles } from '../../styles';
 
 export default class PlansView extends React.Component {
 	constructor(props) {
@@ -27,7 +27,7 @@ export default class PlansView extends React.Component {
 					rightButtonTitle: 'New',
 					onRightButtonPress: () => this._newPlanButtonPressed()
 				}}
-				style={FlatListStyles.listView}
+				style={ListStyles.listView}
 			/>
 		);
 	}
@@ -91,8 +91,8 @@ class PlanList extends React.Component {
 				onPress={() => this._planPressed(plan)}
 				underlayColor="#e2e2e2"
 			>
-				<View style={FlatListStyles.listItem}>
-					<Text style={FlatListStyles.itemTitle}>{plan.displayName}</Text>
+				<View style={ListStyles.listItem}>
+					<Text style={ListStyles.itemTitle}>{plan.displayName}</Text>
 				</View>
 			</TouchableHighlight>
 		);

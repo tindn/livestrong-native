@@ -9,7 +9,7 @@ import {
 import localData from '../../utils/localData';
 import WorkoutView from './workoutView';
 import { sortByStartTimestamp } from '../../utils/sorts';
-import { FlatListStyles } from '../../styles';
+import { ListStyles } from '../../styles';
 
 export default class WorkoutsView extends React.Component {
 	render() {
@@ -20,7 +20,7 @@ export default class WorkoutsView extends React.Component {
 					component: WorkoutList,
 					title: 'Workouts'
 				}}
-				style={FlatListStyles.listView}
+				style={ListStyles.listView}
 			/>
 		);
 	}
@@ -75,7 +75,7 @@ class WorkoutList extends React.Component {
 				onPress={() => this._workoutPressed(workout)}
 				underlayColor="#e2e2e2"
 			>
-				<View style={FlatListStyles.listItem}>
+				<View style={ListStyles.listItem}>
 					<Text>{new Date(parseInt(workout.startTimestamp)).toString()}</Text>
 				</View>
 			</TouchableHighlight>
