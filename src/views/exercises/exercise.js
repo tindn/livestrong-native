@@ -8,11 +8,13 @@ import {
 	Text,
 	TextInput,
 	TouchableHighlight,
-	View
+	View,
+	Picker
 } from 'react-native';
 import localData from '../../utils/localData';
 import TextInputGroup from '../shared/textinputgroup';
 import { TextInputGroupStyles, ActionButtonsStyles } from '../../styles';
+import { ExerciseTypes } from '../../globals';
 
 export default class Exercise extends React.Component {
 	constructor(props) {
@@ -100,35 +102,12 @@ export default class Exercise extends React.Component {
 					/>
 				</View>
 				<View style={styles.selectList}>
-					<View style={styles.selectItem}>
-						<TouchableHighlight
-							onPress={() => this._updateType('resistance')}
-							underlayColor="#007AFF"
-						>
-							<Text
-								style={
-									this.state.exercise.type === 'resistance' ? (
-										styles.selectText
-									) : (
-										{}
-									)
-								}
-							>
-								Resistance
-							</Text>
-						</TouchableHighlight>
-					</View>
-					<View style={styles.selectItem}>
-						<TouchableHighlight onPress={() => this._updateType('cardio')}>
-							<Text
-								style={
-									this.state.exercise.type === 'cardio' ? styles.selectText : {}
-								}
-							>
-								Cardio
-							</Text>
-						</TouchableHighlight>
-					</View>
+					<Picker
+						selectedValue={this.state.exercise.type}
+						onValueChange={this._updateType.bind(this)}
+					>
+						{ExerciseTypes.map(this.renderExerciseType)}
+					</Picker>
 				</View>
 				{this.state.exercise.heaviestSet ? (
 					<View>
@@ -154,6 +133,10 @@ export default class Exercise extends React.Component {
 			</View>
 		);
 	}
+
+	renderExerciseType(type, index) {
+		return <Picker.Item key={index} label={type.name} value={type._id} />;
+	}
 }
 
 const styles = StyleSheet.create({
@@ -161,18 +144,5 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		paddingTop: 64
-	},
-	selectList: {
-		borderColor: '#B5B9C2',
-		borderBottomWidth: 0.5
-	},
-	selectItem: {
-		borderColor: '#B5B9C2',
-		borderTopWidth: 0.5,
-		paddingTop: 15,
-		paddingBottom: 15
-	},
-	selectText: {
-		color: '#007AFF'
 	}
 });
