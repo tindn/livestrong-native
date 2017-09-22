@@ -511,6 +511,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* LivestrongNativeTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				C37CACFA1F749B1F0020193D /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -525,6 +526,14 @@
 				2D02E4901E0B4A5D006451C7 /* LivestrongNative-tvOSTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C37CACFA1F749B1F0020193D /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				464A9CB1F3E24DA99AF3FB0A /* libRNDeviceInfo.a */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		C39092761F1FFB9700FF8635 /* Products */ = {

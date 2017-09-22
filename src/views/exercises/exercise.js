@@ -85,6 +85,7 @@ export default class Exercise extends React.Component {
 			return prevState;
 		}, this._updateExercise);
 	}
+
 	render() {
 		return (
 			<View style={styles.exerciseView}>
@@ -99,34 +100,49 @@ export default class Exercise extends React.Component {
 				</View>
 				<View style={styles.selectList}>
 					<View style={styles.selectItem}>
-						<TouchableHighlight onPress={() => this._updateType('resistance')}>
-							<Text>Resistance</Text>
-							<Image
-								source={require('../../../assets/check.png')}
-								style={styles.selectCheck}
-							/>
+						<TouchableHighlight
+							onPress={() => this._updateType('resistance')}
+							underlayColor="#007AFF"
+						>
+							<Text
+								style={
+									this.state.exercise.type === 'resistance' ? (
+										styles.selectText
+									) : (
+										{}
+									)
+								}
+							>
+								Resistance
+							</Text>
 						</TouchableHighlight>
 					</View>
 					<View style={styles.selectItem}>
 						<TouchableHighlight onPress={() => this._updateType('cardio')}>
-							<Text>Cardio</Text>
+							<Text
+								style={
+									this.state.exercise.type === 'cardio' ? styles.selectText : {}
+								}
+							>
+								Cardio
+							</Text>
 						</TouchableHighlight>
 					</View>
 				</View>
-				{this.state.exercise.heaviestSet
-					? <View>
-							<Text>Heaviest Set</Text>
-							<Text
-							>{`${this.state.exercise.heaviestSet.reps.toString()} reps at ${this.state.exercise.heaviestSet.weight.toString()} ${this
-								.state.exercise.heaviestSet.weightUnit}`}</Text>
-						</View>
-					: null}
+				{this.state.exercise.heaviestSet ? (
+					<View>
+						<Text>Heaviest Set</Text>
+						<Text
+						>{`${this.state.exercise.heaviestSet.reps.toString()} reps at ${this.state.exercise.heaviestSet.weight.toString()} ${this
+							.state.exercise.heaviestSet.weightUnit}`}</Text>
+					</View>
+				) : null}
 				<View style={styles.actions} />
-				{this.state.exercise.id === undefined
-					? <View style={styles.actionButton}>
-							<Button title="Create Exercise" onPress={this._createExercise} />
-						</View>
-					: null}
+				{this.state.exercise.id === undefined ? (
+					<View style={styles.actionButton}>
+						<Button title="Create Exercise" onPress={this._createExercise} />
+					</View>
+				) : null}
 				<View style={styles.actionButton}>
 					<Button
 						title="Delete Exercise"
@@ -168,8 +184,7 @@ const styles = StyleSheet.create({
 		paddingTop: 15,
 		paddingBottom: 15
 	},
-	selectCheck: {
-		width: 15,
-		height: 15
+	selectText: {
+		color: '#007AFF'
 	}
 });

@@ -86,34 +86,34 @@ class Settings extends React.Component {
 						color="black"
 					/>
 				</View>
-				{/* <View style={styles.button}>
+				<View style={styles.button}>
 					<Button onPress={this._reseedData} title="Reseed Data" />
-				</View> */}
+				</View>
 				<View style={styles.button}>
 					<Button onPress={this._backupData} title="Backup Data" />
 				</View>
-				{this.state.backupStatus.length > 0
-					? <View>
-							<Text style={styles.backupStatusLabel}>Backup status:</Text>
-							{this.state.backupStatus.map((status, index) => {
-								return (
-									<Text key={index} style={styles.backupStatus}>
-										{status}
-									</Text>
-								);
-							})}
-							<TouchableHighlight
-								onPress={() => {
-									this.setState(prevState => {
-										prevState.backupStatus = [];
-										return prevState;
-									});
-								}}
-							>
-								<Text style={styles.clearBackupStatus}>Clear</Text>
-							</TouchableHighlight>
-						</View>
-					: null}
+				{this.state.backupStatus.length > 0 ? (
+					<View>
+						<Text style={styles.backupStatusLabel}>Backup status:</Text>
+						{this.state.backupStatus.map((status, index) => {
+							return (
+								<Text key={index} style={styles.backupStatus}>
+									{status}
+								</Text>
+							);
+						})}
+						<TouchableHighlight
+							onPress={() => {
+								this.setState(prevState => {
+									prevState.backupStatus = [];
+									return prevState;
+								});
+							}}
+						>
+							<Text style={styles.clearBackupStatus}>Clear</Text>
+						</TouchableHighlight>
+					</View>
+				) : null}
 				{backupStatusView}
 			</ScrollView>
 		);

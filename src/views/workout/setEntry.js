@@ -11,9 +11,7 @@ import {
 export default (SetEntry = props => {
 	return (
 		<View style={styles.mainView} key={props.setIndex}>
-			<Text style={styles.index}>
-				{props.setIndex + 1}.
-			</Text>
+			<Text style={styles.index}>{props.setIndex + 1}.</Text>
 			<View style={styles.inputGroup}>
 				<TouchableHighlight
 					onPress={() => {
@@ -89,13 +87,13 @@ const styles = StyleSheet.create({
 	},
 	inputGroup: { flexDirection: 'column' },
 	repsInput: {
-		width: 35,
+		width: 40,
 		textAlign: 'center',
 		marginTop: 5,
 		fontSize: 18
 	},
 	weightInput: {
-		width: 60,
+		width: 80,
 		textAlign: 'center',
 		marginTop: 5,
 		fontSize: 18
@@ -125,7 +123,7 @@ const styles = StyleSheet.create({
 	index: {
 		marginTop: 50,
 		fontSize: 17,
-		marginRight: 30
+		marginRight: 20
 	},
 	removeImage: {
 		width: 15,
