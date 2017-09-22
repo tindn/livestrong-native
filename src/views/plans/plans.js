@@ -11,6 +11,7 @@ import {
 import localData from '../../utils/localData';
 import Plan from './plan';
 import { sortByDisplayName } from '../../utils/sorts';
+import { FlatListStyles } from '../../styles';
 
 export default class PlansView extends React.Component {
 	constructor(props) {
@@ -26,7 +27,7 @@ export default class PlansView extends React.Component {
 					rightButtonTitle: 'New',
 					onRightButtonPress: () => this._newPlanButtonPressed()
 				}}
-				style={styles.plansView}
+				style={FlatListStyles.listView}
 			/>
 		);
 	}
@@ -90,10 +91,8 @@ class PlanList extends React.Component {
 				onPress={() => this._planPressed(plan)}
 				underlayColor="#e2e2e2"
 			>
-				<View style={styles.plan}>
-					<Text style={styles.title}>
-						{plan.displayName}
-					</Text>
+				<View style={FlatListStyles.listItem}>
+					<Text style={FlatListStyles.itemTitle}>{plan.displayName}</Text>
 				</View>
 			</TouchableHighlight>
 		);
@@ -113,22 +112,3 @@ class PlanList extends React.Component {
 		});
 	}
 }
-
-const styles = StyleSheet.create({
-	plansView: {
-		flex: 1
-	},
-	plan: {
-		borderBottomColor: '#B5B9C2',
-		borderBottomWidth: 0.5,
-		paddingLeft: 7,
-		paddingBottom: 15,
-		paddingTop: 20,
-		marginLeft: 10
-	},
-	title: {
-		fontSize: 18,
-		// color: '#4B4C4B',
-		marginBottom: 5
-	}
-});

@@ -2,7 +2,6 @@ import React from 'react';
 import {
 	FlatList,
 	NavigatorIOS,
-	StyleSheet,
 	Text,
 	TouchableHighlight,
 	View
@@ -10,6 +9,7 @@ import {
 import Exercise from './exercise';
 import localData from '../../utils/localData';
 import { sortByDisplayName } from '../../utils/sorts';
+import { FlatListStyles } from '../../styles';
 
 export default class ExercisesView extends React.Component {
 	render() {
@@ -22,7 +22,7 @@ export default class ExercisesView extends React.Component {
 					rightButtonTitle: 'New',
 					onRightButtonPress: () => this._newExerciseButtonPressed()
 				}}
-				style={styles.exercisesView}
+				style={FlatListStyles.listView}
 			/>
 		);
 	}
@@ -86,10 +86,8 @@ class ExerciseList extends React.Component {
 				onPress={() => this._exercisePressed(exercise)}
 				underlayColor="#e2e2e2"
 			>
-				<View style={styles.exercise}>
-					<Text style={styles.title}>
-						{exercise.displayName}
-					</Text>
+				<View style={FlatListStyles.listItem}>
+					<Text style={FlatListStyles.itemTitle}>{exercise.displayName}</Text>
 				</View>
 			</TouchableHighlight>
 		);
@@ -109,22 +107,3 @@ class ExerciseList extends React.Component {
 		});
 	}
 }
-
-const styles = StyleSheet.create({
-	exercisesView: {
-		flex: 1
-	},
-	exercise: {
-		borderColor: '#B5B9C2',
-		borderBottomWidth: 0.5,
-		paddingLeft: 7,
-		paddingBottom: 15,
-		paddingTop: 20,
-		marginLeft: 10
-	},
-	title: {
-		fontSize: 18,
-		// color: '#4B4C4B',
-		marginBottom: 5
-	}
-});
