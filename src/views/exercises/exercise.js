@@ -8,13 +8,13 @@ import {
 	Text,
 	TextInput,
 	TouchableHighlight,
-	View,
-	Picker
+	View
 } from 'react-native';
 import localData from '../../utils/localData';
 import TextInputGroup from '../shared/textinputgroup';
 import { TextInputGroupStyles, ActionButtonsStyles } from '../../styles';
 import { ExerciseTypes } from '../../globals';
+import PickerGroup from '../shared/pickerGroup';
 
 export default class Exercise extends React.Component {
 	constructor(props) {
@@ -90,6 +90,12 @@ export default class Exercise extends React.Component {
 	}
 
 	render() {
+		console.log(
+			ExerciseTypes.map(type => ({
+				label: type.name,
+				value: type._id
+			}))
+		);
 		return (
 			<View style={styles.exerciseView}>
 				<View style={TextInputGroupStyles.input}>
@@ -101,14 +107,19 @@ export default class Exercise extends React.Component {
 						autoFocus={true}
 					/>
 				</View>
-				<View style={styles.selectList}>
-					<Picker
-						selectedValue={this.state.exercise.type}
-						onValueChange={this._updateType.bind(this)}
-					>
-						{ExerciseTypes.map(this.renderExerciseType)}
-					</Picker>
-				</View>
+				<PickerGroup
+					label="Type"
+					selectedValue={this.state.exercise.type}
+					onValueChange={this._updateType.bind(this)}
+					pickerItems={ExerciseTypes.map(type => ({
+						label: type.name,
+						value: type._id
+					}))}
+					width={150}
+					itemStyle={{
+						height: 110
+					}}
+				/>
 				{this.state.exercise.heaviestSet ? (
 					<View>
 						<Text>Heaviest Set</Text>
@@ -132,10 +143,6 @@ export default class Exercise extends React.Component {
 				</View>
 			</View>
 		);
-	}
-
-	renderExerciseType(type, index) {
-		return <Picker.Item key={index} label={type.name} value={type._id} />;
 	}
 }
 
