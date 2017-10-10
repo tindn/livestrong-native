@@ -70,24 +70,28 @@ class WorkoutList extends React.Component {
 	}
 
 	renderWorkout(workout) {
+		const workoutDate = new Date(parseInt(workout.startTimestamp));
 		return (
 			<TouchableHighlight
-				onPress={() => this._workoutPressed(workout)}
+				onPress={() =>
+					this._workoutPressed(workoutDate.toDateString(), workout)}
 				underlayColor="#e2e2e2"
 			>
 				<View style={ListStyles.listItem}>
-					<Text>{new Date(parseInt(workout.startTimestamp)).toString()}</Text>
+					<Text>
+						{`${workoutDate.toDateString()} ${workoutDate.toLocaleTimeString()}`}
+					</Text>
 				</View>
 			</TouchableHighlight>
 		);
 	}
 
-	_workoutPressed(workout) {
+	_workoutPressed(title, workout) {
 		this.props.navigator.push({
-			title: 'Workout',
+			title,
 			component: WorkoutView,
 			passProps: {
-				workout: workout
+				workout
 			}
 		});
 	}

@@ -106,9 +106,11 @@ class Workout extends React.Component {
 					/>
 				}
 			>
-				{!this.state.workout.startTimestamp
-					? <DayPicker updateDay={this._updateDay} title="Choose Day" />
-					: <View style={styles.placeholder} />}
+				{!this.state.workout.startTimestamp ? (
+					<DayPicker updateDay={this._updateDay} title="Choose Day" />
+				) : (
+					<View style={styles.placeholder} />
+				)}
 				<View style={styles.exercises}>
 					{this.state.workout.exercises.map((exercise, index) => {
 						return (
@@ -124,47 +126,51 @@ class Workout extends React.Component {
 					})}
 				</View>
 
-				{this.state.showExercisePicker
-					? <ExercisePicker
-							addExercise={exercise => {
-								this.setState(prevState => {
-									prevState.workout.exercises.push(exercise);
-									prevState.showExercisePicker = false;
-									return prevState;
-								});
-							}}
-							cancelPicker={() => {
-								this.setState(prevState => {
-									prevState.showExercisePicker = false;
-									return prevState;
-								});
-							}}
-						/>
-					: <TouchableHighlight
-							onPress={() => {
-								this.setState(prevState => {
-									prevState.showExercisePicker = true;
-									return prevState;
-								});
-							}}
-							title="Add Exercise"
-							style={styles.addExercise}
-						>
-							<Text style={styles.addExerciseText}>Add Exercise</Text>
-						</TouchableHighlight>}
+				{this.state.showExercisePicker ? (
+					<ExercisePicker
+						addExercise={exercise => {
+							this.setState(prevState => {
+								prevState.workout.exercises.push(exercise);
+								prevState.showExercisePicker = false;
+								return prevState;
+							});
+						}}
+						cancelPicker={() => {
+							this.setState(prevState => {
+								prevState.showExercisePicker = false;
+								return prevState;
+							});
+						}}
+					/>
+				) : (
+					<TouchableHighlight
+						onPress={() => {
+							this.setState(prevState => {
+								prevState.showExercisePicker = true;
+								return prevState;
+							});
+						}}
+						title="Add Exercise"
+						style={styles.addExercise}
+					>
+						<Text style={styles.addExerciseText}>Add Exercise</Text>
+					</TouchableHighlight>
+				)}
 				<View style={styles.actions}>
 					<View style={styles.button}>
-						{this.state.workout.startTimestamp
-							? <Button
-									title="End Workout"
-									onPress={this._endWorkout}
-									color="red"
-								/>
-							: <Button
-									title="Begin Workout"
-									onPress={this._beginWorkout}
-									color="#16ad05"
-								/>}
+						{this.state.workout.startTimestamp ? (
+							<Button
+								title="End Workout"
+								onPress={this._endWorkout}
+								color="red"
+							/>
+						) : (
+							<Button
+								title="Begin Workout"
+								onPress={this._beginWorkout}
+								color="#16ad05"
+							/>
+						)}
 					</View>
 				</View>
 			</ScrollView>
@@ -178,16 +184,24 @@ class Workout extends React.Component {
 	}
 
 	_endWorkout() {
-		localData
-			.setItem(
-				'lastWorkout',
-				JSON.stringify({
-					workoutId: this.state.workout.id,
-					planId: this.state.workout.planId,
-					dayIndex: this.state.workout.dayIndex
-				})
-			)
-			.then(this._resetState);
+		this.setState(
+			(prevState, props) => {
+				prevState.workout.endTimestamp = new Date().getTime().toString();
+			},
+			() => {
+				this._saveWorkout();
+				localData
+					.setItem(
+						'lastWorkout',
+						JSON.stringify({
+							workoutId: this.state.workout.id,
+							planId: this.state.workout.planId,
+							dayIndex: this.state.workout.dayIndex
+						})
+					)
+					.then(this._resetState);
+			}
+		);
 	}
 
 	_resetState() {
@@ -213,27 +227,27 @@ class Workout extends React.Component {
 	}
 
 	_updateExercise(exercise, index) {
-		if (exercise.sets.length > 0) {
-			exercise.heaviestSet = exercise.sets[0];
-			for (var i = 1; i < exercise.sets.length - 1; i++) {
-				if (exercise.heaviestSet.weight < exercise.sets[i].weight) {
-					exercise.heaviestSet = exercise.sets[i];
-				}
-			}
-			localData.getItem('exercise.' + exercise.id).then(currentExercise => {
-				if (
-					!currentExercise.heaviestSet ||
-					currentExercise.heaviestSet.weight < exercise.heaviestSet.weight
-				) {
-					localData.mergeItem(
-						'exercise.' + exercise.id,
-						JSON.stringify({
-							heaviestSet: exercise.heaviestSet
-						})
-					);
-				}
-			});
-		}
+		// if (exercise.sets.length > 0) {
+		// 	exercise.heaviestSet = exercise.sets[0];
+		// 	for (var i = 1; i < exercise.sets.length - 1; i++) {
+		// 		if (exercise.heaviestSet.weight < exercise.sets[i].weight) {
+		// 			exercise.heaviestSet = exercise.sets[i];
+		// 		}
+		// 	}
+		// 	localData.getItem('exercise.' + exercise.id).then(currentExercise => {
+		// 		if (
+		// 			!currentExercise.heaviestSet ||
+		// 			currentExercise.heaviestSet.weight < exercise.heaviestSet.weight
+		// 		) {
+		// 			localData.mergeItem(
+		// 				'exercise.' + exercise.id,
+		// 				JSON.stringify({
+		// 					heaviestSet: exercise.heaviestSet
+		// 				})
+		// 			);
+		// 		}
+		// 	});
+		// }
 		this.setState(prevState => {
 			prevState.workout.exercises[index] = exercise;
 			return prevState;

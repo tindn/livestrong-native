@@ -3,25 +3,20 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export default (WorkoutView = props => {
 	return (
-		<ScrollView>
-			<Text style={styles.header}>
-				{new Date(parseInt(props.workout.startTimestamp)).toString()}
-			</Text>
-			<Text style={styles.label}>Plan Id</Text>
+		<ScrollView style={styles.scrollView}>
 			<Text>
-				{props.workout.planId}
+				{new Date(parseInt(props.workout.startTimestamp)).toLocaleTimeString()}
 			</Text>
-			<Text style={styles.label}>Day Index</Text>
 			<Text>
-				{props.workout.dayIndex}
+				{new Date(props.workout.endTimestamp - props.workout.startTimestamp)
+					.toISOString()
+					.slice(11, -1)}
 			</Text>
 			<Text style={styles.label}>Exercises</Text>
 			{props.workout.exercises.map((exercise, exerciseIndex) => {
 				return (
 					<View key={exerciseIndex}>
-						<Text>
-							{exercise.displayName}
-						</Text>
+						<Text>{exercise.displayName}</Text>
 						{exercise.sets.map((set, setIndex) => {
 							return (
 								<View key={setIndex}>
@@ -39,8 +34,9 @@ export default (WorkoutView = props => {
 });
 
 const styles = StyleSheet.create({
-	header: {
-		fontWeight: 'bold'
+	scrollView: {
+		paddingTop: 10,
+		paddingLeft: 5
 	},
 	label: {
 		fontWeight: 'bold'
