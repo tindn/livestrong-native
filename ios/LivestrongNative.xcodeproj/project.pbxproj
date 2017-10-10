@@ -36,11 +36,8 @@
 		2DCD954D1E0B4F2C00145EB5 /* LivestrongNativeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* LivestrongNativeTests.m */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-<<<<<<< ours
 		FB7FDC7F669E43C888C12BA2 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 464A9CB1F3E24DA99AF3FB0A /* libRNDeviceInfo.a */; };
-=======
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
->>>>>>> theirs
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -233,7 +230,6 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-<<<<<<< ours
 		C31E73EA1EFA0A640096AB0A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -268,14 +264,12 @@
 			proxyType = 2;
 			remoteGlobalIDString = 3D383D621EBD27B9005632C8;
 			remoteInfo = "double-conversion-tvOS";
-=======
 		ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
->>>>>>> theirs
 		};
 /* End PBXContainerItemProxy section */
 
@@ -466,14 +460,11 @@
 				3DAD3EAB1DF850E9000B6D8A /* libcxxreact.a */,
 				3DAD3EAD1DF850E9000B6D8A /* libjschelpers.a */,
 				3DAD3EAF1DF850E9000B6D8A /* libjschelpers.a */,
-<<<<<<< ours
 				C31E73EB1EFA0A640096AB0A /* libthird-party.a */,
 				C3E3D90C1F3D4A4000395470 /* libthird-party.a */,
 				C31E73ED1EFA0A640096AB0A /* libdouble-conversion.a */,
 				C3E3D90E1F3D4A4000395470 /* libdouble-conversion.a */,
-=======
 				3DAD3EA31DF850E9000B6D8A /* libReact-tvOS.a */,
->>>>>>> theirs
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -550,7 +541,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-<<<<<<< ours
 		C37CACFA1F749B1F0020193D /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -563,12 +553,10 @@
 			isa = PBXGroup;
 			children = (
 				C39092951F1FFB9700FF8635 /* libRNDeviceInfo.a */,
-=======
 		ADBDB9201DFEBF0600ED6528 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */,
->>>>>>> theirs
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -928,7 +916,6 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-<<<<<<< ours
 		C31E73EB1EFA0A640096AB0A /* libthird-party.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -962,13 +949,11 @@
 			fileType = archive.ar;
 			path = "libdouble-conversion.a";
 			remoteRef = C3E3D90D1F3D4A4000395470 /* PBXContainerItemProxy */;
-=======
 		ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRCTBlob.a;
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
->>>>>>> theirs
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
