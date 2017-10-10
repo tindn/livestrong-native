@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ActionSheetIOS, Button, ScrollView, Text, View } from 'react-native';
 import localData from '../../utils/localData';
 
 export default class DeviceData extends React.Component {
@@ -42,39 +42,63 @@ export default class DeviceData extends React.Component {
 		});
 	}
 
+	_deleteData(key) {
+		console.log(key);
+		ActionSheetIOS.showActionSheetWithOptions(
+			{
+				message: `Are you sure you want to delete ${key}?`,
+				options: ['Delete', 'Cancel'],
+				destructiveButtonIndex: 0,
+				cancelButtonIndex: 1
+			},
+			buttonIndex => {
+				if (buttonIndex === 0) {
+					localData.deleteItem(key).then(this._updateData.bind(this));
+				}
+			}
+		);
+	}
+
 	render() {
 		return (
 			<ScrollView>
-				{this.state.data.map(function(obj, index) {
-					return (
-						<View
-							key={index}
-							style={{
-								paddingTop: 10,
-								paddingBottom: 10,
-								paddingLeft: 10,
-								paddingRight: 5,
-								borderBottomColor: '#B5B9C2',
-								borderBottomWidth: 0.5
-							}}
-						>
-							<Text
+				{this.state.data.map(
+					function(obj, index) {
+						return (
+							<View
+								key={index}
 								style={{
-									fontWeight: 'bold'
+									paddingTop: 10,
+									paddingBottom: 10,
+									paddingLeft: 10,
+									paddingRight: 5,
+									borderBottomColor: '#B5B9C2',
+									borderBottomWidth: 0.5
 								}}
 							>
-								{obj.key}
-							</Text>
-							<Text
-								style={{
-									paddingTop: 5
-								}}
-							>
-								{JSON.stringify(obj.value)}
-							</Text>
-						</View>
-					);
-				})}
+								<Text
+									style={{
+										fontWeight: 'bold'
+									}}
+								>
+									{obj.key}
+								</Text>
+								<Text
+									style={{
+										paddingTop: 5
+									}}
+								>
+									{JSON.stringify(obj.value)}
+								</Text>
+								<Button
+									title="Delete"
+									onPress={() => this._deleteData(obj.key)}
+									color="red"
+								/>
+							</View>
+						);
+					}.bind(this)
+				)}
 			</ScrollView>
 		);
 	}

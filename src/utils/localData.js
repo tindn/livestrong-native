@@ -47,7 +47,7 @@ function saveExercise(exercise) {
 		return AsyncStorage.mergeItem(
 			'exercise.' + exercise.id,
 			JSON.stringify(exercise)
-		).then(() => _udpateTimestamp());
+		).then(_updateTimestamp);
 	}
 }
 
@@ -55,9 +55,7 @@ function deleteExercise(exercise) {
 	if (exercise.id === undefined) {
 		return;
 	}
-	AsyncStorage.removeItem('exercise.' + exercise.id).then(() =>
-		_udpateTimestamp()
-	);
+	AsyncStorage.removeItem('exercise.' + exercise.id).then(_updateTimestamp);
 }
 
 function _getKeys(keySelector) {
@@ -93,10 +91,9 @@ function savePlan(plan) {
 		plan.id = uuid(plan.name, secrets.NS);
 		return setItem('plan.' + plan.id, JSON.stringify(plan));
 	} else {
-		return AsyncStorage.mergeItem(
-			'plan.' + plan.id,
-			JSON.stringify(plan)
-		).then(() => _udpateTimestamp());
+		return AsyncStorage.mergeItem('plan.' + plan.id, JSON.stringify(plan)).then(
+			_updateTimestamp
+		);
 	}
 }
 
@@ -104,7 +101,7 @@ function deletePlan(plan) {
 	if (plan.id === undefined) {
 		return;
 	}
-	AsyncStorage.removeItem('plan.' + plan.id).then(() => _udpateTimestamp());
+	AsyncStorage.removeItem('plan.' + plan.id).then(_updateTimestamp);
 }
 
 function saveWorkout(workout) {
@@ -126,7 +123,7 @@ function flushGetRequests() {
 	AsyncStorage.flushGetRequests();
 }
 
-function _udpateTimestamp() {
+function _updateTimestamp() {
 	AsyncStorage.setItem('lastUpdated', new Date().getTime().toString());
 }
 
@@ -140,11 +137,15 @@ function getItem(key) {
 }
 
 function setItem(key, value) {
-	return AsyncStorage.setItem(key, value).then(() => _udpateTimestamp());
+	return AsyncStorage.setItem(key, value).then(_updateTimestamp);
 }
 
 function mergeItem(key, value) {
-	return AsyncStorage.mergeItem(key, value).then(() => _udpateTimestamp());
+	return AsyncStorage.mergeItem(key, value).then(_updateTimestamp);
+}
+
+function deleteItem(key) {
+	return AsyncStorage.removeItem(key).then(_updateTimestamp);
 }
 
 module.exports = {
@@ -164,5 +165,6 @@ module.exports = {
 	setItem,
 	getValues,
 	restoreData,
-	mergeItem
+	mergeItem,
+	deleteItem
 };
