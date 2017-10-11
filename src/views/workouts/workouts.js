@@ -79,7 +79,7 @@ class WorkoutList extends React.Component {
 			>
 				<View style={ListStyles.listItem}>
 					<Text>
-						{`${workoutDate.toDateString()} ${workoutDate.toLocaleTimeString()}`}
+						{`${workoutDate.toDateString()} @ ${workoutDate.toLocaleTimeString()}`}
 					</Text>
 				</View>
 			</TouchableHighlight>

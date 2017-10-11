@@ -187,6 +187,9 @@ class Workout extends React.Component {
 		this.setState(
 			(prevState, props) => {
 				prevState.workout.endTimestamp = new Date().getTime().toString();
+				prevState.workout.exercises = prevState.workout.exercises.filter(
+					exercise => exercise.sets.length > 0
+				);
 			},
 			() => {
 				this._saveWorkout();
