@@ -3,8 +3,7 @@
 	"prettier.singleQuote": true,
 	"prettier.tabWidth": 2,
 	"prettier.useTabs": true,
-	"prettier.jsonEnable": [
-		"json"
-	],
-	"eslint.enable": false
+	"prettier.jsonEnable": ["json"],
+	"prettier.printWidth": 80,
+	"eslint.enable": true
 }
