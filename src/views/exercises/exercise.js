@@ -3,11 +3,9 @@ import {
 	ActionSheetIOS,
 	Alert,
 	Button,
-	Image,
 	StyleSheet,
 	Text,
 	TextInput,
-	TouchableHighlight,
 	View
 } from 'react-native';
 import localData from '../../utils/localData';
@@ -15,6 +13,7 @@ import TextInputGroup from '../shared/textinputgroup';
 import { TextInputGroupStyles, ActionButtonsStyles } from '../../styles';
 import { ExerciseTypes } from '../../globals';
 import PickerGroup from '../shared/pickerGroup';
+import CheckList from '../shared/checkList';
 
 export default class Exercise extends React.Component {
 	constructor(props) {
@@ -26,6 +25,7 @@ export default class Exercise extends React.Component {
 		this._updateExercise = this._updateExercise.bind(this);
 		this._deleteExercise = this._deleteExercise.bind(this);
 		this._createExercise = this._createExercise.bind(this);
+		this._updateType = this._updateType.bind(this);
 	}
 
 	_updateName(name) {
@@ -90,12 +90,6 @@ export default class Exercise extends React.Component {
 	}
 
 	render() {
-		console.log(
-			ExerciseTypes.map(type => ({
-				label: type.name,
-				value: type._id
-			}))
-		);
 		return (
 			<View style={styles.exerciseView}>
 				<View style={TextInputGroupStyles.input}>
@@ -107,18 +101,13 @@ export default class Exercise extends React.Component {
 						autoFocus={true}
 					/>
 				</View>
-				<PickerGroup
-					label="Type"
-					selectedValue={this.state.exercise.type}
-					onValueChange={this._updateType.bind(this)}
-					pickerItems={ExerciseTypes.map(type => ({
-						label: type.name,
-						value: type._id
+				<CheckList
+					options={ExerciseTypes.map(type => ({
+						value: type._id,
+						name: type.name
 					}))}
-					width={150}
-					itemStyle={{
-						height: 110
-					}}
+					onPress={this._updateType}
+					selectedValue={this.state.exercise.type}
 				/>
 				{this.state.exercise.heaviestSet ? (
 					<View>

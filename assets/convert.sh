@@ -1,1 +1,1 @@
-rsvg-convert pencil.svg > pencil@2x.png
+rsvg-convert check.svg > check@2x.png

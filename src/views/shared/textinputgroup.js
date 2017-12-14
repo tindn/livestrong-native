@@ -1,22 +1,18 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-export default function TextInputGroup(props) {
-	return (
-		<View style={styles.inputGroup}>
-			<Text style={styles.label}>
-				{props.labelText}
-			</Text>
-			<TextInput
-				style={styles.input}
-				defaultValue={props.inputValue}
-				onChangeText={props.onChangeText}
-				autoFocus={props.autoFocus ? props.autoFocus : false}
-				placeholder={props.placeholderText}
-			/>
-		</View>
-	);
-}
+export default props => (
+	<View style={styles.inputGroup}>
+		<Text style={styles.label}>{props.labelText}</Text>
+		<TextInput
+			style={styles.input}
+			defaultValue={props.inputValue}
+			onChangeText={props.onChangeText}
+			autoFocus={props.autoFocus ? props.autoFocus : false}
+			placeholder={props.placeholderText}
+		/>
+	</View>
+);
 
 const styles = StyleSheet.create({
 	inputGroup: {
