@@ -108,15 +108,8 @@ export default class Exercise extends React.Component {
 					}))}
 					onPress={this._updateType}
 					selectedValue={this.state.exercise.type}
+					labelText="Type"
 				/>
-				{this.state.exercise.heaviestSet ? (
-					<View>
-						<Text>Heaviest Set</Text>
-						<Text
-						>{`${this.state.exercise.heaviestSet.reps.toString()} reps at ${this.state.exercise.heaviestSet.weight.toString()} ${this
-							.state.exercise.heaviestSet.weightUnit}`}</Text>
-					</View>
-				) : null}
 				<View style={ActionButtonsStyles.group} />
 				{this.state.exercise.id === undefined ? (
 					<View style={ActionButtonsStyles.button}>
