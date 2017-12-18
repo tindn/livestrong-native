@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActionSheetIOS, Button, ScrollView, Text, View } from 'react-native';
 import localData from '../../utils/localData';
+import { borderGray } from '../../globals';
 
 export default class DeviceData extends React.Component {
 	constructor(props) {
@@ -72,7 +73,7 @@ export default class DeviceData extends React.Component {
 									paddingBottom: 10,
 									paddingLeft: 10,
 									paddingRight: 5,
-									borderBottomColor: '#B5B9C2',
+									borderBottomColor: borderGray,
 									borderBottomWidth: 0.5
 								}}
 							>

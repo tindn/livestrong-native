@@ -109,19 +109,21 @@ export default class Exercise extends React.Component {
 					onPress={this._updateType}
 					selectedValue={this.state.exercise.type}
 					labelText="Type"
+					style={{ flex: 1 }}
 				/>
-				<View style={ActionButtonsStyles.group} />
-				{this.state.exercise.id === undefined ? (
+				<View style={[ActionButtonsStyles.group]}>
+					{this.state.exercise.id === undefined ? (
+						<View style={ActionButtonsStyles.button}>
+							<Button title="Create Exercise" onPress={this._createExercise} />
+						</View>
+					) : null}
 					<View style={ActionButtonsStyles.button}>
-						<Button title="Create Exercise" onPress={this._createExercise} />
+						<Button
+							title="Delete Exercise"
+							onPress={this._deleteExercise}
+							color="red"
+						/>
 					</View>
-				) : null}
-				<View style={ActionButtonsStyles.button}>
-					<Button
-						title="Delete Exercise"
-						onPress={this._deleteExercise}
-						color="red"
-					/>
 				</View>
 			</View>
 		);
@@ -130,7 +132,6 @@ export default class Exercise extends React.Component {
 
 const styles = StyleSheet.create({
 	exerciseView: {
-		flex: 1,
 		flexDirection: 'column',
 		paddingTop: 64
 	}

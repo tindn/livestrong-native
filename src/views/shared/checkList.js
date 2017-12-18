@@ -6,12 +6,13 @@ import {
 	TouchableHighlight,
 	View
 } from 'react-native';
+import { iosBlue, borderGray } from '../../globals';
 
 export default props => (
 	<View style={styles.container}>
 		<Text style={styles.label}>{props.labelText}</Text>
 		<View style={styles.list}>
-			{props.options.map((option, index) => {
+			{props.options.map((option, index, list) => {
 				let isSelected = props.selectedValue === option.value;
 				return (
 					<TouchableHighlight
@@ -21,7 +22,12 @@ export default props => (
 						}}
 						underlayColor="#ddd"
 					>
-						<View style={styles.listItem}>
+						<View
+							style={[
+								styles.listItem,
+								index === list.length - 1 && styles.lastListItem
+							]}
+						>
 							<Text
 								style={[
 									styles.listItemText,
@@ -51,35 +57,40 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		height: 15,
 		color: '#808080',
-		height: 20
+		height: 20,
+		marginBottom: 10
 	},
 	list: {
-		borderColor: '#B5B9C2',
-		borderTopWidth: 0.5
+		borderColor: borderGray,
+		borderTopWidth: 0.5,
+		borderBottomWidth: 0.5
 	},
 	listItem: {
 		flexDirection: 'row',
-		borderColor: '#B5B9C2',
+		borderColor: borderGray,
 		borderBottomWidth: 0.5,
 		marginLeft: 10
 	},
+	lastListItem: {
+		borderBottomWidth: 0
+	},
 	listItemText: {
 		fontSize: 20,
-		height: 40,
+		height: 35,
 		color: '#000',
 		paddingLeft: 10,
 		flex: 9,
-		marginTop: 13
+		marginTop: 8
 	},
 	selectedListItemText: {
-		color: '#007AFF'
+		color: iosBlue
 	},
 	checkIcon: {
 		alignSelf: 'flex-end',
-		width: 30,
-		height: 30,
-		tintColor: '#007AFF',
+		width: 25,
+		height: 25,
+		tintColor: iosBlue,
 		marginBottom: 14,
-		flex: 1
+		marginRight: 10
 	}
 });

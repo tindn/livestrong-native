@@ -7,6 +7,7 @@ import {
 	View,
 	StyleSheet
 } from 'react-native';
+import { iosBlue, borderGray } from '../../globals';
 
 export default (SetEntry = props => {
 	return (
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
 		marginLeft: 5,
 		marginRight: 5,
 		marginTop: 5,
-		borderColor: '#B5B9C2',
+		borderColor: borderGray,
 		borderTopWidth: 0.5,
 		paddingLeft: 10
 	},
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
 		fontSize: 18
 	},
 	repsAction: {
-		color: '#007AFF',
+		color: iosBlue,
 		fontSize: 30,
 		paddingLeft: 8,
 		paddingRight: 7,
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
 		height: 45
 	},
 	weightAction: {
-		color: '#007AFF',
+		color: iosBlue,
 		fontSize: 30,
 		paddingLeft: 10,
 		paddingRight: 7,

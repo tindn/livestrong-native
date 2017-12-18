@@ -9,6 +9,7 @@ import {
 	View
 } from 'react-native';
 import SetEntry from './setEntry';
+import { iosBlue } from '../../globals';
 
 export default class ExerciseEntry extends React.Component {
 	constructor(props) {
@@ -50,11 +51,11 @@ export default class ExerciseEntry extends React.Component {
 						/>
 					);
 				})}
-				{this.props.workoutStarted
-					? <TouchableHighlight onPress={this._addSet}>
-							<Text style={styles.addSetText}>Add set</Text>
-						</TouchableHighlight>
-					: null}
+				{this.props.workoutStarted ? (
+					<TouchableHighlight onPress={this._addSet}>
+						<Text style={styles.addSetText}>Add set</Text>
+					</TouchableHighlight>
+				) : null}
 			</View>
 		);
 	}
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
 	},
 	addSetText: {
 		marginTop: 15,
-		color: '#007AFF',
+		color: iosBlue,
 		fontSize: 15,
 		textAlign: 'center'
 	}

@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
+import { borderGray } from './globals';
 
 export const ListStyles = StyleSheet.create({
 	listView: {
 		flex: 1
 	},
 	listItem: {
-		borderColor: '#B5B9C2',
+		borderColor: borderGray,
 		borderBottomWidth: 0.5,
 		paddingLeft: 7,
 		paddingBottom: 15,
@@ -31,13 +32,13 @@ export const ActionButtonsStyles = StyleSheet.create({
 		marginTop: 50
 	},
 	button: {
-		borderColor: '#B5B9C2',
+		borderColor: borderGray,
 		borderTopWidth: 0.5,
 		paddingTop: 10,
 		paddingBottom: 10
 	},
 	lastButton: {
-		borderColor: '#B5B9C2',
+		borderColor: borderGray,
 		borderTopWidth: 0.5,
 		paddingTop: 10,
 		paddingBottom: 10,

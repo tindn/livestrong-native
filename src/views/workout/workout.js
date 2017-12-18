@@ -14,6 +14,7 @@ import { sortByDisplayName } from '../../utils/sorts';
 import ExercisePicker from '../shared/exercisePicker';
 import DayPicker from '../shared/dayPicker';
 import ExerciseEntry from './exerciseEntry';
+import { iosBlue, borderGray } from '../../globals';
 
 export default class WorkoutView extends React.Component {
 	constructor(props) {
@@ -278,7 +279,7 @@ const styles = StyleSheet.create({
 		marginTop: 65
 	},
 	button: {
-		borderColor: '#B5B9C2',
+		borderColor: borderGray,
 		borderTopWidth: 0.5,
 		marginLeft: 10,
 		paddingTop: 10,
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
 	},
 	addExercise: {},
 	addExerciseText: {
-		color: '#007AFF',
+		color: iosBlue,
 		textAlign: 'center',
 		fontSize: 16
 	}

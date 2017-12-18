@@ -15,6 +15,7 @@ import DeviceInformation from './deviceInformation';
 import DeviceData from './deviceData';
 import BackedupData from './backedupData';
 import { ListStyles } from '../../styles';
+import { iosBlue } from '../../globals';
 
 export default class SettingsView extends React.Component {
 	render() {
@@ -252,7 +253,7 @@ const styles = StyleSheet.create({
 		marginBottom: 5
 	},
 	clearBackupStatus: {
-		color: '#007AFF',
+		color: iosBlue,
 		fontSize: 16,
 		textAlign: 'center',
 		marginTop: 10

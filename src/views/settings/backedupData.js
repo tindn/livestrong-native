@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import localData from '../../utils/localData';
+import { borderGray } from '../../globals';
 
 export default class BackedupData extends React.Component {
 	constructor(props) {
@@ -66,26 +67,26 @@ export default class BackedupData extends React.Component {
 	}
 
 	render() {
-		let renderView = this.state.error
-			? <ScrollView
-					style={{ marginTop: 65 }}
-					refreshControl={
-						<RefreshControl
-							refreshing={this.state.refreshing}
-							onRefresh={this._updateBackups}
-						/>
-					}
-				>
-					<Text>
-						{this.state.error.message}
-					</Text>
-				</ScrollView>
-			: <FlatList
-					data={this.state.backups}
-					renderItem={({ item, index }) => this.renderBackup(item, index)}
-					refreshing={this.state.refreshing}
-					onRefresh={this._updateBackups}
-				/>;
+		let renderView = this.state.error ? (
+			<ScrollView
+				style={{ marginTop: 65 }}
+				refreshControl={
+					<RefreshControl
+						refreshing={this.state.refreshing}
+						onRefresh={this._updateBackups}
+					/>
+				}
+			>
+				<Text>{this.state.error.message}</Text>
+			</ScrollView>
+		) : (
+			<FlatList
+				data={this.state.backups}
+				renderItem={({ item, index }) => this.renderBackup(item, index)}
+				refreshing={this.state.refreshing}
+				onRefresh={this._updateBackups}
+			/>
+		);
 		return renderView;
 	}
 
@@ -93,13 +94,9 @@ export default class BackedupData extends React.Component {
 		return (
 			<View style={styles.backup}>
 				<Text style={styles.label}>Backup Id</Text>
-				<Text>
-					{backup._id}
-				</Text>
+				<Text>{backup._id}</Text>
 				<Text style={styles.label}>Received Time</Text>
-				<Text>
-					{new Date(parseInt(backup.receivedTimestamp)).toString()}
-				</Text>
+				<Text>{new Date(parseInt(backup.receivedTimestamp)).toString()}</Text>
 				<Text style={styles.label}>Last Updated</Text>
 				<Text>
 					{backup.lastUpdated
@@ -177,7 +174,7 @@ const styles = StyleSheet.create({
 	backup: {
 		paddingBottom: 10,
 		marginBottom: 20,
-		borderColor: '#B5B9C2',
+		borderColor: borderGray,
 		borderBottomWidth: 0.5
 	},
 	label: {

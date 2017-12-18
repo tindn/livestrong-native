@@ -8,6 +8,7 @@ import {
 	View
 } from 'react-native';
 import localData from '../../utils/localData';
+import { iosBlue, borderGray } from '../../globals';
 
 export default class DayPicker extends React.Component {
 	constructor(props) {
@@ -47,75 +48,73 @@ export default class DayPicker extends React.Component {
 	render() {
 		return (
 			<View style={styles.mainView}>
-				{this.state.showPicker
-					? <View>
-							<View style={styles.pickers}>
-								<View style={styles.picker}>
-									<Text style={styles.pickerTitle}>Plan</Text>
-									<Picker
-										selectedValue={this.state.selectedPlanIndex}
-										onValueChange={this._updatePlan}
-									>
-										<Picker.Item key={-1} label="" value="-1" />
-										{this.state.allPlans.map((plan, index) => {
-											return (
-												<Picker.Item
-													key={index}
-													label={plan.displayName}
-													value={index}
-												/>
-											);
-										})}
-									</Picker>
-								</View>
-								<View style={styles.picker}>
-									<Text style={styles.pickerTitle}>Day</Text>
-									<Picker
-										selectedValue={this.state.selectedDayIndex}
-										onValueChange={this._updateDay}
-									>
-										<Picker.Item key={-1} label="" value="-1" />
-										{this.state.days.map((day, index) => {
-											if (!day.name) {
-												day.name = 'Day ' + (index + 1);
-											}
-											return (
-												<Picker.Item
-													key={index}
-													value={index}
-													label={day.name}
-												/>
-											);
-										})}
-									</Picker>
-								</View>
+				{this.state.showPicker ? (
+					<View>
+						<View style={styles.pickers}>
+							<View style={styles.picker}>
+								<Text style={styles.pickerTitle}>Plan</Text>
+								<Picker
+									selectedValue={this.state.selectedPlanIndex}
+									onValueChange={this._updatePlan}
+								>
+									<Picker.Item key={-1} label="" value="-1" />
+									{this.state.allPlans.map((plan, index) => {
+										return (
+											<Picker.Item
+												key={index}
+												label={plan.displayName}
+												value={index}
+											/>
+										);
+									})}
+								</Picker>
 							</View>
-							<View style={styles.actions}>
-								<Button
-									title="Cancel"
-									onPress={() => {
-										this.setState(prevState => {
-											prevState.showPicker = false;
-											prevState.days = [];
-											prevState.selectedPlanId = null;
-											prevState.selectedPlanIndex = -1;
-											prevState.selectedDayIndex = -1;
-											return prevState;
-										});
-									}}
-									color="red"
-								/>
-								<Button title="Select" onPress={this._selectDay} />
+							<View style={styles.picker}>
+								<Text style={styles.pickerTitle}>Day</Text>
+								<Picker
+									selectedValue={this.state.selectedDayIndex}
+									onValueChange={this._updateDay}
+								>
+									<Picker.Item key={-1} label="" value="-1" />
+									{this.state.days.map((day, index) => {
+										if (!day.name) {
+											day.name = 'Day ' + (index + 1);
+										}
+										return (
+											<Picker.Item key={index} value={index} label={day.name} />
+										);
+									})}
+								</Picker>
 							</View>
 						</View>
-					: <TouchableHighlight
-							onPress={this._togglePicker}
-							style={styles.toggleAction}
-						>
-							<Text style={styles.toggleActionText}>
-								{this.props.title ? this.props.title : 'Choose day'}
-							</Text>
-						</TouchableHighlight>}
+						<View style={styles.actions}>
+							<Button
+								title="Cancel"
+								onPress={() => {
+									this.setState(prevState => {
+										prevState.showPicker = false;
+										prevState.days = [];
+										prevState.selectedPlanId = null;
+										prevState.selectedPlanIndex = -1;
+										prevState.selectedDayIndex = -1;
+										return prevState;
+									});
+								}}
+								color="red"
+							/>
+							<Button title="Select" onPress={this._selectDay} />
+						</View>
+					</View>
+				) : (
+					<TouchableHighlight
+						onPress={this._togglePicker}
+						style={styles.toggleAction}
+					>
+						<Text style={styles.toggleActionText}>
+							{this.props.title ? this.props.title : 'Choose day'}
+						</Text>
+					</TouchableHighlight>
+				)}
 			</View>
 		);
 	}
@@ -183,7 +182,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 7
 	},
 	toggleActionText: {
-		color: '#007AFF',
+		color: iosBlue,
 		fontSize: 14,
 		textAlign: 'center'
 	},
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
 	},
 	picker: {
 		flex: 1,
-		borderColor: '#B5B9C2',
+		borderColor: borderGray,
 		borderRightWidth: 0.5
 	},
 	pickerTitle: {

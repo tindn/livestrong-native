@@ -7,6 +7,7 @@ import {
 	StyleSheet,
 	Image
 } from 'react-native';
+import { iosBlue, borderGray } from '../../globals';
 
 export default (Exercise = props => {
 	return (
@@ -18,7 +19,7 @@ export default (Exercise = props => {
 				>
 					<Image
 						source={require('../../../assets/chevron-up.png')}
-						style={styles.chevronUp}
+						style={styles.chevron}
 					/>
 				</TouchableHighlight>
 				<TouchableHighlight
@@ -27,14 +28,12 @@ export default (Exercise = props => {
 				>
 					<Image
 						source={require('../../../assets/chevron-down.png')}
-						style={styles.chevronUp}
+						style={styles.chevron}
 					/>
 				</TouchableHighlight>
 			</View>
 			<View style={styles.exerciseInformation}>
-				<Text style={styles.exerciseName}>
-					{props.exercise.displayName}
-				</Text>
+				<Text style={styles.exerciseName}>{props.exercise.displayName}</Text>
 				<View style={styles.details}>
 					<TextInput
 						style={styles.detailInput}
@@ -91,11 +90,10 @@ const styles = StyleSheet.create({
 		marginLeft: 15,
 		paddingTop: 15,
 		flexDirection: 'row',
-		borderColor: '#B5B9C2',
+		borderColor: borderGray,
 		borderTopWidth: 0.5
 	},
 	exerciseInformation: {
-		// width: '82%'
 		flex: 8
 	},
 	exerciseName: {
@@ -115,7 +113,6 @@ const styles = StyleSheet.create({
 		fontSize: 18
 	},
 	deleteButton: {
-		// width: '10%',
 		flex: 1,
 		marginTop: 10
 	},
@@ -134,13 +131,8 @@ const styles = StyleSheet.create({
 	orderDown: {
 		flex: 1
 	},
-	chevronUp: {
-		tintColor: '#007AFF',
-		width: 18,
-		height: 18
-	},
-	chevronDown: {
-		tintColor: '#007AFF',
+	chevron: {
+		tintColor: iosBlue,
 		width: 18,
 		height: 18
 	}

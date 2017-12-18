@@ -12,6 +12,7 @@ import localData from '../../utils/localData';
 import ExercisePicker from '../shared/exercisePicker';
 import Exercise from './exercise';
 import { sortByDisplayName } from '../../utils/sorts';
+import { iosBlue } from '../../globals';
 
 export default class Day extends React.Component {
 	constructor(props) {
@@ -61,21 +62,21 @@ export default class Day extends React.Component {
 						<Text style={styles.removeDay}>Remove</Text>
 					</TouchableHighlight>
 				</View>
-				<View>
-					{this._renderExercises(this.state.day.exercises)}
-				</View>
-				{this.state.showExercisePicker
-					? <ExercisePicker
-							allExercises={this.state.allExercises}
-							addExercise={this._addExercise}
-							cancelPicker={this._toggleExercisePicker}
-						/>
-					: <TouchableHighlight
-							onPress={this._toggleExercisePicker}
-							style={styles.addButton}
-						>
-							<Text style={styles.addText}>Add Exercise</Text>
-						</TouchableHighlight>}
+				<View>{this._renderExercises(this.state.day.exercises)}</View>
+				{this.state.showExercisePicker ? (
+					<ExercisePicker
+						allExercises={this.state.allExercises}
+						addExercise={this._addExercise}
+						cancelPicker={this._toggleExercisePicker}
+					/>
+				) : (
+					<TouchableHighlight
+						onPress={this._toggleExercisePicker}
+						style={styles.addButton}
+					>
+						<Text style={styles.addText}>Add Exercise</Text>
+					</TouchableHighlight>
+				)}
 			</View>
 		);
 	}
@@ -210,11 +211,11 @@ const styles = StyleSheet.create({
 		marginTop: 20
 	},
 	addText: {
-		color: '#007AFF',
+		color: iosBlue,
 		fontSize: 18
 	},
 	addImage: {
-		tintColor: '#007AFF',
+		tintColor: iosBlue,
 		width: 18,
 		height: 18
 	}
