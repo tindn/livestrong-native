@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+	ActionSheetIOS,
 	Button,
 	FlatList,
 	NavigatorIOS,
@@ -140,52 +141,74 @@ class Settings extends React.Component {
 	}
 
 	_reseedData() {
-		this._firebaseApp
-			.database()
-			.ref('seedData')
-			.once('value')
-			.then(snapshot => {
-				const val = snapshot.val();
-				if (val) {
-					localData.dangerouslyClearEverything().then(function() {
-						localData.seedData(val);
-					});
+		ActionSheetIOS.showActionSheetWithOptions(
+			{
+				message: 'Are you sure you want to reseed?',
+				options: ['Reseed', 'Cancel'],
+				cancelButtonIndex: 1
+			},
+			function(buttonIndex) {
+				if (buttonIndex === 0) {
+					this._firebaseApp
+						.database()
+						.ref('seedData')
+						.once('value')
+						.then(snapshot => {
+							const val = snapshot.val();
+							if (val) {
+								localData.dangerouslyClearEverything().then(function() {
+									localData.seedData(val);
+								});
+							}
+						});
 				}
-			});
+			}.bind(this)
+		);
 	}
 
 	_backupData() {
-		let body = {
-			deviceUniqueId: DeviceInfo.getUniqueID(),
-			brand: DeviceInfo.getBrand(),
-			model: DeviceInfo.getModel(),
-			deviceId: DeviceInfo.getDeviceId(),
-			system: DeviceInfo.getSystemName(),
-			systemVersion: DeviceInfo.getSystemVersion(),
-			bundleId: DeviceInfo.getBundleId(),
-			buildNumber: DeviceInfo.getBuildNumber(),
-			appVersion: DeviceInfo.getVersion(),
-			deviceName: DeviceInfo.getDeviceName(),
-			userAgent: DeviceInfo.getUserAgent(),
-			deviceLocale: DeviceInfo.getDeviceLocale(),
-			deviceCountry: DeviceInfo.getDeviceCountry(),
-			timezone: DeviceInfo.getTimezone(),
-			exportedTimestamp: new Date().getTime()
-		};
-		localData
-			.getItem('lastUpdated')
-			.then(lastUpdated => {
-				body.lastUpdated = lastUpdated;
-			})
-			.then(() => {
-				return localData.getAllData();
-			})
-			.then(
-				function(data) {
-					body.localData = data;
-					this._backupDataRef.push(body);
-				}.bind(this)
-			);
+		ActionSheetIOS.showActionSheetWithOptions(
+			{
+				message: 'Are you sure you want to backup data?',
+				options: ['Backup', 'Cancel'],
+				cancelButtonIndex: 1
+			},
+			function(buttonIndex) {
+				if (buttonIndex === 0) {
+					let body = {
+						deviceUniqueId: DeviceInfo.getUniqueID(),
+						brand: DeviceInfo.getBrand(),
+						model: DeviceInfo.getModel(),
+						deviceId: DeviceInfo.getDeviceId(),
+						system: DeviceInfo.getSystemName(),
+						systemVersion: DeviceInfo.getSystemVersion(),
+						bundleId: DeviceInfo.getBundleId(),
+						buildNumber: DeviceInfo.getBuildNumber(),
+						appVersion: DeviceInfo.getVersion(),
+						deviceName: DeviceInfo.getDeviceName(),
+						userAgent: DeviceInfo.getUserAgent(),
+						deviceLocale: DeviceInfo.getDeviceLocale(),
+						deviceCountry: DeviceInfo.getDeviceCountry(),
+						timezone: DeviceInfo.getTimezone(),
+						exportedTimestamp: new Date().getTime()
+					};
+					localData
+						.getItem('lastUpdated')
+						.then(lastUpdated => {
+							body.lastUpdated = lastUpdated;
+						})
+						.then(() => {
+							return localData.getAllData();
+						})
+						.then(
+							function(data) {
+								body.localData = data;
+								this._backupDataRef.push(body);
+							}.bind(this)
+						);
+				}
+			}.bind(this)
+		);
 	}
 }
 
