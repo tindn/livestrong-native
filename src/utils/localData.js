@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import seedling from '../../seedData.json';
+// import seedling from '../../seedData.json';
 import uuid from 'uuid/v5';
 import secrets from '../../config/secrets.json';
 
@@ -7,7 +7,7 @@ function dangerouslyClearEverything() {
 	return AsyncStorage.clear();
 }
 
-function seedData() {
+function seedData(seedling) {
 	seedling.forEach(function(element) {
 		AsyncStorage.setItem(element.key, JSON.stringify(element.value));
 	}, this);

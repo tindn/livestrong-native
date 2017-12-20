@@ -41,6 +41,12 @@ export default class BackedupData extends React.Component {
 			.then(
 				function(snapshot) {
 					const val = snapshot.val();
+					if (!val) {
+						this.setState({
+							refreshing: false
+						});
+						return;
+					}
 					const backupData = Object.keys(val).map(key =>
 						Object.assign({ key: key }, val[key])
 					);
@@ -50,17 +56,20 @@ export default class BackedupData extends React.Component {
 					});
 				}.bind(this)
 			)
-			.catch(error => {
-				this.setState({
-					error: error,
-					refreshing: false
-				});
-			});
+			.catch(
+				function(error) {
+					this.setState({
+						error: error,
+						refreshing: false
+					});
+				}.bind(this)
+			);
 	}
 
 	render() {
 		let renderView = this.state.error ? (
 			<ScrollView
+				style={{ marginTop: 65 }}
 				refreshControl={
 					<RefreshControl
 						refreshing={this.state.refreshing}
@@ -76,6 +85,16 @@ export default class BackedupData extends React.Component {
 				renderItem={({ item, index }) => this.renderBackup(item, index)}
 				refreshing={this.state.refreshing}
 				onRefresh={this._updateBackups}
+				ListEmptyComponent={() => (
+					<Text
+						style={{
+							textAlign: 'center',
+							marginTop: 10
+						}}
+					>
+						No backups found
+					</Text>
+				)}
 			/>
 		);
 		return renderView;

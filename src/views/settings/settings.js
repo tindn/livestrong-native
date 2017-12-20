@@ -37,12 +37,9 @@ class Settings extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: '',
 			backupStatus: [],
 			refreshing: false
 		};
-		this._showData = this._showData.bind(this);
-		this._clearData = this._clearData.bind(this);
 		this._backupData = this._backupData.bind(this);
 		const firebaseConfig = {
 			apiKey: 'AIzaSyADkMtF8ghoUNJWHAQJRg8DkA0bXmQfWSQ',
@@ -53,8 +50,8 @@ class Settings extends React.Component {
 			messagingSenderId: '804834349247'
 		};
 
-		const firebaseApp = firebase.initializeApp(firebaseConfig);
-		this._backupDataRef = firebaseApp
+		this._firebaseApp = firebase.initializeApp(firebaseConfig);
+		this._backupDataRef = this._firebaseApp
 			.database()
 			.ref()
 			.child(
@@ -62,6 +59,7 @@ class Settings extends React.Component {
 					.split('-')
 					.join('')}`
 			);
+		this._reseedData = this._reseedData.bind(this);
 	}
 
 	render() {
@@ -141,45 +139,19 @@ class Settings extends React.Component {
 		);
 	}
 
-	_showData() {
-		localData.getAllData().then(
-			function(data) {
-				data = data
-					.map(function(val) {
-						let data = val[1];
-						if (val[1][0] === '{' || val[1][0] === '[') {
-							data = JSON.parse(val[1]);
-						}
-						return {
-							key: val[0],
-							value: data
-						};
-					})
-					.sort(function(obj1, obj2) {
-						if (obj1.key < obj2.key) {
-							return -1;
-						} else if (obj1.key > obj2.key) {
-							return 1;
-						}
-						return 0;
-					});
-				this.setState({
-					data: data
-				});
-			}.bind(this)
-		);
-	}
-
-	_clearData() {
-		this.setState({
-			data: ''
-		});
-	}
-
 	_reseedData() {
-		localData.dangerouslyClearEverything().then(function() {
-			return localData.seedData();
-		});
+		this._firebaseApp
+			.database()
+			.ref('seedData')
+			.once('value')
+			.then(snapshot => {
+				const val = snapshot.val();
+				if (val) {
+					localData.dangerouslyClearEverything().then(function() {
+						localData.seedData(val);
+					});
+				}
+			});
 	}
 
 	_backupData() {
