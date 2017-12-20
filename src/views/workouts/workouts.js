@@ -65,6 +65,16 @@ class WorkoutList extends React.Component {
 				renderItem={({ item }) => this.renderWorkout(item)}
 				refreshing={this.state.refreshing}
 				onRefresh={this._updateList.bind(this)}
+				ListEmptyComponent={() => (
+					<Text
+						style={{
+							textAlign: 'center',
+							marginTop: 10
+						}}
+					>
+						No workouts found
+					</Text>
+				)}
 			/>
 		);
 	}
@@ -74,7 +84,8 @@ class WorkoutList extends React.Component {
 		return (
 			<TouchableHighlight
 				onPress={() =>
-					this._workoutPressed(workoutDate.toDateString(), workout)}
+					this._workoutPressed(workoutDate.toDateString(), workout)
+				}
 				underlayColor="#e2e2e2"
 			>
 				<View style={ListStyles.listItem}>

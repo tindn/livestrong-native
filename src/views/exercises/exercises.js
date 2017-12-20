@@ -76,6 +76,16 @@ class ExerciseList extends React.Component {
 				renderItem={({ item }) => this.renderExercise(item)}
 				refreshing={this.state.refreshing}
 				onRefresh={this._updateList.bind(this)}
+				ListEmptyComponent={() => (
+					<Text
+						style={{
+							textAlign: 'center',
+							marginTop: 10
+						}}
+					>
+						No exercises found
+					</Text>
+				)}
 			/>
 		);
 	}
