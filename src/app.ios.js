@@ -10,12 +10,8 @@ export default class LivestrongNative extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			selectedTab: 'Exercises'
+			selectedTab: 'Workout'
 		};
-	}
-
-	_getDefaultTab() {
-		return 'Exericses';
 	}
 
 	_selectTab(tab) {

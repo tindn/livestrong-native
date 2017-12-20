@@ -10,6 +10,7 @@ import localData from '../../utils/localData';
 import WorkoutView from './workoutView';
 import { sortByStartTimestamp } from '../../utils/sorts';
 import { ListStyles } from '../../styles';
+import { Workout } from '../workout/workout';
 
 export default class WorkoutsView extends React.Component {
 	render() {
@@ -98,6 +99,12 @@ class WorkoutList extends React.Component {
 	}
 
 	_workoutPressed(title, workout) {
+		if (!workout.endTimestamp) {
+			this.props.navigator.push({
+				component: Workout,
+				passProps: { workout: workout }
+			});
+		}
 		this.props.navigator.push({
 			title,
 			component: WorkoutView,

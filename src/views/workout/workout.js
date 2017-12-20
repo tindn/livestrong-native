@@ -34,16 +34,15 @@ export default class WorkoutView extends React.Component {
 	}
 }
 
-class Workout extends React.Component {
+export class Workout extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			workout: {
+			workout: props.workout || {
 				exercises: []
 			},
 			showExercisePicker: false,
 			showPlanPicker: false,
-			planChosen: false,
 			refreshPlans: 1,
 			refreshing: false
 		};
@@ -64,6 +63,7 @@ class Workout extends React.Component {
 	_updateFromLastWorkout() {
 		localData.getItem('lastWorkout').then(lastWorkout => {
 			if (lastWorkout) {
+				if (!lastWorkout.planId) return;
 				localData.getItem('plan.' + lastWorkout.planId).then(plan => {
 					let nextDayIndex = (lastWorkout.dayIndex + 1) % plan.days.length;
 					return localData
@@ -109,7 +109,10 @@ class Workout extends React.Component {
 				}
 			>
 				{!this.state.workout.startTimestamp ? (
-					<DayPicker updateDay={this._updateDay} title="Choose Day" />
+					<DayPicker
+						updateDay={this._updateDay}
+						title={this.state.workout.planId ? 'Change Plan' : 'Pick from plan'}
+					/>
 				) : null}
 				<View style={styles.exercises}>
 					{this.state.workout.exercises.map((exercise, index) => {
@@ -157,21 +160,41 @@ class Workout extends React.Component {
 					</TouchableHighlight>
 				)}
 				<View style={styles.actions}>
-					<View style={styles.button}>
-						{this.state.workout.startTimestamp ? (
-							<Button
-								title="End Workout"
-								onPress={this._endWorkout}
-								color="red"
-							/>
-						) : (
+					{!this.state.workout.startTimestamp ? (
+						<View style={styles.button}>
 							<Button
 								title="Begin Workout"
 								onPress={this._beginWorkout}
 								color="#16ad05"
 							/>
-						)}
-					</View>
+						</View>
+					) : null}
+					{this.state.workout.startTimestamp &&
+					!this.state.workout.endTimestamp ? (
+						<View style={styles.button}>
+							<Button
+								title="End Workout"
+								onPress={this._endWorkout}
+								color="red"
+							/>
+						</View>
+					) : null}
+					{!this.state.workout.startTimestamp && this.state.workout.planId ? (
+						<View style={styles.button}>
+							<Button
+								title="Clear Plan"
+								onPress={() => {
+									this.setState({
+										...this.state,
+										workout: {
+											exercises: []
+										}
+									});
+								}}
+								color="red"
+							/>
+						</View>
+					) : null}
 				</View>
 			</ScrollView>
 		);
@@ -290,7 +313,6 @@ const styles = StyleSheet.create({
 		paddingTop: 10,
 		paddingBottom: 10
 	},
-	addExercise: {},
 	addExerciseText: {
 		color: iosBlue,
 		textAlign: 'center',

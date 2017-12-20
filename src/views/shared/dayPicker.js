@@ -178,12 +178,12 @@ const styles = StyleSheet.create({
 		backgroundColor: '#f0f0f0'
 	},
 	toggleAction: {
-		paddingTop: 7,
-		paddingBottom: 7
+		paddingTop: 10,
+		paddingBottom: 10
 	},
 	toggleActionText: {
 		color: iosBlue,
-		fontSize: 14,
+		fontSize: 16,
 		textAlign: 'center'
 	},
 	actions: {
