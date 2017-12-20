@@ -4,6 +4,7 @@ import {
 	Alert,
 	Button,
 	StyleSheet,
+	ScrollView,
 	Text,
 	TextInput,
 	View
@@ -91,7 +92,7 @@ export default class Exercise extends React.Component {
 
 	render() {
 		return (
-			<View style={styles.exerciseView}>
+			<ScrollView style={styles.exerciseView} keyboardDismissMode="on-drag">
 				<View style={TextInputGroupStyles.group}>
 					<TextInputGroup
 						labelText="Name"
@@ -135,15 +136,15 @@ export default class Exercise extends React.Component {
 						/>
 					</View>
 				</View>
-			</View>
+			</ScrollView>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
 	exerciseView: {
-		flexDirection: 'column',
-		paddingTop: 64
+		flex: 1,
+		flexDirection: 'column'
 	},
 	heaviestSet: {
 		paddingLeft: 10
