@@ -62,8 +62,11 @@ export default class ExerciseEntry extends React.Component {
 
 	_addSet() {
 		let newSet = { reps: 8, weight: 25, weightUnit: 'lbs' };
-		if (this.state.exercise.heaviestSet) {
-			newSet = Object.assign({}, this.state.exercise.heaviestSet);
+		if (this.state.exercise.sets.length) {
+			newSet = Object.assign(
+				{},
+				this.state.exercise.sets[this.state.exercise.sets.length - 1]
+			);
 		}
 		this.setState(prevState => {
 			prevState.exercise.sets.push(newSet);
@@ -97,6 +100,7 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		paddingLeft: 10,
+		paddingRight: 5,
 		flexDirection: 'row'
 	},
 	headerText: {
@@ -105,12 +109,12 @@ const styles = StyleSheet.create({
 		flex: 8
 	},
 	remove: {
-		flex: 2,
-		alignSelf: 'flex-end'
+		flex: 2
 	},
 	removeText: {
 		fontSize: 14,
-		color: 'red'
+		color: 'red',
+		textAlign: 'right'
 	},
 	addSetText: {
 		marginTop: 15,

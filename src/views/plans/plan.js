@@ -36,7 +36,7 @@ export default class Plan extends React.Component {
 				style={styles.planView}
 				automaticallyAdjustContentInsets={true}
 			>
-				<View style={TextInputGroupStyles.input}>
+				<View style={TextInputGroupStyles.group}>
 					<TextInputGroup
 						labelText="Name"
 						inputValue={this.state.plan.displayName}

@@ -92,7 +92,7 @@ export default class Exercise extends React.Component {
 	render() {
 		return (
 			<View style={styles.exerciseView}>
-				<View style={TextInputGroupStyles.input}>
+				<View style={TextInputGroupStyles.group}>
 					<TextInputGroup
 						labelText="Name"
 						inputValue={this.state.exercise.displayName}
@@ -109,8 +109,18 @@ export default class Exercise extends React.Component {
 					onPress={this._updateType}
 					selectedValue={this.state.exercise.type}
 					labelText="Type"
-					style={{ flex: 1 }}
+					style={TextInputGroupStyles.group}
 				/>
+				{this.state.exercise.heaviestSet ? (
+					<View style={[styles.heaviestSet, TextInputGroupStyles.group]}>
+						<Text style={TextInputGroupStyles.label}>Heaviest Set</Text>
+						<Text style={TextInputGroupStyles.input}>
+							{this.state.exercise.heaviestSet.reps} reps at{' '}
+							{this.state.exercise.heaviestSet.weight}{' '}
+							{this.state.exercise.heaviestSet.weightUnit}
+						</Text>
+					</View>
+				) : null}
 				<View style={[ActionButtonsStyles.group]}>
 					{this.state.exercise.id === undefined ? (
 						<View style={ActionButtonsStyles.button}>
@@ -134,5 +144,8 @@ const styles = StyleSheet.create({
 	exerciseView: {
 		flexDirection: 'column',
 		paddingTop: 64
+	},
+	heaviestSet: {
+		paddingLeft: 10
 	}
 });

@@ -9,7 +9,7 @@ import {
 import { iosBlue, borderGray } from '../../globals';
 
 export default props => (
-	<View style={styles.container}>
+	<View style={props.style}>
 		<Text style={styles.label}>{props.labelText}</Text>
 		<View style={styles.list}>
 			{props.options.map((option, index, list) => {
@@ -51,7 +51,6 @@ export default props => (
 );
 
 const styles = StyleSheet.create({
-	container: {},
 	label: {
 		paddingLeft: 10,
 		fontSize: 14,

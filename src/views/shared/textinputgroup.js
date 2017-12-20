@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { TextInputGroupStyles } from '../../styles';
 
 export default props => (
 	<View style={styles.inputGroup}>
-		<Text style={styles.label}>{props.labelText}</Text>
+		<Text style={TextInputGroupStyles.label}>{props.labelText}</Text>
 		<TextInput
-			style={styles.input}
+			style={TextInputGroupStyles.input}
 			defaultValue={props.inputValue}
 			onChangeText={props.onChangeText}
 			autoFocus={props.autoFocus ? props.autoFocus : false}
@@ -17,14 +18,5 @@ export default props => (
 const styles = StyleSheet.create({
 	inputGroup: {
 		paddingLeft: 10
-	},
-	label: {
-		fontSize: 14,
-		height: 15,
-		color: '#808080'
-	},
-	input: {
-		fontSize: 20,
-		height: 40
 	}
 });

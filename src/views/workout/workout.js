@@ -54,6 +54,7 @@ class Workout extends React.Component {
 		this._updateDay = this._updateDay.bind(this);
 		this._updateExercise = this._updateExercise.bind(this);
 		this._removeExercise = this._removeExercise.bind(this);
+		this._updateHeaviestSet = this._updateHeaviestSet.bind(this);
 	}
 
 	componentDidMount() {
@@ -109,9 +110,7 @@ class Workout extends React.Component {
 			>
 				{!this.state.workout.startTimestamp ? (
 					<DayPicker updateDay={this._updateDay} title="Choose Day" />
-				) : (
-					<View style={styles.placeholder} />
-				)}
+				) : null}
 				<View style={styles.exercises}>
 					{this.state.workout.exercises.map((exercise, index) => {
 						return (
@@ -194,6 +193,7 @@ class Workout extends React.Component {
 			},
 			() => {
 				this._saveWorkout();
+				this._updateHeaviestSet();
 				localData
 					.setItem(
 						'lastWorkout',
@@ -231,27 +231,6 @@ class Workout extends React.Component {
 	}
 
 	_updateExercise(exercise, index) {
-		// if (exercise.sets.length > 0) {
-		// 	exercise.heaviestSet = exercise.sets[0];
-		// 	for (var i = 1; i < exercise.sets.length - 1; i++) {
-		// 		if (exercise.heaviestSet.weight < exercise.sets[i].weight) {
-		// 			exercise.heaviestSet = exercise.sets[i];
-		// 		}
-		// 	}
-		// 	localData.getItem('exercise.' + exercise.id).then(currentExercise => {
-		// 		if (
-		// 			!currentExercise.heaviestSet ||
-		// 			currentExercise.heaviestSet.weight < exercise.heaviestSet.weight
-		// 		) {
-		// 			localData.mergeItem(
-		// 				'exercise.' + exercise.id,
-		// 				JSON.stringify({
-		// 					heaviestSet: exercise.heaviestSet
-		// 				})
-		// 			);
-		// 		}
-		// 	});
-		// }
 		this.setState(prevState => {
 			prevState.workout.exercises[index] = exercise;
 			return prevState;
@@ -265,6 +244,32 @@ class Workout extends React.Component {
 			prevState.workout.exercises = exercises;
 			return prevState;
 		}, this._saveWorkout);
+	}
+
+	_updateHeaviestSet() {
+		this.state.workout.exercises.forEach(exercise => {
+			let heaviestSet = null;
+			exercise.sets.forEach(set => {
+				if (!heaviestSet || set.weight > heaviestSet.weight) {
+					heaviestSet = Object.assign({}, set);
+				}
+			});
+			if (heaviestSet) {
+				localData.getItem('exercise.' + exercise.id).then(currentExercise => {
+					if (
+						!currentExercise.heaviestSet ||
+						currentExercise.heaviestSet.weight < heaviestSet.weight
+					) {
+						localData.mergeItem(
+							'exercise.' + exercise.id,
+							JSON.stringify({
+								heaviestSet: heaviestSet
+							})
+						);
+					}
+				});
+			}
+		});
 	}
 }
 
@@ -284,10 +289,6 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 		paddingTop: 10,
 		paddingBottom: 10
-	},
-	placeholder: {
-		backgroundColor: '#f0f0f0',
-		height: 31
 	},
 	addExercise: {},
 	addExerciseText: {

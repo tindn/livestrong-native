@@ -21,9 +21,19 @@ export const ListStyles = StyleSheet.create({
 });
 
 export const TextInputGroupStyles = StyleSheet.create({
-	input: {
+	group: {
 		marginTop: 10,
 		marginBottom: 40
+	},
+	label: {
+		fontSize: 14,
+		height: 15,
+		color: '#808080',
+		marginBottom: 10
+	},
+	input: {
+		fontSize: 20,
+		height: 40
 	}
 });
 
