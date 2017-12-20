@@ -33,17 +33,6 @@ export default class SettingsView extends React.Component {
 	}
 }
 
-const firebaseConfig = {
-	apiKey: 'AIzaSyADkMtF8ghoUNJWHAQJRg8DkA0bXmQfWSQ',
-	authDomain: 'livestrong-native.firebaseapp.com',
-	databaseURL: 'https://livestrong-native.firebaseio.com',
-	projectId: 'livestrong-native',
-	storageBucket: 'livestrong-native.appspot.com',
-	messagingSenderId: '804834349247'
-};
-
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
@@ -55,6 +44,16 @@ class Settings extends React.Component {
 		this._showData = this._showData.bind(this);
 		this._clearData = this._clearData.bind(this);
 		this._backupData = this._backupData.bind(this);
+		const firebaseConfig = {
+			apiKey: 'AIzaSyADkMtF8ghoUNJWHAQJRg8DkA0bXmQfWSQ',
+			authDomain: 'livestrong-native.firebaseapp.com',
+			databaseURL: 'https://livestrong-native.firebaseio.com',
+			projectId: 'livestrong-native',
+			storageBucket: 'livestrong-native.appspot.com',
+			messagingSenderId: '804834349247'
+		};
+
+		const firebaseApp = firebase.initializeApp(firebaseConfig);
 		this._backupDataRef = firebaseApp
 			.database()
 			.ref()
@@ -101,7 +100,8 @@ class Settings extends React.Component {
 						onPress={() => {
 							this.props.navigator.push({
 								title: 'Backedup Data',
-								component: BackedupData
+								component: BackedupData,
+								passProps: { _backupDataRef: this._backupDataRef }
 							});
 						}}
 						title="Backedup Data"
@@ -183,12 +183,6 @@ class Settings extends React.Component {
 	}
 
 	_backupData() {
-		let dataUrl = 'https://pixiecloud.herokuapp.com';
-		let authToken = 'fd1bafdd-e8f0-4b66-8116-6a7383d2ea19';
-		if (DeviceInfo.isEmulator()) {
-			dataUrl = 'http://localhost:5000';
-			authToken = 'b23de2b9-06c8-4f3f-bca0-2e798282ed5d';
-		}
 		let body = {
 			deviceUniqueId: DeviceInfo.getUniqueID(),
 			brand: DeviceInfo.getBrand(),
@@ -218,50 +212,8 @@ class Settings extends React.Component {
 				function(data) {
 					body.localData = data;
 					this._backupDataRef.push(body);
-					// return fetch(dataUrl + '/livestrong/appdata', {
-					// 	method: 'POST',
-					// 	headers: {
-					// 		'Content-Type': 'application/json',
-					// 		Authorization: authToken
-					// 	},
-					// 	body: JSON.stringify(body)
-					// });
 				}.bind(this)
 			);
-		// .then(
-		// 	function(result) {
-		// 		if (!result.ok) {
-		// 			throw result;
-		// 		}
-		// 		this.setState((prevState, props) => {
-		// 			let message = 'Backup succeeded.';
-		// 			if (result.status === 208) {
-		// 				message = 'This version has already been backed up.';
-		// 			}
-		// 			prevState.backupStatus.push(message);
-		// 			return prevState;
-		// 		});
-		// 	}.bind(this)
-		// )
-		// .catch(
-		// 	function(error) {
-		// 		if (error.json) {
-		// 			error.json().then(jsonError => {
-		// 				this.setState((prevState, props) => {
-		// 					prevState.backupStatus.push(
-		// 						`Backup failed - ${jsonError.name}: ${jsonError.message}.`
-		// 					);
-		// 					return prevState;
-		// 				});
-		// 			});
-		// 		} else {
-		// 			this.setState((prevState, props) => {
-		// 				prevState.backupStatus.push(`Backup failed.`);
-		// 				return prevState;
-		// 			});
-		// 		}
-		// 	}.bind(this)
-		// );
 	}
 }
 

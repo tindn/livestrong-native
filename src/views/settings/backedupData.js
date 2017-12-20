@@ -13,6 +13,7 @@ import {
 import DeviceInfo from 'react-native-device-info';
 import localData from '../../utils/localData';
 import { borderGray } from '../../globals';
+import { TextInputGroupStyles } from '../../styles';
 
 export default class BackedupData extends React.Component {
 	constructor(props) {
@@ -32,32 +33,23 @@ export default class BackedupData extends React.Component {
 
 	_updateBackups() {
 		this.setState({ refreshing: true, error: undefined });
-		let dataUrl = 'https://pixiecloud.herokuapp.com';
-		let authToken = 'fd1bafdd-e8f0-4b66-8116-6a7383d2ea19';
-		if (DeviceInfo.isEmulator()) {
-			dataUrl = 'http://localhost:5000';
-			authToken = 'b23de2b9-06c8-4f3f-bca0-2e798282ed5d';
-		}
-		fetch(dataUrl + '/livestrong/appdata', {
-			headers: {
-				Authorization: authToken,
-				DeviceUniqueId: DeviceInfo.getUniqueID()
-			}
-		})
-			.then(result => {
-				this.setState({ refreshing: false });
-				return result.json();
-			})
-			.then(backups => {
-				backups = backups.map((backup, index) => {
-					backup.key = index;
-					return backup;
-				});
-				this.setState(prevState => {
-					prevState.backups = backups;
-					return prevState;
-				});
-			})
+
+		this.props._backupDataRef
+			.orderByKey()
+			.limitToLast(20)
+			.once('value')
+			.then(
+				function(snapshot) {
+					const val = snapshot.val();
+					const backupData = Object.keys(val).map(key =>
+						Object.assign({ key: key }, val[key])
+					);
+					this.setState({
+						refreshing: false,
+						backups: backupData
+					});
+				}.bind(this)
+			)
 			.catch(error => {
 				this.setState({
 					error: error,
@@ -69,7 +61,6 @@ export default class BackedupData extends React.Component {
 	render() {
 		let renderView = this.state.error ? (
 			<ScrollView
-				style={{ marginTop: 65 }}
 				refreshControl={
 					<RefreshControl
 						refreshing={this.state.refreshing}
@@ -93,23 +84,17 @@ export default class BackedupData extends React.Component {
 	renderBackup(backup, index) {
 		return (
 			<View style={styles.backup}>
-				<Text style={styles.label}>Backup Id</Text>
-				<Text>{backup._id}</Text>
-				<Text style={styles.label}>Received Time</Text>
-				<Text>{new Date(parseInt(backup.receivedTimestamp)).toString()}</Text>
-				<Text style={styles.label}>Last Updated</Text>
-				<Text>
-					{backup.lastUpdated
-						? new Date(parseInt(backup.lastUpdated)).toString()
-						: ''}
-				</Text>
+				<Text style={TextInputGroupStyles.label}>Backup Time</Text>
+				<Text>{new Date(parseInt(backup.exportedTimestamp)).toString()}</Text>
+				<Text style={TextInputGroupStyles.label}>Last Updated</Text>
+				<Text>{new Date(parseInt(backup.lastUpdated)).toString()}</Text>
 				<View style={styles.restore}>
 					<Button onPress={() => this._restore(index)} title="Restore" />
-					<Button
+					{/* <Button
 						onPress={() => this._delete(index)}
 						title="Delete"
 						color="red"
-					/>
+					/> */}
 				</View>
 			</View>
 		);
@@ -177,14 +162,8 @@ const styles = StyleSheet.create({
 		borderColor: borderGray,
 		borderBottomWidth: 0.5
 	},
-	label: {
-		fontWeight: 'bold'
-	},
 	restore: {
-		marginTop: 10
+		marginTop: 10,
+		flexDirection: 'row'
 	}
 });
-
-class BackedupDataList extends React.Component {
-	render() {}
-}
