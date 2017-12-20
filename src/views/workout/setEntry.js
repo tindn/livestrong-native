@@ -1,13 +1,14 @@
 import React from 'react';
 import {
 	Image,
+	Picker,
 	Text,
 	TextInput,
 	TouchableHighlight,
 	View,
 	StyleSheet
 } from 'react-native';
-import { iosBlue, borderGray } from '../../globals';
+import { iosBlue, borderGray, UnitTypes } from '../../globals';
 
 export default (SetEntry = props => {
 	return (
@@ -38,9 +39,10 @@ export default (SetEntry = props => {
 			<View style={styles.inputGroup}>
 				<TouchableHighlight
 					onPress={() => {
-						const set = props.set;
-						set.weight += 2.5;
-						props.updateSet(set, props.setIndex);
+						props.updateSet(
+							{ ...props.set, weight: (props.set.weight += 2.5) },
+							props.setIndex
+						);
 					}}
 				>
 					<Text style={styles.weightAction}>+</Text>
@@ -51,21 +53,36 @@ export default (SetEntry = props => {
 				/>
 				<TouchableHighlight
 					onPress={() => {
-						const set = props.set;
-						set.weight -= 2.5;
-						props.updateSet(set, props.setIndex);
+						props.updateSet(
+							{ ...props.set, weight: (props.set.weight -= 2.5) },
+							props.setIndex
+						);
 					}}
 				>
 					<Text style={styles.weightAction}>-</Text>
 				</TouchableHighlight>
 			</View>
-			<Text style={styles.staticText}>
-				{props.set.weightUnit ? props.set.weightUnit : 'lbs'}
-			</Text>
+			<View />
+			<Picker
+				style={{ width: 50 }}
+				itemStyle={{ height: 120 }}
+				selectedValue={props.set.weightUnit}
+				onValueChange={(itemValue, itemIndex) => {
+					props.updateSet(
+						{ ...props.set, weightUnit: itemValue },
+						props.setIndex
+					);
+				}}
+			>
+				{UnitTypes.map((type, index) => (
+					<Picker.Item key={index} label={type.name} value={type._id} />
+				))}
+			</Picker>
 			<TouchableHighlight
 				onPress={() => {
 					props.removeSet(props.setIndex);
 				}}
+				style={styles.removeInput}
 			>
 				<Image
 					source={require('../../../assets/close.png')}
@@ -79,24 +96,26 @@ export default (SetEntry = props => {
 const styles = StyleSheet.create({
 	mainView: {
 		flexDirection: 'row',
-		marginLeft: 5,
+		marginLeft: 10,
 		marginRight: 5,
 		marginTop: 5,
 		borderColor: borderGray,
 		borderTopWidth: 0.5,
-		paddingLeft: 10
+		justifyContent: 'space-between'
 	},
 	inputGroup: { flexDirection: 'column' },
 	repsInput: {
 		width: 40,
 		textAlign: 'center',
 		marginTop: 5,
+		marginBottom: 8,
 		fontSize: 18
 	},
 	weightInput: {
 		width: 80,
 		textAlign: 'center',
 		marginTop: 5,
+		marginBottom: 8,
 		fontSize: 18
 	},
 	repsAction: {
@@ -126,11 +145,13 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		marginRight: 20
 	},
+	removeInput: {},
 	removeImage: {
 		width: 15,
 		height: 15,
 		tintColor: 'red',
-		marginTop: 55,
-		marginLeft: 30
+		marginTop: 52,
+		marginLeft: 15,
+		marginRight: 15
 	}
 });
