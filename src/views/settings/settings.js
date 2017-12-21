@@ -98,16 +98,16 @@ class Settings extends React.Component {
 					<Button
 						onPress={() => {
 							this.props.navigator.push({
-								title: 'Backedup Data',
+								title: 'Backups',
 								component: BackedupData,
 								passProps: { _backupDataRef: this._backupDataRef }
 							});
 						}}
-						title="Backedup Data"
+						title="Backups"
 						color="black"
 					/>
 				</View>
-				<View style={ListStyles.listItem}>
+				<View style={[ListStyles.listItem, styles.reseed]}>
 					<Button onPress={this._reseedData} title="Reseed Data" />
 				</View>
 				<View style={ListStyles.listItem}>
@@ -213,6 +213,9 @@ class Settings extends React.Component {
 }
 
 const styles = StyleSheet.create({
+	reseed: {
+		marginTop: 50
+	},
 	backupStatusLabel: {
 		fontWeight: 'bold',
 		textAlign: 'center',

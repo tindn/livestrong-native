@@ -102,11 +102,15 @@ export default class BackedupData extends React.Component {
 
 	renderBackup(backup, index) {
 		return (
-			<View style={styles.backup}>
+			<View style={[TextInputGroupStyles.group, styles.backup]}>
 				<Text style={TextInputGroupStyles.label}>Backup Time</Text>
-				<Text>{new Date(parseInt(backup.exportedTimestamp)).toString()}</Text>
+				<Text style={styles.value}>
+					{new Date(parseInt(backup.exportedTimestamp)).toString()}
+				</Text>
 				<Text style={TextInputGroupStyles.label}>Last Updated</Text>
-				<Text>{new Date(parseInt(backup.lastUpdated)).toString()}</Text>
+				<Text style={styles.value}>
+					{new Date(parseInt(backup.lastUpdated)).toString()}
+				</Text>
 				<View style={styles.restore}>
 					<Button onPress={() => this._restore(index)} title="Restore" />
 					{/* <Button
@@ -176,13 +180,13 @@ export default class BackedupData extends React.Component {
 
 const styles = StyleSheet.create({
 	backup: {
-		paddingBottom: 10,
-		marginBottom: 20,
 		borderColor: borderGray,
-		borderBottomWidth: 0.5
+		borderBottomWidth: 0.5,
+		marginTop: 10
 	},
+	value: { marginBottom: 10 },
 	restore: {
-		marginTop: 10,
-		flexDirection: 'row'
+		marginTop: 5,
+		marginBottom: 20
 	}
 });

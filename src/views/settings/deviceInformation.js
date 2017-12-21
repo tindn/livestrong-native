@@ -1,102 +1,40 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import { TextInputGroupStyles } from '../../styles';
 
 export default (DeviceInformation = props => {
+	const deviceInfo = [
+		{ label: 'Device Unique Id', info: DeviceInfo.getUniqueID() },
+		{ label: 'Brand', info: DeviceInfo.getBrand() },
+		{ label: 'Model', info: DeviceInfo.getModel() },
+		{ label: 'Device Id', info: DeviceInfo.getDeviceId() },
+		{ label: 'System', info: DeviceInfo.getSystemName() },
+		{ label: 'System Version', info: DeviceInfo.getSystemVersion() },
+		{ label: 'Bundle Id', info: DeviceInfo.getBundleId() },
+		{ label: 'Build Number', info: DeviceInfo.getBuildNumber() },
+		{ label: 'App Version', info: DeviceInfo.getVersion() },
+		{ label: 'Device Name', info: DeviceInfo.getDeviceName() },
+		{ label: 'User Agent', info: DeviceInfo.getUserAgent() },
+		{ label: 'Device Locale', info: DeviceInfo.getDeviceLocale() },
+		{ label: 'Device Country', info: DeviceInfo.getDeviceCountry() },
+		{ label: 'Timezone', info: DeviceInfo.getTimezone() }
+	];
 	return (
-		<ScrollView>
-			<View>
-				<Text style={styles.label}>Device Unique Id </Text>
-				<Text>
-					{DeviceInfo.getUniqueID()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>Brand</Text>
-				<Text>
-					{DeviceInfo.getBrand()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>Model</Text>
-				<Text>
-					{DeviceInfo.getModel()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>Device Id</Text>
-				<Text>
-					{DeviceInfo.getDeviceId()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>System</Text>
-				<Text>
-					{DeviceInfo.getSystemName()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>System Version</Text>
-				<Text>
-					{DeviceInfo.getSystemVersion()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>Bundle Id</Text>
-				<Text>
-					{DeviceInfo.getBundleId()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>Build Number</Text>
-				<Text>
-					{DeviceInfo.getBuildNumber()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>App Version</Text>
-				<Text>
-					{DeviceInfo.getVersion()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>Device Name</Text>
-				<Text>
-					{DeviceInfo.getDeviceName()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>User Agent</Text>
-				<Text>
-					{DeviceInfo.getUserAgent()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>Device Locale</Text>
-				<Text>
-					{DeviceInfo.getDeviceLocale()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>Device Country</Text>
-				<Text>
-					{DeviceInfo.getDeviceCountry()}
-				</Text>
-			</View>
-			<View>
-				<Text style={styles.label}>Timezone</Text>
-				<Text>
-					{DeviceInfo.getTimezone()}
-				</Text>
-			</View>
+		<ScrollView style={styles.scrollView}>
+			{deviceInfo.map((info, index) => (
+				<View style={TextInputGroupStyles.group} key={index}>
+					<Text style={TextInputGroupStyles.label}>{info.label}</Text>
+					<Text style={styles.info}>{info.info}</Text>
+				</View>
+			))}
 		</ScrollView>
 	);
 });
 
 const styles = StyleSheet.create({
-	label: {
-		fontWeight: 'bold',
-		marginBottom: 5,
-		marginTop: 15
+	scrollView: { marginTop: 10 },
+	info: {
+		marginBottom: 20
 	}
 });
