@@ -38,7 +38,7 @@ export default class Plan extends React.Component {
 				automaticallyAdjustContentInsets={true}
 				keyboardDismissMode="on-drag"
 			>
-				<View style={TextInputGroupStyles.group}>
+				<View style={styles.fieldGroup}>
 					<TextInputGroup
 						labelText="Name"
 						inputValue={this.state.plan.displayName}
@@ -178,5 +178,9 @@ export default class Plan extends React.Component {
 const styles = StyleSheet.create({
 	planView: {
 		flex: 1
+	},
+	fieldGroup: {
+		marginTop: 10,
+		marginBottom: 40
 	}
 });

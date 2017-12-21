@@ -32,7 +32,7 @@ export default class Exercise extends React.Component {
 	render() {
 		return (
 			<ScrollView style={styles.exerciseView} keyboardDismissMode="on-drag">
-				<View style={TextInputGroupStyles.group}>
+				<View style={styles.fieldGroup}>
 					<TextInputGroup
 						labelText="Name"
 						inputValue={this.state.exercise.displayName}
@@ -49,10 +49,10 @@ export default class Exercise extends React.Component {
 					onPress={this._updateType}
 					selectedValue={this.state.exercise.type}
 					labelText="Type"
-					style={TextInputGroupStyles.group}
+					style={styles.fieldGroup}
 				/>
 				{this.state.exercise.heaviestSet ? (
-					<View style={[styles.heaviestSet, TextInputGroupStyles.group]}>
+					<View style={[styles.heaviestSet, styles.fieldGroup]}>
 						<Text style={TextInputGroupStyles.label}>Heaviest Set</Text>
 						<Text style={TextInputGroupStyles.input}>
 							{this.state.exercise.heaviestSet.reps} reps at{' '}
@@ -146,6 +146,10 @@ const styles = StyleSheet.create({
 	exerciseView: {
 		flex: 1,
 		flexDirection: 'column'
+	},
+	fieldGroup: {
+		marginTop: 10,
+		marginBottom: 40
 	},
 	heaviestSet: {
 		paddingLeft: 10

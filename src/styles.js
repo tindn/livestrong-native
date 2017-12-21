@@ -22,8 +22,7 @@ export const ListStyles = StyleSheet.create({
 
 export const TextInputGroupStyles = StyleSheet.create({
 	group: {
-		marginTop: 10,
-		marginBottom: 40
+		paddingLeft: 10
 	},
 	label: {
 		fontSize: 14,
