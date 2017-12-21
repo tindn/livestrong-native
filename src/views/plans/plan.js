@@ -28,6 +28,7 @@ export default class Plan extends React.Component {
 		this._deletePlan = this._deletePlan.bind(this);
 		this._addDay = this._addDay.bind(this);
 		this._removeDay = this._removeDay.bind(this);
+		this._createPlan = this._createPlan.bind(this);
 	}
 
 	render() {
@@ -35,6 +36,7 @@ export default class Plan extends React.Component {
 			<ScrollView
 				style={styles.planView}
 				automaticallyAdjustContentInsets={true}
+				keyboardDismissMode="on-drag"
 			>
 				<View style={TextInputGroupStyles.group}>
 					<TextInputGroup
@@ -49,13 +51,19 @@ export default class Plan extends React.Component {
 					<View style={ActionButtonsStyles.button}>
 						<Button title="Add Day" onPress={this._addDay} />
 					</View>
-					<View style={ActionButtonsStyles.lastButton}>
-						<Button
-							title="Delete Plan"
-							onPress={this._deletePlan}
-							color="red"
-						/>
-					</View>
+					{this.state.plan.id === undefined ? (
+						<View style={ActionButtonsStyles.lastButton}>
+							<Button title="Create Plan" onPress={this._createPlan} />
+						</View>
+					) : (
+						<View style={ActionButtonsStyles.lastButton}>
+							<Button
+								title="Delete Plan"
+								onPress={this._deletePlan}
+								color="red"
+							/>
+						</View>
+					)}
 				</View>
 			</ScrollView>
 		);
@@ -92,50 +100,45 @@ export default class Plan extends React.Component {
 			});
 			return;
 		}
-		this.setState(
-			prevState => {
-				prevState.plan.displayName = name;
-				if (prevState.plan.id === undefined) {
-					prevState.plan.name = name.toLowerCase().replace(/\s/g, '_');
-				}
-				return prevState;
-			},
-			() => this._savePlan()
-		);
+		this.setState(prevState => {
+			prevState.plan.displayName = name;
+			if (prevState.plan.id === undefined) {
+				prevState.plan.name = name.toLowerCase().replace(/\s/g, '_');
+			}
+			return prevState;
+		}, this._savePlan);
 	}
 
 	_updateDay(day, dayIndex) {
-		this.setState(
-			prevState => {
-				prevState.plan.days[dayIndex] = day;
-				return prevState;
-			},
-			() => this._savePlan()
-		);
+		this.setState(prevState => {
+			prevState.plan.days[dayIndex] = day;
+			return prevState;
+		}, this._savePlan);
 	}
 
 	_updateExercise(exercise, exerciseIndex, dayIndex) {
-		this.setState(
-			prevState => {
-				prevState.plan.days[dayIndex].exercises[exerciseIndex] = exercise;
-				return prevState;
-			},
-			() => this._savePlan()
-		);
+		this.setState(prevState => {
+			prevState.plan.days[dayIndex].exercises[exerciseIndex] = exercise;
+			return prevState;
+		}, this._savePlan);
 	}
 
 	_deleteExercise(exerciseIndex, dayIndex) {
-		this.setState(
-			prevState => {
-				prevState.plan.days[dayIndex].exercises.splice(exerciseIndex, 1);
-				return prevState;
-			},
-			() => this._savePlan()
-		);
+		this.setState(prevState => {
+			prevState.plan.days[dayIndex].exercises.splice(exerciseIndex, 1);
+			return prevState;
+		}, this._savePlan);
 	}
 
 	_savePlan() {
+		if (this.state.plan.id !== undefined) {
+			localData.savePlan(this.state.plan);
+		}
+	}
+
+	_createPlan() {
 		localData.savePlan(this.state.plan);
+		this.props.navigator.pop();
 	}
 
 	_deletePlan() {

@@ -37,7 +37,7 @@ export default class Exercise extends React.Component {
 						labelText="Name"
 						inputValue={this.state.exercise.displayName}
 						onChangeText={this._updateName}
-						placeholderText="Run Forest, Run"
+						placeholderText="Run Forrest, Run"
 						autoFocus={true}
 					/>
 				</View>
@@ -66,14 +66,15 @@ export default class Exercise extends React.Component {
 						<View style={ActionButtonsStyles.button}>
 							<Button title="Create Exercise" onPress={this._createExercise} />
 						</View>
-					) : null}
-					<View style={ActionButtonsStyles.button}>
-						<Button
-							title="Delete Exercise"
-							onPress={this._deleteExercise}
-							color="red"
-						/>
-					</View>
+					) : (
+						<View style={ActionButtonsStyles.button}>
+							<Button
+								title="Delete Exercise"
+								onPress={this._deleteExercise}
+								color="red"
+							/>
+						</View>
+					)}
 				</View>
 			</ScrollView>
 		);
