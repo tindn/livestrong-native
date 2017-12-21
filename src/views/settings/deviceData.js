@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionSheetIOS, Button, ScrollView, Text, View } from 'react-native';
+import { ActionSheetIOS, Button, FlatList, Text, View } from 'react-native';
 import localData from '../../utils/localData';
 import { borderGray } from '../../globals';
 
@@ -7,8 +7,11 @@ export default class DeviceData extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: []
+			data: [],
+			refreshing: false
 		};
+		this._renderDataItem = this._renderDataItem.bind(this);
+		this._updateData = this._updateData.bind(this);
 	}
 
 	componentDidMount() {
@@ -44,7 +47,6 @@ export default class DeviceData extends React.Component {
 	}
 
 	_deleteData(key) {
-		console.log(key);
 		ActionSheetIOS.showActionSheetWithOptions(
 			{
 				message: `Are you sure you want to delete ${key}?`,
@@ -62,45 +64,58 @@ export default class DeviceData extends React.Component {
 
 	render() {
 		return (
-			<ScrollView>
-				{this.state.data.map(
-					function(obj, index) {
-						return (
-							<View
-								key={index}
-								style={{
-									paddingTop: 10,
-									paddingBottom: 10,
-									paddingLeft: 10,
-									paddingRight: 5,
-									borderBottomColor: borderGray,
-									borderBottomWidth: 0.5
-								}}
-							>
-								<Text
-									style={{
-										fontWeight: 'bold'
-									}}
-								>
-									{obj.key}
-								</Text>
-								<Text
-									style={{
-										paddingTop: 5
-									}}
-								>
-									{JSON.stringify(obj.value)}
-								</Text>
-								<Button
-									title="Delete"
-									onPress={() => this._deleteData(obj.key)}
-									color="red"
-								/>
-							</View>
-						);
-					}.bind(this)
+			<FlatList
+				data={this.state.data}
+				renderItem={this._renderDataItem}
+				refreshing={this.state.refreshing}
+				onRefresh={this._updateData}
+				ListEmptyComponent={() => (
+					<Text
+						style={{
+							textAlign: 'center',
+							marginTop: 10
+						}}
+					>
+						No data found
+					</Text>
 				)}
-			</ScrollView>
+			/>
+		);
+	}
+
+	_renderDataItem({ item, index }) {
+		return (
+			<View
+				key={index}
+				style={{
+					paddingTop: 10,
+					paddingBottom: 10,
+					paddingLeft: 10,
+					paddingRight: 5,
+					borderBottomColor: borderGray,
+					borderBottomWidth: 0.5
+				}}
+			>
+				<Text
+					style={{
+						fontWeight: 'bold'
+					}}
+				>
+					{item.key}
+				</Text>
+				<Text
+					style={{
+						paddingTop: 5
+					}}
+				>
+					{JSON.stringify(item.value)}
+				</Text>
+				<Button
+					title="Delete"
+					onPress={() => this._deleteData(item.key)}
+					color="red"
+				/>
+			</View>
 		);
 	}
 }
