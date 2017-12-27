@@ -14,7 +14,7 @@ import { sortByDisplayName } from '../../utils/sorts';
 import ExercisePicker from '../shared/exercisePicker';
 import DayPicker from '../shared/dayPicker';
 import ExerciseEntry from './exerciseEntry';
-import { iosBlue, borderGray } from '../../globals';
+import { iosBlue, borderGray, successGreen } from '../../globals';
 
 export default class WorkoutView extends React.Component {
 	constructor(props) {
@@ -172,7 +172,7 @@ export class Workout extends React.Component {
 							<Button
 								title="Begin Workout"
 								onPress={this._beginWorkout}
-								color="#16ad05"
+								color={successGreen}
 							/>
 						</View>
 					) : null}

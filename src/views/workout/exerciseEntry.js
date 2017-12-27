@@ -65,7 +65,8 @@ export default class ExerciseEntry extends React.Component {
 		if (this.state.exercise.sets.length) {
 			newSet = Object.assign(
 				{},
-				this.state.exercise.sets[this.state.exercise.sets.length - 1]
+				this.state.exercise.sets[this.state.exercise.sets.length - 1],
+				{ completed: false }
 			);
 		}
 		this.setState(prevState => {
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
 		textAlign: 'right'
 	},
 	addSetText: {
-		marginTop: 15,
+		marginTop: 30,
 		color: iosBlue,
 		fontSize: 15,
 		textAlign: 'center'
