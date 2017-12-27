@@ -57,26 +57,33 @@ export class Workout extends React.Component {
 	}
 
 	componentDidMount() {
-		this._updateFromLastWorkout();
+		localData.getItem('currentWorkout').then(currentWorkoutId => {
+			if (currentWorkoutId) {
+				localData.getItem(currentWorkoutId).then(currentWorkout => {
+					this.setState({ workout: currentWorkout });
+				});
+			} else {
+				this._updateFromLastWorkout();
+			}
+		});
 	}
 
 	_updateFromLastWorkout() {
 		localData.getItem('lastWorkout').then(lastWorkout => {
-			if (lastWorkout) {
-				if (!lastWorkout.planId) return;
-				localData.getItem('plan.' + lastWorkout.planId).then(plan => {
-					let nextDayIndex = (lastWorkout.dayIndex + 1) % plan.days.length;
-					return localData
-						.getValues(
-							plan.days[nextDayIndex].exercises.map(exercise => {
-								return 'exercise.' + exercise.exerciseId;
-							})
-						)
-						.then(exercises =>
-							this._updateDay(exercises, lastWorkout.planId, nextDayIndex)
-						);
-				});
-			}
+			if (!lastWorkout) return;
+			if (!lastWorkout.planId) return;
+			localData.getItem('plan.' + lastWorkout.planId).then(plan => {
+				let nextDayIndex = (lastWorkout.dayIndex + 1) % plan.days.length;
+				return localData
+					.getValues(
+						plan.days[nextDayIndex].exercises.map(exercise => {
+							return 'exercise.' + exercise.exerciseId;
+						})
+					)
+					.then(exercises =>
+						this._updateDay(exercises, lastWorkout.planId, nextDayIndex)
+					);
+			});
 		});
 	}
 
@@ -201,9 +208,16 @@ export class Workout extends React.Component {
 	}
 
 	_beginWorkout() {
-		this.setState((prevState, props) => {
-			prevState.workout.startTimestamp = new Date().getTime().toString();
-		}, this._saveWorkout);
+		this.setState(
+			(prevState, props) => {
+				prevState.workout.startTimestamp = new Date().getTime().toString();
+			},
+			() => {
+				this._saveWorkout().then(workout => {
+					localData.setItem('currentWorkout', `workout.${workout.id}`);
+				});
+			}
+		);
 	}
 
 	_endWorkout() {
@@ -227,6 +241,7 @@ export class Workout extends React.Component {
 						})
 					)
 					.then(this._resetState);
+				localData.deleteItem('currentWorkout');
 			}
 		);
 	}
@@ -245,11 +260,12 @@ export class Workout extends React.Component {
 		if (!this.state.workout.startTimestamp) {
 			return;
 		}
-		localData.saveWorkout(this.state.workout).then(workout => {
+		return localData.saveWorkout(this.state.workout).then(workout => {
 			this.setState(prevState => {
 				prevState.workout = workout;
 				return prevState;
 			});
+			return workout;
 		});
 	}
 

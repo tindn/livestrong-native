@@ -1,5 +1,4 @@
 import { AsyncStorage } from 'react-native';
-// import seedling from '../../seedData.json';
 import uuid from 'uuid/v5';
 import secrets from '../../config/secrets.json';
 
