@@ -90,7 +90,7 @@ class WorkoutList extends React.Component {
 				underlayColor="#e2e2e2"
 			>
 				<View style={ListStyles.listItem}>
-					<Text>
+					<Text style={ListStyles.itemTitle}>
 						{`${workoutDate.toDateString()} @ ${workoutDate.toLocaleTimeString()}`}
 					</Text>
 				</View>
