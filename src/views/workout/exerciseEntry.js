@@ -40,6 +40,21 @@ export default class ExerciseEntry extends React.Component {
 						<Text style={styles.removeText}>Remove</Text>
 					</TouchableHighlight>
 				</View>
+				{this.props.exercise.heaviestSet ? (
+					<View
+						style={[
+							{
+								paddingLeft: 10
+							}
+						]}
+					>
+						<Text>
+							{this.state.exercise.heaviestSet.reps} reps at{' '}
+							{this.state.exercise.heaviestSet.weight}{' '}
+							{this.state.exercise.heaviestSet.weightUnit}
+						</Text>
+					</View>
+				) : null}
 				{this.state.exercise.sets.map((set, index) => {
 					return (
 						<SetEntry
