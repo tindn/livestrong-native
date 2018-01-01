@@ -9,105 +9,136 @@ import {
 	StyleSheet
 } from 'react-native';
 import { iosBlue, borderGray, UnitTypes, successGreen } from '../../globals';
+import getRepsInputs from '../../utils/repsInputs';
+import getWeightInputs from '../../utils/weightInputs';
 
-export default (SetEntry = props => {
-	return (
-		<View style={styles.mainView} key={props.setIndex}>
-			{props.set.completed ? null : (
-				<View style={styles.actionGroup}>
-					<TouchableHighlight
-						style={styles.repsAction}
-						onPress={() => {
-							const set = props.set;
-							set.reps++;
-							props.updateSet(set, props.setIndex);
-						}}
-					>
-						<Text style={styles.updateIcon}>+</Text>
-					</TouchableHighlight>
-					<TouchableHighlight
-						style={styles.weightAction}
-						onPress={() => {
-							props.updateSet(
-								{ ...props.set, weight: (props.set.weight += 2.5) },
-								props.setIndex
-							);
-						}}
-					>
-						<Text style={styles.updateIcon}>+</Text>
-					</TouchableHighlight>
-				</View>
-			)}
-			<View style={styles.inputGroup}>
-				<Text style={[styles.index, styles.readingFont]}>
-					{props.setIndex + 1}.
-				</Text>
-				<TextInput
-					style={[styles.repsInput, styles.readingFont]}
-					value={props.set.reps.toString()}
-					editable={!props.set.completed}
-				/>
-				<Text style={[styles.staticText, styles.readingFont]}>reps at</Text>
-				<TextInput
-					style={[styles.weightInput, styles.readingFont]}
-					value={props.set.weight.toString()}
-					editable={!props.set.completed}
-				/>
-				{props.set.completed ? (
-					<Text style={[styles.readingFont, { width: 50 }]}>
-						{props.set.weightUnit}
+export default class SetEntry extends React.Component {
+	constructor(props) {
+		super(props);
+		this.repsInputs = getRepsInputs(props.set.reps);
+		this.weightInputs = getWeightInputs(props.set.weight);
+	}
+	render() {
+		return (
+			<View style={styles.mainView} key={this.props.setIndex}>
+				<View style={styles.inputGroup}>
+					<Text style={[styles.index, styles.readingFont]}>
+						{this.props.setIndex + 1}.
 					</Text>
-				) : (
-					<Picker
-						style={{ width: 50 }}
-						itemStyle={{ height: 110 }}
-						selectedValue={props.set.weightUnit}
-						onValueChange={(itemValue, itemIndex) => {
-							props.updateSet(
-								{ ...props.set, weightUnit: itemValue },
-								props.setIndex
-							);
-						}}
-					>
-						{UnitTypes.map((type, index) => (
-							<Picker.Item key={index} label={type.name} value={type._id} />
-						))}
-					</Picker>
-				)}
-				<View style={styles.iconGroup}>
-					{props.set.completed ? null : (
-						<TouchableHighlight
-							onPress={() => {
-								props.removeSet(props.setIndex);
-							}}
-						>
-							<Image
-								source={require('../../../assets/close.png')}
-								style={[styles.actionIcon, styles.removeIcon]}
-							/>
-						</TouchableHighlight>
-					)}
-					{props.set.completed ? (
-						<TouchableHighlight
-							onPress={() => {
-								props.updateSet(
-									{ ...props.set, completed: false },
-									props.setIndex
+					{this.props.set.completed ? (
+						<Text style={[styles.readingFont, styles.repsText]}>
+							{this.props.set.reps}
+						</Text>
+					) : (
+						<Picker
+							style={styles.repsPicker}
+							itemStyle={{ height: 110 }}
+							selectedValue={this.props.set.reps}
+							onValueChange={reps => {
+								this.props.updateSet(
+									{ ...this.props.set, reps: reps },
+									this.props.setIndex
 								);
 							}}
 						>
-							<Image
-								source={require('../../../assets/pencil.png')}
-								style={[styles.actionIcon, styles.editIcon]}
-							/>
-						</TouchableHighlight>
+							{this.repsInputs.map(input => (
+								<Picker.Item
+									key={input}
+									label={input.toString()}
+									value={input}
+								/>
+							))}
+						</Picker>
+					)}
+					<Text style={[styles.readingFont]}>reps at</Text>
+					{this.props.set.completed ? (
+						<Text style={[styles.readingFont, styles.weightText]}>
+							{this.props.set.weight}
+						</Text>
+					) : (
+						<Picker
+							style={styles.weightPicker}
+							itemStyle={{ height: 110 }}
+							selectedValue={this.props.set.weight}
+							onValueChange={weight => {
+								this.props.updateSet(
+									{ ...this.props.set, weight: weight },
+									this.props.setIndex
+								);
+							}}
+						>
+							{this.weightInputs.map(input => (
+								<Picker.Item
+									key={input}
+									label={input.toString()}
+									value={input}
+								/>
+							))}
+						</Picker>
+					)}
+					{this.props.set.completed ? (
+						<Text style={[styles.readingFont, { width: 50 }]}>
+							{this.props.set.weightUnit}
+						</Text>
+					) : (
+						<Picker
+							style={{ width: 50 }}
+							itemStyle={{ height: 110 }}
+							selectedValue={this.props.set.weightUnit}
+							onValueChange={(itemValue, itemIndex) => {
+								this.props.updateSet(
+									{ ...this.props.set, weightUnit: itemValue },
+									this.props.setIndex
+								);
+							}}
+						>
+							{UnitTypes.map((type, index) => (
+								<Picker.Item key={index} label={type.name} value={type._id} />
+							))}
+						</Picker>
+					)}
+				</View>
+				<View style={styles.iconGroup}>
+					{this.props.set.completed ? (
+						<View style={{ flexDirection: 'row' }}>
+							<TouchableHighlight
+								onPress={() => {
+									this.props.updateSet(
+										{ ...this.props.set, completed: false },
+										this.props.setIndex
+									);
+								}}
+								underlayColor="#ddd"
+							>
+								<Image
+									source={require('../../../assets/pencil.png')}
+									style={[styles.actionIcon, styles.editIcon]}
+								/>
+							</TouchableHighlight>
+							<TouchableHighlight
+								onPress={() => {
+									this.props.removeSet(this.props.setIndex);
+								}}
+								underlayColor="#ddd"
+							>
+								<Image
+									source={require('../../../assets/close.png')}
+									style={[styles.actionIcon, styles.removeIcon]}
+								/>
+							</TouchableHighlight>
+						</View>
 					) : (
 						<TouchableHighlight
 							onPress={() => {
-								props.updateSet(
-									{ ...props.set, completed: true },
-									props.setIndex
+								this.props.updateSet(
+									{ ...this.props.set, completed: true },
+									this.props.setIndex
 								);
+							}}
+							underlayColor="#ddd"
+							style={{
+								alignItems: 'center',
+								marginTop: 35
 							}}
 						>
 							<Image
@@ -118,40 +149,15 @@ export default (SetEntry = props => {
 					)}
 				</View>
 			</View>
-			{props.set.completed ? null : (
-				<View style={styles.actionGroup}>
-					<TouchableHighlight
-						style={[styles.repsAction, { marginLeft: 5 }]}
-						onPress={() => {
-							const set = props.set;
-							set.reps--;
-							props.updateSet(set, props.setIndex);
-						}}
-					>
-						<Text style={styles.updateIcon}>-</Text>
-					</TouchableHighlight>
-					<TouchableHighlight
-						style={[styles.weightAction, { marginLeft: 5 }]}
-						onPress={() => {
-							props.updateSet(
-								{ ...props.set, weight: (props.set.weight -= 2.5) },
-								props.setIndex
-							);
-						}}
-					>
-						<Text style={styles.updateIcon}>-</Text>
-					</TouchableHighlight>
-				</View>
-			)}
-		</View>
-	);
-});
+		);
+	}
+}
 
 const styles = StyleSheet.create({
 	mainView: {
-		flexDirection: 'column',
-		marginLeft: 10,
-		marginRight: 5,
+		flexDirection: 'row',
+		paddingLeft: 10,
+		paddingRight: 10,
 		marginTop: 5,
 		borderColor: borderGray,
 		borderTopWidth: 0.5,
@@ -160,47 +166,32 @@ const styles = StyleSheet.create({
 	readingFont: {
 		fontSize: 18
 	},
-	actionGroup: {
-		flexDirection: 'row',
-		flex: 1
-	},
 	inputGroup: {
 		flexDirection: 'row',
-		flex: 1,
-		// justifyContent: 'center',
-		alignItems: 'center'
-	},
-	repsInput: {
-		width: 40,
-		textAlign: 'center'
-	},
-	weightInput: {
-		width: 80,
-		textAlign: 'center'
-	},
-	updateIcon: {
-		color: iosBlue,
-		fontSize: 30,
-		textAlign: 'center',
-		height: 30
-	},
-	staticText: {
-		fontSize: 17,
-		paddingLeft: 10,
-		paddingRight: 10
-	},
-	repsAction: {
-		left: 43
-	},
-	weightAction: {
-		left: 160
+		flex: 8,
+		alignItems: 'center',
+		justifyContent: 'space-between'
 	},
 	index: {
-		marginRight: 20
+		marginRight: 5
+	},
+	repsText: {
+		width: 25,
+		textAlign: 'center'
+	},
+	repsPicker: {
+		width: 50
+	},
+	weightText: {
+		width: 70,
+		textAlign: 'center'
+	},
+	weightPicker: {
+		width: 80
 	},
 	iconGroup: {
 		flexDirection: 'column',
-		marginLeft: 20
+		flex: 3
 	},
 	actionIcon: {
 		width: 15,
