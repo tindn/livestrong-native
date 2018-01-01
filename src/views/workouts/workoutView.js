@@ -1,7 +1,32 @@
 import React from 'react';
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+	ActionSheetIOS,
+	Button,
+	ScrollView,
+	StyleSheet,
+	Text,
+	View
+} from 'react-native';
+import { ActionButtonsStyles } from '../../styles';
+import localData from '../../utils/localData';
 
 export default (WorkoutView = props => {
+	deleteWorkout = () => {
+		ActionSheetIOS.showActionSheetWithOptions(
+			{
+				message: 'Are you sure you want to delete this workout?',
+				options: ['Delete', 'Cancel'],
+				destructiveButtonIndex: 0,
+				cancelButtonIndex: 1
+			},
+			buttonIndex => {
+				if (buttonIndex === 0) {
+					localData.deleteItem(`workout.${props.workout.id}`);
+					props.navigator.pop();
+				}
+			}
+		);
+	};
 	return (
 		<ScrollView style={styles.scrollView}>
 			<View>
@@ -26,6 +51,9 @@ export default (WorkoutView = props => {
 							})}
 					</View>
 				))}
+				<View style={ActionButtonsStyles.button}>
+					<Button title="Delete Workout" onPress={deleteWorkout} color="red" />
+				</View>
 			</View>
 		</ScrollView>
 	);

@@ -144,6 +144,7 @@ function mergeItem(key, value) {
 }
 
 function deleteItem(key) {
+	if (key === undefined) return;
 	return AsyncStorage.removeItem(key).then(_updateTimestamp);
 }
 
