@@ -224,8 +224,15 @@ export class Workout extends React.Component {
 		this.setState(
 			(prevState, props) => {
 				prevState.workout.endTimestamp = new Date().getTime().toString();
-				prevState.workout.exercises = prevState.workout.exercises.filter(
-					exercise => exercise.sets.length > 0
+				prevState.workout.exercises = prevState.workout.exercises.reduce(
+					(acc, exercise) => {
+						if (exercise.sets.length > 0) {
+							delete exercise.heaviestSet;
+							acc.push(exercise);
+						}
+						return acc;
+					},
+					[]
 				);
 			},
 			() => {
