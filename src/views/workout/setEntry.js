@@ -75,16 +75,18 @@ export default (SetEntry = props => {
 					</Picker>
 				)}
 				<View style={styles.iconGroup}>
-					<TouchableHighlight
-						onPress={() => {
-							props.removeSet(props.setIndex);
-						}}
-					>
-						<Image
-							source={require('../../../assets/close.png')}
-							style={[styles.actionIcon, styles.removeIcon]}
-						/>
-					</TouchableHighlight>
+					{props.set.completed ? null : (
+						<TouchableHighlight
+							onPress={() => {
+								props.removeSet(props.setIndex);
+							}}
+						>
+							<Image
+								source={require('../../../assets/close.png')}
+								style={[styles.actionIcon, styles.removeIcon]}
+							/>
+						</TouchableHighlight>
+					)}
 					{props.set.completed ? (
 						<TouchableHighlight
 							onPress={() => {
