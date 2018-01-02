@@ -15,8 +15,14 @@ import getWeightInputs from '../../utils/weightInputs';
 export default class SetEntry extends React.Component {
 	constructor(props) {
 		super(props);
-		this.repsInputs = getRepsInputs(props.set.reps);
-		this.weightInputs = getWeightInputs(props.set.weight);
+		let weightIncrement = 2.5;
+		if (props.set.weightUnit && props.set.weightUnit === 'cnt') {
+			weightIncrement = 1;
+		}
+		this.state = {
+			repsInputs: getRepsInputs(props.set.reps),
+			weightInputs: getWeightInputs(props.set.weight, weightIncrement)
+		};
 	}
 	render() {
 		return (
@@ -41,7 +47,7 @@ export default class SetEntry extends React.Component {
 								);
 							}}
 						>
-							{this.repsInputs.map(input => (
+							{this.state.repsInputs.map(input => (
 								<Picker.Item
 									key={input}
 									label={input.toString()}
@@ -67,7 +73,7 @@ export default class SetEntry extends React.Component {
 								);
 							}}
 						>
-							{this.weightInputs.map(input => (
+							{this.state.weightInputs.map(input => (
 								<Picker.Item
 									key={input}
 									label={input.toString()}
@@ -90,6 +96,16 @@ export default class SetEntry extends React.Component {
 									{ ...this.props.set, weightUnit: itemValue },
 									this.props.setIndex
 								);
+								let weightIncrement = 2.5;
+								if (itemValue === 'cnt') {
+									weightIncrement = 1;
+								}
+								this.setState({
+									weightInputs: getWeightInputs(
+										this.props.set.weight,
+										weightIncrement
+									)
+								});
 							}}
 						>
 							{UnitTypes.map((type, index) => (
