@@ -15,6 +15,7 @@ import ExercisePicker from '../shared/exercisePicker';
 import DayPicker from '../shared/dayPicker';
 import ExerciseEntry from './exerciseEntry';
 import { iosBlue, borderGray, successGreen } from '../../globals';
+import { UIManager } from 'NativeModules';
 
 export default class WorkoutView extends React.Component {
 	constructor(props) {
@@ -114,6 +115,7 @@ export class Workout extends React.Component {
 						}}
 					/>
 				}
+				ref="scrollView"
 			>
 				{!this.state.workout.startTimestamp ? (
 					<DayPicker
@@ -155,10 +157,24 @@ export class Workout extends React.Component {
 				) : (
 					<TouchableHighlight
 						onPress={() => {
-							this.setState(prevState => {
-								prevState.showExercisePicker = true;
-								return prevState;
-							});
+							this.setState(
+								prevState => {
+									prevState.showExercisePicker = true;
+									return prevState;
+								},
+								() => {
+									UIManager.measure(
+										this.refs.scrollView.getInnerViewNode(),
+										(...data) => {
+											this.refs.scrollView.scrollTo({
+												x: 0,
+												y: data[3] - 200,
+												animated: true
+											});
+										}
+									);
+								}
+							);
 						}}
 						title="Add Exercise"
 						style={styles.addExercise}

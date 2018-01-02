@@ -12,3 +12,4 @@ export const UnitTypes = [
 export const iosBlue = '#007AFF';
 export const successGreen = '#16ad05';
 export const borderGray = '#B5B9C2';
+export const textGray = '#7a7b7c';

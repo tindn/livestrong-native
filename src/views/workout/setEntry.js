@@ -128,24 +128,22 @@ export default class SetEntry extends React.Component {
 							</TouchableHighlight>
 						</View>
 					) : (
-						<TouchableHighlight
-							onPress={() => {
-								this.props.updateSet(
-									{ ...this.props.set, completed: true },
-									this.props.setIndex
-								);
-							}}
-							underlayColor="#ddd"
-							style={{
-								alignItems: 'center',
-								marginTop: 35
-							}}
-						>
-							<Image
-								source={require('../../../assets/check.png')}
-								style={[styles.actionIcon, styles.completeIcon]}
-							/>
-						</TouchableHighlight>
+						<View style={{ marginTop: 35 }}>
+							<TouchableHighlight
+								onPress={() => {
+									this.props.updateSet(
+										{ ...this.props.set, completed: true },
+										this.props.setIndex
+									);
+								}}
+								underlayColor="#ddd"
+							>
+								<Image
+									source={require('../../../assets/check.png')}
+									style={[styles.actionIcon, styles.completeIcon]}
+								/>
+							</TouchableHighlight>
+						</View>
 					)}
 				</View>
 			</View>

@@ -9,7 +9,7 @@ import {
 	View
 } from 'react-native';
 import SetEntry from './setEntry';
-import { iosBlue } from '../../globals';
+import { iosBlue, textGray } from '../../globals';
 
 export default class ExerciseEntry extends React.Component {
 	constructor(props) {
@@ -33,12 +33,25 @@ export default class ExerciseEntry extends React.Component {
 					<Text style={styles.headerText}>
 						{this.props.exercise.displayName}
 					</Text>
-					<TouchableHighlight
-						style={styles.remove}
-						onPress={() => this.props.removeExercise(this.props.exerciseIndex)}
+					<View
+						style={{
+							flex: 3
+						}}
 					>
-						<Text style={styles.removeText}>Remove</Text>
-					</TouchableHighlight>
+						<TouchableHighlight
+							onPress={() => {
+								this.setState(prevState => {
+									prevState.completed = !prevState.completed;
+									return prevState;
+								});
+							}}
+							underlayColor="#ddd"
+						>
+							<Text style={{ color: iosBlue, paddingLeft: 15 }}>
+								{this.state.completed ? 'Edit' : 'Done'}
+							</Text>
+						</TouchableHighlight>
+					</View>
 				</View>
 				{this.props.exercise.heaviestSet ? (
 					<View
@@ -48,7 +61,7 @@ export default class ExerciseEntry extends React.Component {
 							}
 						]}
 					>
-						<Text>
+						<Text style={{ fontStyle: 'italic', color: textGray }}>
 							{this.state.exercise.heaviestSet.reps} reps at{' '}
 							{this.state.exercise.heaviestSet.weight}{' '}
 							{this.state.exercise.heaviestSet.weightUnit}
@@ -66,10 +79,28 @@ export default class ExerciseEntry extends React.Component {
 						/>
 					);
 				})}
-				{this.props.workoutStarted ? (
-					<TouchableHighlight onPress={this._addSet}>
-						<Text style={styles.addSetText}>Add set</Text>
-					</TouchableHighlight>
+
+				{this.props.workoutStarted && !this.state.completed ? (
+					<View
+						style={{
+							marginTop: 30,
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							paddingLeft: 10,
+							paddingRight: 10
+						}}
+					>
+						<TouchableHighlight
+							onPress={() =>
+								this.props.removeExercise(this.props.exerciseIndex)
+							}
+						>
+							<Text style={styles.removeText}>Remove Exercise</Text>
+						</TouchableHighlight>
+						<TouchableHighlight onPress={this._addSet}>
+							<Text style={styles.addSetText}>Add set</Text>
+						</TouchableHighlight>
+					</View>
 				) : null}
 			</View>
 		);
@@ -124,18 +155,12 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		flex: 8
 	},
-	remove: {
-		flex: 2
-	},
 	removeText: {
-		fontSize: 14,
-		color: 'red',
-		textAlign: 'right'
+		fontSize: 15,
+		color: 'red'
 	},
 	addSetText: {
-		marginTop: 30,
 		color: iosBlue,
-		fontSize: 15,
-		textAlign: 'center'
+		fontSize: 15
 	}
 });
