@@ -237,6 +237,7 @@ export class Workout extends React.Component {
 	}
 
 	_endWorkout() {
+		this._updateHeaviestSet();
 		this.setState(
 			(prevState, props) => {
 				prevState.workout.endTimestamp = new Date().getTime().toString();
@@ -253,7 +254,6 @@ export class Workout extends React.Component {
 			},
 			() => {
 				this._saveWorkout();
-				this._updateHeaviestSet();
 				localData
 					.setItem(
 						'lastWorkout',

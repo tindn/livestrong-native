@@ -144,7 +144,7 @@ export default class SetEntry extends React.Component {
 							</TouchableHighlight>
 						</View>
 					) : (
-						<View style={{ marginTop: 35 }}>
+						<View style={{ flexDirection: 'row', marginTop: 35 }}>
 							<TouchableHighlight
 								onPress={() => {
 									this.props.updateSet(
@@ -157,6 +157,17 @@ export default class SetEntry extends React.Component {
 								<Image
 									source={require('../../../assets/check.png')}
 									style={[styles.actionIcon, styles.completeIcon]}
+								/>
+							</TouchableHighlight>
+							<TouchableHighlight
+								onPress={() => {
+									this.props.removeSet(this.props.setIndex);
+								}}
+								underlayColor="#ddd"
+							>
+								<Image
+									source={require('../../../assets/close.png')}
+									style={[styles.actionIcon, styles.removeIcon]}
 								/>
 							</TouchableHighlight>
 						</View>

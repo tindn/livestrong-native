@@ -107,7 +107,13 @@ export default class ExerciseEntry extends React.Component {
 	}
 
 	_addSet() {
-		let newSet = { reps: 8, weight: 25, weightUnit: 'lbs' };
+		let newSet = Object.assign({}, this.state.exercise.heaviestSet, {
+			completed: false
+		}) || {
+			reps: 8,
+			weight: 25,
+			weightUnit: 'lbs'
+		};
 		if (this.state.exercise.sets.length) {
 			newSet = Object.assign(
 				{},
