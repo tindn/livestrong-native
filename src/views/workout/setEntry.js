@@ -38,7 +38,7 @@ export default class SetEntry extends React.Component {
 					) : (
 						<Picker
 							style={styles.repsPicker}
-							itemStyle={{ height: 110 }}
+							itemStyle={styles.pickerItem}
 							selectedValue={this.props.set.reps}
 							onValueChange={reps => {
 								this.props.updateSet(
@@ -64,7 +64,7 @@ export default class SetEntry extends React.Component {
 					) : (
 						<Picker
 							style={styles.weightPicker}
-							itemStyle={{ height: 110 }}
+							itemStyle={styles.pickerItem}
 							selectedValue={this.props.set.weight}
 							onValueChange={weight => {
 								this.props.updateSet(
@@ -89,7 +89,7 @@ export default class SetEntry extends React.Component {
 					) : (
 						<Picker
 							style={{ width: 50 }}
-							itemStyle={{ height: 110 }}
+							itemStyle={styles.pickerItem}
 							selectedValue={this.props.set.weightUnit}
 							onValueChange={(itemValue, itemIndex) => {
 								this.props.updateSet(
@@ -236,5 +236,8 @@ const styles = StyleSheet.create({
 		tintColor: successGreen,
 		width: 17,
 		height: 17
+	},
+	pickerItem: {
+		height: 110
 	}
 });

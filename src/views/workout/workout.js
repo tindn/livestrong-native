@@ -168,7 +168,7 @@ export class Workout extends React.Component {
 										(...data) => {
 											this.refs.scrollView.scrollTo({
 												x: 0,
-												y: data[3] - 200,
+												y: data[3] - 120,
 												animated: true
 											});
 										}

@@ -33,35 +33,30 @@ export default class ExerciseEntry extends React.Component {
 					<Text style={styles.headerText}>
 						{this.props.exercise.displayName}
 					</Text>
-					<View
-						style={{
-							flex: 3
-						}}
-					>
+					<View style={styles.headerEdit}>
 						<TouchableHighlight
 							onPress={() => {
 								this.setState(prevState => {
+									if (!prevState.completed) {
+										prevState.exercise.sets.forEach(set => {
+											set.completed = true;
+										});
+									}
 									prevState.completed = !prevState.completed;
 									return prevState;
 								});
 							}}
 							underlayColor="#ddd"
 						>
-							<Text style={{ color: iosBlue, paddingLeft: 15 }}>
+							<Text style={styles.headerEditText}>
 								{this.state.completed ? 'Edit' : 'Done'}
 							</Text>
 						</TouchableHighlight>
 					</View>
 				</View>
 				{this.props.exercise.heaviestSet ? (
-					<View
-						style={[
-							{
-								paddingLeft: 10
-							}
-						]}
-					>
-						<Text style={{ fontStyle: 'italic', color: textGray }}>
+					<View style={styles.heaviestSetView}>
+						<Text style={styles.heaviestSetText}>
 							{this.state.exercise.heaviestSet.reps} reps at{' '}
 							{this.state.exercise.heaviestSet.weight}{' '}
 							{this.state.exercise.heaviestSet.weightUnit}
@@ -81,15 +76,7 @@ export default class ExerciseEntry extends React.Component {
 				})}
 
 				{this.props.workoutStarted && !this.state.completed ? (
-					<View
-						style={{
-							marginTop: 30,
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							paddingLeft: 10,
-							paddingRight: 10
-						}}
-					>
+					<View style={styles.actionsView}>
 						<TouchableHighlight
 							onPress={() =>
 								this.props.removeExercise(this.props.exerciseIndex)
@@ -160,6 +147,24 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		fontWeight: 'bold',
 		flex: 8
+	},
+	headerEdit: {
+		flex: 3
+	},
+	headerEditText: { color: iosBlue, paddingLeft: 15 },
+	heaviestSetView: {
+		paddingLeft: 10
+	},
+	heaviestSetText: {
+		fontStyle: 'italic',
+		color: textGray
+	},
+	actionsView: {
+		marginTop: 30,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingLeft: 10,
+		paddingRight: 10
 	},
 	removeText: {
 		fontSize: 15,
