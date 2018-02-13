@@ -60,13 +60,10 @@ class Settings extends React.Component {
 					.split('-')
 					.join('')}`
 			);
-		this._reseedData = this._reseedData.bind(this);
 	}
 
 	render() {
 		let dataView = null;
-
-		let backupStatusView = null;
 
 		return (
 			<ScrollView style={{ flex: 1 }}>
@@ -107,62 +104,10 @@ class Settings extends React.Component {
 						color="black"
 					/>
 				</View>
-				<View style={[ListStyles.listItem, styles.reseed]}>
-					<Button onPress={this._reseedData} title="Reseed Data" />
-				</View>
 				<View style={ListStyles.listItem}>
 					<Button onPress={this._backupData} title="Backup Data" />
 				</View>
-				{this.state.backupStatus.length > 0 ? (
-					<View>
-						<Text style={styles.backupStatusLabel}>Backup status:</Text>
-						{this.state.backupStatus.map((status, index) => {
-							return (
-								<Text key={index} style={styles.backupStatus}>
-									{status}
-								</Text>
-							);
-						})}
-						<TouchableHighlight
-							onPress={() => {
-								this.setState(prevState => {
-									prevState.backupStatus = [];
-									return prevState;
-								});
-							}}
-						>
-							<Text style={styles.clearBackupStatus}>Clear</Text>
-						</TouchableHighlight>
-					</View>
-				) : null}
-				{backupStatusView}
 			</ScrollView>
-		);
-	}
-
-	_reseedData() {
-		ActionSheetIOS.showActionSheetWithOptions(
-			{
-				message: 'Are you sure you want to reseed?',
-				options: ['Reseed', 'Cancel'],
-				cancelButtonIndex: 1
-			},
-			function(buttonIndex) {
-				if (buttonIndex === 0) {
-					this._firebaseApp
-						.database()
-						.ref('seedData')
-						.once('value')
-						.then(snapshot => {
-							const val = snapshot.val();
-							if (val) {
-								localData.dangerouslyClearEverything().then(function() {
-									localData.seedData(val);
-								});
-							}
-						});
-				}
-			}.bind(this)
 		);
 	}
 
@@ -211,24 +156,3 @@ class Settings extends React.Component {
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	reseed: {
-		marginTop: 50
-	},
-	backupStatusLabel: {
-		fontWeight: 'bold',
-		textAlign: 'center',
-		marginBottom: 10
-	},
-	backupStatus: {
-		paddingLeft: 10,
-		marginBottom: 5
-	},
-	clearBackupStatus: {
-		color: iosBlue,
-		fontSize: 16,
-		textAlign: 'center',
-		marginTop: 10
-	}
-});
