@@ -163,16 +163,16 @@ export class Workout extends React.Component {
 									return prevState;
 								},
 								() => {
-									UIManager.measure(
-										this.refs.scrollView.getInnerViewNode(),
-										(...data) => {
-											this.refs.scrollView.scrollTo({
-												x: 0,
-												y: data[3] - 120,
-												animated: true
-											});
-										}
-									);
+									// UIManager.measure(
+									// 	this.refs.scrollView.getInnerViewNode(),
+									// 	(...data) => {
+									// 		this.refs.scrollView.scrollTo({
+									// 			x: 0,
+									// 			y: data[3] - 120,
+									// 			animated: true
+									// 		});
+									// 	}
+									// );
 								}
 							);
 						}}

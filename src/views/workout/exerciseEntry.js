@@ -34,24 +34,34 @@ export default class ExerciseEntry extends React.Component {
 						{this.props.exercise.displayName}
 					</Text>
 					<View style={styles.headerEdit}>
-						<TouchableHighlight
-							onPress={() => {
-								this.setState(prevState => {
-									if (!prevState.completed) {
-										prevState.exercise.sets.forEach(set => {
-											set.completed = true;
-										});
-									}
-									prevState.completed = !prevState.completed;
-									return prevState;
-								});
-							}}
-							underlayColor="#ddd"
-						>
-							<Text style={styles.headerEditText}>
-								{this.state.completed ? 'Edit' : 'Done'}
-							</Text>
-						</TouchableHighlight>
+						{this.props.workoutStarted ? (
+							<TouchableHighlight
+								onPress={() => {
+									this.setState(prevState => {
+										if (!prevState.completed) {
+											prevState.exercise.sets.forEach(set => {
+												set.completed = true;
+											});
+										}
+										prevState.completed = !prevState.completed;
+										return prevState;
+									});
+								}}
+								underlayColor="#ddd"
+							>
+								<Text style={styles.headerEditText}>
+									{this.state.completed ? 'Edit' : 'Done'}
+								</Text>
+							</TouchableHighlight>
+						) : (
+							<TouchableHighlight
+								onPress={() =>
+									this.props.removeExercise(this.props.exerciseIndex)
+								}
+							>
+								<Text style={styles.removeText}>Remove</Text>
+							</TouchableHighlight>
+						)}
 					</View>
 				</View>
 				{this.props.exercise.heaviestSet ? (
