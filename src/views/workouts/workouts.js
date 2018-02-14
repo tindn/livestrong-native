@@ -40,7 +40,7 @@ class WorkoutList extends React.Component {
 		this.setState({ refreshing: true });
 		localData.getAllWorkouts().then(workouts => {
 			workouts = workouts.map((workout, index) => {
-				workout.key = index;
+				workout.key = index.toString();
 				return workout;
 			});
 			let sortedWorkouts = workouts.sort(sortByStartTimestamp);

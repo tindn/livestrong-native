@@ -54,7 +54,7 @@ class PlanList extends React.Component {
 		this.setState({ refreshing: true });
 		localData.getAllPlans().then(plans => {
 			plans = plans.map((plan, index) => {
-				plan.key = index;
+				plan.key = index.toString();
 				return plan;
 			});
 			plans = plans.sort(sortByDisplayName);

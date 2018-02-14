@@ -49,7 +49,7 @@ class ExerciseList extends React.Component {
 		this.setState({ refreshing: true });
 		localData.getAllExercises().then(exercises => {
 			exercises = exercises.map((exercise, index) => {
-				exercise.key = index;
+				exercise.key = index.toString();
 				return exercise;
 			});
 			let sortedExercises = exercises.sort(sortByDisplayName);
