@@ -1,15 +1,8 @@
 import React from 'react';
-import {
-	Button,
-	Image,
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableHighlight,
-	View
-} from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import SetEntry from './setEntry';
-import { iosBlue, textGray } from '../../globals';
+import { iosBlue, textGray, red } from '../../globals';
+import PropTypes from 'prop-types';
 
 export default class ExerciseEntry extends React.Component {
 	constructor(props) {
@@ -34,46 +27,25 @@ export default class ExerciseEntry extends React.Component {
 						{this.props.exercise.displayName}
 					</Text>
 					<View style={styles.headerEdit}>
-						{this.props.workoutStarted ? (
-							<TouchableHighlight
-								onPress={() => {
-									this.setState(prevState => {
-										if (!prevState.completed) {
-											prevState.exercise.sets.forEach(set => {
-												set.completed = true;
-											});
-										}
-										prevState.completed = !prevState.completed;
-										return prevState;
-									});
-								}}
-								underlayColor="#ddd"
-							>
-								<Text style={styles.headerEditText}>
-									{this.state.completed ? 'Edit' : 'Done'}
-								</Text>
-							</TouchableHighlight>
-						) : (
-							<TouchableHighlight
-								onPress={() =>
-									this.props.removeExercise(this.props.exerciseIndex)
-								}
-							>
-								<Text style={styles.removeText}>Remove</Text>
-							</TouchableHighlight>
-						)}
+						<TouchableHighlight
+							onPress={() =>
+								this.props.removeExercise(this.props.exerciseIndex)
+							}
+						>
+							<Text style={styles.removeText}>Remove</Text>
+						</TouchableHighlight>
 					</View>
 				</View>
 				{this.props.exercise.heaviestSet ? (
 					<View style={styles.heaviestSetView}>
 						<Text style={styles.heaviestSetText}>
-							{this.state.exercise.heaviestSet.reps} reps at{' '}
-							{this.state.exercise.heaviestSet.weight}{' '}
-							{this.state.exercise.heaviestSet.weightUnit}
+							{this.props.exercise.heaviestSet.reps} reps at{' '}
+							{this.props.exercise.heaviestSet.weight}{' '}
+							{this.props.exercise.heaviestSet.weightUnit}
 						</Text>
 					</View>
 				) : null}
-				{this.state.exercise.sets.map((set, index) => {
+				{this.props.exercise.sets.map((set, index) => {
 					return (
 						<SetEntry
 							set={set}
@@ -104,13 +76,15 @@ export default class ExerciseEntry extends React.Component {
 	}
 
 	_addSet() {
-		let newSet = Object.assign({}, this.state.exercise.heaviestSet, {
-			completed: false
-		}) || {
-			reps: 8,
-			weight: 25,
-			weightUnit: 'lbs'
-		};
+		let newSet = this.state.exercise.heaviestSet
+			? Object.assign({}, this.state.exercise.heaviestSet, {
+				completed: false
+			})
+			: {
+				reps: 8,
+				weight: 25,
+				weightUnit: 'lbs'
+			};
 		if (this.state.exercise.sets.length) {
 			newSet = Object.assign(
 				{},
@@ -135,10 +109,10 @@ export default class ExerciseEntry extends React.Component {
 	}
 
 	_removeSet(setIndex) {
-		let sets = this.state.exercise.sets;
-		sets.splice(setIndex, 1);
+		let newSets = [...this.state.exercise.sets];
+		newSets.splice(setIndex, 1);
 		this.setState(prevState => {
-			prevState.exercise.sets = sets;
+			prevState.exercise.sets = newSets;
 			return prevState;
 		}, this.props.updateExercise(this.state.exercise, this.props.exerciseIndex));
 	}
@@ -161,7 +135,6 @@ const styles = StyleSheet.create({
 	headerEdit: {
 		flex: 3
 	},
-	headerEditText: { color: iosBlue, paddingLeft: 15 },
 	heaviestSetView: {
 		paddingLeft: 10
 	},
@@ -178,10 +151,18 @@ const styles = StyleSheet.create({
 	},
 	removeText: {
 		fontSize: 15,
-		color: 'red'
+		color: red
 	},
 	addSetText: {
 		color: iosBlue,
 		fontSize: 15
 	}
 });
+
+ExerciseEntry.propTypes = {
+	updateExercise: PropTypes.func.isRequired,
+	removeExercise: PropTypes.func.isRequired,
+	exerciseIndex: PropTypes.number,
+	exercise: PropTypes.object,
+	workoutStarted: PropTypes.bool
+};

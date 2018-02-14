@@ -10,12 +10,11 @@ import {
 	View
 } from 'react-native';
 import localData from '../../utils/localData';
-import { sortByDisplayName } from '../../utils/sorts';
 import ExercisePicker from '../shared/exercisePicker';
 import DayPicker from '../shared/dayPicker';
 import ExerciseEntry from './exerciseEntry';
 import { iosBlue, borderGray, successGreen } from '../../globals';
-import { UIManager } from 'NativeModules';
+import PropTypes from 'prop-types';
 
 export default class WorkoutView extends React.Component {
 	constructor(props) {
@@ -24,12 +23,11 @@ export default class WorkoutView extends React.Component {
 	render() {
 		return (
 			<NavigatorIOS
-				ref="nav"
 				initialRoute={{
 					component: Workout,
 					title: 'Workout'
 				}}
-				style={{ flex: 1 }}
+				style={styles.mainView}
 			/>
 		);
 	}
@@ -115,7 +113,6 @@ export class Workout extends React.Component {
 						}}
 					/>
 				}
-				ref="scrollView"
 			>
 				{!this.state.workout.startTimestamp ? (
 					<DayPicker
@@ -157,24 +154,10 @@ export class Workout extends React.Component {
 				) : (
 					<TouchableHighlight
 						onPress={() => {
-							this.setState(
-								prevState => {
-									prevState.showExercisePicker = true;
-									return prevState;
-								},
-								() => {
-									// UIManager.measure(
-									// 	this.refs.scrollView.getInnerViewNode(),
-									// 	(...data) => {
-									// 		this.refs.scrollView.scrollTo({
-									// 			x: 0,
-									// 			y: data[3] - 120,
-									// 			animated: true
-									// 		});
-									// 	}
-									// );
-								}
-							);
+							this.setState(prevState => {
+								prevState.showExercisePicker = true;
+								return prevState;
+							});
 						}}
 						title="Add Exercise"
 						style={styles.addExercise}
@@ -194,14 +177,14 @@ export class Workout extends React.Component {
 					) : null}
 					{this.state.workout.startTimestamp &&
 					!this.state.workout.endTimestamp ? (
-						<View style={styles.button}>
-							<Button
-								title="End Workout"
-								onPress={this._endWorkout}
-								color="red"
-							/>
-						</View>
-					) : null}
+							<View style={styles.button}>
+								<Button
+									title="End Workout"
+									onPress={this._endWorkout}
+									color="red"
+								/>
+							</View>
+						) : null}
 					{!this.state.workout.startTimestamp && this.state.workout.planId ? (
 						<View style={styles.button}>
 							<Button
@@ -225,7 +208,7 @@ export class Workout extends React.Component {
 
 	_beginWorkout() {
 		this.setState(
-			(prevState, props) => {
+			prevState => {
 				prevState.workout.startTimestamp = new Date().getTime().toString();
 			},
 			() => {
@@ -239,7 +222,7 @@ export class Workout extends React.Component {
 	_endWorkout() {
 		this._updateHeaviestSet();
 		this.setState(
-			(prevState, props) => {
+			prevState => {
 				prevState.workout.endTimestamp = new Date().getTime().toString();
 				prevState.workout.exercises = prevState.workout.exercises.reduce(
 					(acc, exercise) => {
@@ -300,10 +283,10 @@ export class Workout extends React.Component {
 	}
 
 	_removeExercise(exerciseIndex) {
-		let exercises = this.state.workout.exercises;
-		exercises.splice(exerciseIndex, 1);
+		const newExerciseSet = [...this.state.workout.exercises];
+		newExerciseSet.splice(exerciseIndex, 1);
 		this.setState(prevState => {
-			prevState.workout.exercises = exercises;
+			prevState.workout.exercises = newExerciseSet;
 			return prevState;
 		}, this._saveWorkout);
 	}
@@ -311,9 +294,9 @@ export class Workout extends React.Component {
 	_updateHeaviestSet() {
 		this.state.workout.exercises.forEach(exercise => {
 			let heaviestSet = null;
-			exercise.sets.forEach(set => {
-				if (!heaviestSet || set.weight > heaviestSet.weight) {
-					heaviestSet = Object.assign({}, set);
+			exercise.sets.forEach(({ reps, weight, weightUnit }) => {
+				if (!heaviestSet || weight > heaviestSet.weight) {
+					heaviestSet = Object.assign({}, { reps, weight, weightUnit });
 				}
 			});
 			if (heaviestSet) {
@@ -358,3 +341,7 @@ const styles = StyleSheet.create({
 		fontSize: 16
 	}
 });
+
+Workout.propTypes = {
+	workout: PropTypes.object
+};

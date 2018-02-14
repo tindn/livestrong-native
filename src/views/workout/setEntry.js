@@ -3,14 +3,20 @@ import {
 	Image,
 	Picker,
 	Text,
-	TextInput,
 	TouchableHighlight,
 	View,
 	StyleSheet
 } from 'react-native';
-import { iosBlue, borderGray, UnitTypes, successGreen } from '../../globals';
+import {
+	iosBlue,
+	borderGray,
+	UnitTypes,
+	successGreen,
+	red
+} from '../../globals';
 import getRepsInputs from '../../utils/repsInputs';
 import getWeightInputs from '../../utils/weightInputs';
+import PropTypes from 'prop-types';
 
 export default class SetEntry extends React.Component {
 	constructor(props) {
@@ -21,7 +27,8 @@ export default class SetEntry extends React.Component {
 		}
 		this.state = {
 			repsInputs: getRepsInputs(props.set.reps),
-			weightInputs: getWeightInputs(props.set.weight, weightIncrement)
+			weightInputs: getWeightInputs(props.set.weight, weightIncrement),
+			isEditing: true
 		};
 	}
 	render() {
@@ -31,11 +38,7 @@ export default class SetEntry extends React.Component {
 					<Text style={[styles.index, styles.readingFont]}>
 						{this.props.setIndex + 1}.
 					</Text>
-					{this.props.set.completed ? (
-						<Text style={[styles.readingFont, styles.repsText]}>
-							{this.props.set.reps}
-						</Text>
-					) : (
+					{this.state.isEditing ? (
 						<Picker
 							style={styles.repsPicker}
 							itemStyle={styles.pickerItem}
@@ -55,13 +58,13 @@ export default class SetEntry extends React.Component {
 								/>
 							))}
 						</Picker>
+					) : (
+						<Text style={[styles.readingFont, styles.repsText]}>
+							{this.props.set.reps}
+						</Text>
 					)}
 					<Text style={[styles.readingFont]}>reps at</Text>
-					{this.props.set.completed ? (
-						<Text style={[styles.readingFont, styles.weightText]}>
-							{this.props.set.weight}
-						</Text>
-					) : (
+					{this.state.isEditing ? (
 						<Picker
 							style={styles.weightPicker}
 							itemStyle={styles.pickerItem}
@@ -81,17 +84,17 @@ export default class SetEntry extends React.Component {
 								/>
 							))}
 						</Picker>
-					)}
-					{this.props.set.completed ? (
-						<Text style={[styles.readingFont, { width: 50 }]}>
-							{this.props.set.weightUnit}
-						</Text>
 					) : (
+						<Text style={[styles.readingFont, styles.weightText]}>
+							{this.props.set.weight}
+						</Text>
+					)}
+					{this.state.isEditing ? (
 						<Picker
-							style={{ width: 50 }}
+							style={styles.weightUnit}
 							itemStyle={styles.pickerItem}
 							selectedValue={this.props.set.weightUnit}
-							onValueChange={(itemValue, itemIndex) => {
+							onValueChange={itemValue => {
 								this.props.updateSet(
 									{ ...this.props.set, weightUnit: itemValue },
 									this.props.setIndex
@@ -112,45 +115,24 @@ export default class SetEntry extends React.Component {
 								<Picker.Item key={index} label={type.name} value={type._id} />
 							))}
 						</Picker>
+					) : (
+						<Text style={[styles.readingFont, styles.weightUnit]}>
+							{this.props.set.weightUnit}
+						</Text>
 					)}
 				</View>
-				<View style={styles.iconGroup}>
-					{this.props.set.completed ? (
-						<View style={{ flexDirection: 'row' }}>
+				<View
+					style={[
+						styles.iconGroup,
+						this.state.isEditing && styles.iconGroupEditing
+					]}
+				>
+					{this.state.isEditing
+						? [
 							<TouchableHighlight
+								key={1}
 								onPress={() => {
-									this.props.updateSet(
-										{ ...this.props.set, completed: false },
-										this.props.setIndex
-									);
-								}}
-								underlayColor="#ddd"
-							>
-								<Image
-									source={require('../../../assets/pencil.png')}
-									style={[styles.actionIcon, styles.editIcon]}
-								/>
-							</TouchableHighlight>
-							<TouchableHighlight
-								onPress={() => {
-									this.props.removeSet(this.props.setIndex);
-								}}
-								underlayColor="#ddd"
-							>
-								<Image
-									source={require('../../../assets/close.png')}
-									style={[styles.actionIcon, styles.removeIcon]}
-								/>
-							</TouchableHighlight>
-						</View>
-					) : (
-						<View style={{ flexDirection: 'row', marginTop: 35 }}>
-							<TouchableHighlight
-								onPress={() => {
-									this.props.updateSet(
-										{ ...this.props.set, completed: true },
-										this.props.setIndex
-									);
+									this.setState({ isEditing: false });
 								}}
 								underlayColor="#ddd"
 							>
@@ -158,8 +140,9 @@ export default class SetEntry extends React.Component {
 									source={require('../../../assets/check.png')}
 									style={[styles.actionIcon, styles.completeIcon]}
 								/>
-							</TouchableHighlight>
+							</TouchableHighlight>,
 							<TouchableHighlight
+								key={2}
 								onPress={() => {
 									this.props.removeSet(this.props.setIndex);
 								}}
@@ -170,8 +153,33 @@ export default class SetEntry extends React.Component {
 									style={[styles.actionIcon, styles.removeIcon]}
 								/>
 							</TouchableHighlight>
-						</View>
-					)}
+						]
+						: [
+							<TouchableHighlight
+								key={1}
+								onPress={() => {
+									this.setState({ isEditing: true });
+								}}
+								underlayColor="#ddd"
+							>
+								<Image
+									source={require('../../../assets/pencil.png')}
+									style={[styles.actionIcon, styles.editIcon]}
+								/>
+							</TouchableHighlight>,
+							<TouchableHighlight
+								key={2}
+								onPress={() => {
+									this.props.removeSet(this.props.setIndex);
+								}}
+								underlayColor="#ddd"
+							>
+								<Image
+									source={require('../../../assets/close.png')}
+									style={[styles.actionIcon, styles.removeIcon]}
+								/>
+							</TouchableHighlight>
+						]}
 				</View>
 			</View>
 		);
@@ -214,9 +222,15 @@ const styles = StyleSheet.create({
 	weightPicker: {
 		width: 80
 	},
+	weightUnit: {
+		width: 50
+	},
 	iconGroup: {
-		flexDirection: 'column',
+		flexDirection: 'row',
 		flex: 3
+	},
+	iconGroupEditing: {
+		marginTop: 35
 	},
 	actionIcon: {
 		width: 15,
@@ -227,7 +241,7 @@ const styles = StyleSheet.create({
 		marginRight: 15
 	},
 	removeIcon: {
-		tintColor: 'red'
+		tintColor: red
 	},
 	editIcon: {
 		tintColor: iosBlue
@@ -241,3 +255,10 @@ const styles = StyleSheet.create({
 		height: 110
 	}
 });
+
+SetEntry.propTypes = {
+	removeSet: PropTypes.func,
+	updateSet: PropTypes.func,
+	set: PropTypes.object,
+	setIndex: PropTypes.number
+};

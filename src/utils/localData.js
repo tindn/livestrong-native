@@ -54,7 +54,9 @@ function deleteExercise(exercise) {
 	if (exercise.id === undefined) {
 		return;
 	}
-	AsyncStorage.removeItem('exercise.' + exercise.id).then(_updateTimestamp);
+	return AsyncStorage.removeItem('exercise.' + exercise.id).then(
+		_updateTimestamp
+	);
 }
 
 function _getKeys(keySelector) {
