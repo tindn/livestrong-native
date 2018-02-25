@@ -34,6 +34,7 @@ export default TabNavigator({
 	Settings: {
 		screen: Settings,
 		navigationOptions: {
+			title: 'Settings',
 			tabBarIcon: getTabBarIcon(require('../assets/gear.png'))
 		}
 	}
