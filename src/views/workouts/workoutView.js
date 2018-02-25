@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	ActionSheetIOS,
+	Alert,
 	Button,
 	ScrollView,
 	StyleSheet,
@@ -9,31 +9,18 @@ import {
 } from 'react-native';
 import { ActionButtonsStyles } from '../../styles';
 import localData from '../../utils/localData';
+import PropTypes from 'prop-types';
 
-export default (WorkoutView = props => {
-	deleteWorkout = () => {
-		ActionSheetIOS.showActionSheetWithOptions(
-			{
-				message: 'Are you sure you want to delete this workout?',
-				options: ['Delete', 'Cancel'],
-				destructiveButtonIndex: 0,
-				cancelButtonIndex: 1
-			},
-			buttonIndex => {
-				if (buttonIndex === 0) {
-					localData.deleteItem(`workout.${props.workout.id}`);
-					props.navigator.pop();
-				}
-			}
-		);
-	};
+const WorkoutView = props => {
+	const workout = props.navigation.getParam('workout');
+
 	return (
 		<ScrollView style={styles.scrollView}>
 			<View>
-				<Text>{getTimeDisplay(props.workout)}</Text>
+				<Text>{getTimeDisplay(workout)}</Text>
 			</View>
 			<View style={styles.exercisesView}>
-				{props.workout.exercises.map((exercise, exerciseIndex) => (
+				{workout.exercises.map((exercise, exerciseIndex) => (
 					<View key={exerciseIndex} style={styles.exercise}>
 						<Text style={styles.label}>{exercise.displayName}</Text>
 						{exercise.sets &&
@@ -52,12 +39,32 @@ export default (WorkoutView = props => {
 					</View>
 				))}
 				<View style={ActionButtonsStyles.button}>
-					<Button title="Delete Workout" onPress={deleteWorkout} color="red" />
+					<Button
+						title="Delete Workout"
+						onPress={() => {
+							Alert.alert('', 'Are you sure you want to delete this workout?', [
+								{
+									text: 'Cancel',
+									style: 'cancel'
+								},
+								{
+									text: 'Delete',
+									style: 'Destructive',
+									onPress: () => {
+										localData.deleteItem(`workout.${workout.id}`).then(() => {
+											props.navigation.pop();
+										});
+									}
+								}
+							]);
+						}}
+						color="red"
+					/>
 				</View>
 			</View>
 		</ScrollView>
 	);
-});
+};
 
 function getTimeDisplay(workout) {
 	let display = `Started at ${new Date(
@@ -92,3 +99,8 @@ const styles = StyleSheet.create({
 		paddingTop: 5
 	}
 });
+
+WorkoutView.propTypes = {
+	navigation: PropTypes.object
+};
+export default WorkoutView;
