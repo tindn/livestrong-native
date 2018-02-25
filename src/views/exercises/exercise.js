@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-	ActionSheetIOS,
 	Alert,
 	Button,
 	StyleSheet,
@@ -132,25 +131,27 @@ export default class Exercise extends React.Component {
 	}
 
 	_deleteExercise() {
-		ActionSheetIOS.showActionSheetWithOptions(
+		Alert.alert('', 'Are you sure you want to delete this exercise?', [
 			{
-				message: 'Are you sure you want to delete this exercise?',
-				options: ['Delete', 'Cancel'],
-				destructiveButtonIndex: 0,
-				cancelButtonIndex: 1
+				text: 'Cancel',
+				style: 'cancel'
 			},
-			buttonIndex => {
-				if (buttonIndex === 0) {
-					localData.deleteExercise(this.state.exercise);
-					this.props.navigation.pop();
+			{
+				text: 'Delete',
+				style: 'destructive',
+				onPress: () => {
+					localData.deleteExercise(this.state.exercise).then(() => {
+						this.props.navigation.pop();
+					});
 				}
 			}
-		);
+		]);
 	}
 
 	_createExercise() {
-		localData.saveExercise(this.state.exercise);
-		this.props.navigation.pop();
+		localData.saveExercise(this.state.exercise).then(() => {
+			this.props.navigation.pop();
+		});
 	}
 }
 

@@ -19,7 +19,7 @@ export default class ExerciseList extends React.Component {
 			refreshing: false
 		};
 		this._exercisePressed = this._exercisePressed.bind(this);
-		props.navigation.addListener('didFocus', this._updateList.bind(this));
+		props.navigation.addListener('willFocus', this._updateList.bind(this));
 	}
 
 	_updateList() {

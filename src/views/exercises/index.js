@@ -19,7 +19,17 @@ const ExercisesView = StackNavigator({
 		}
 	},
 	Exercise: {
-		screen: Exercise
+		screen: Exercise,
+		navigationOptions: ({ navigation }) => {
+			let title = 'New Exercise';
+			const exercise = navigation.getParam('exercise');
+			if (exercise && exercise.displayName) {
+				title = exercise.displayName;
+			}
+			return {
+				title: title
+			};
+		}
 	}
 });
 
