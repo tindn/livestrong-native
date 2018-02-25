@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './src/app';
+import init from './src/redux';
 
-AppRegistry.registerComponent('LivestrongNative', () => App);
+AppRegistry.registerComponent('LivestrongNative', () => init);

@@ -1,43 +1,17 @@
 import React from 'react';
 import {
 	FlatList,
-	NavigatorIOS,
 	StyleSheet,
 	Text,
 	TouchableHighlight,
 	View
 } from 'react-native';
-import Exercise from './exercise';
 import localData from '../../utils/localData';
 import { sortByDisplayName } from '../../utils/sorts';
 import { ListStyles } from '../../styles';
 import PropTypes from 'prop-types';
 
-export default class ExercisesView extends React.Component {
-	render() {
-		return (
-			<NavigatorIOS
-				ref="nav"
-				initialRoute={{
-					component: ExerciseList,
-					title: 'Exercises',
-					rightButtonTitle: 'New',
-					onRightButtonPress: () => this._newExerciseButtonPressed()
-				}}
-				style={ListStyles.listView}
-			/>
-		);
-	}
-
-	_newExerciseButtonPressed() {
-		this.refs.nav.push({
-			component: Exercise,
-			title: 'New Exercise'
-		});
-	}
-}
-
-class ExerciseList extends React.Component {
+export default class ExerciseList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -45,6 +19,7 @@ class ExerciseList extends React.Component {
 			refreshing: false
 		};
 		this._exercisePressed = this._exercisePressed.bind(this);
+		props.navigation.addListener('didFocus', this._updateList.bind(this));
 	}
 
 	_updateList() {
@@ -61,14 +36,6 @@ class ExerciseList extends React.Component {
 				return prevState;
 			});
 		});
-	}
-
-	componentDidMount() {
-		this._updateList();
-	}
-
-	componentWillReceiveProps() {
-		this._updateList();
 	}
 
 	render() {
@@ -99,17 +66,7 @@ class ExerciseList extends React.Component {
 	}
 
 	_exercisePressed(exercise) {
-		this.props.navigator.push({
-			title: exercise.displayName,
-			component: Exercise,
-			passProps: {
-				exercise: exercise
-			},
-			onLeftButtonPress: () => {
-				this.props.navigator.pop();
-			},
-			leftButtonTitle: '< Back'
-		});
+		this.props.navigation.push('Exercise', { exercise });
 	}
 }
 
@@ -121,8 +78,5 @@ const styles = StyleSheet.create({
 });
 
 ExerciseList.propTypes = {
-	navigator: PropTypes.shape({
-		push: PropTypes.func,
-		pop: PropTypes.func
-	})
+	navigation: PropTypes.object
 };

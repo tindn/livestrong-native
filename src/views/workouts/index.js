@@ -10,7 +10,7 @@ import localData from '../../utils/localData';
 import WorkoutView from './workoutView';
 import { sortByStartTimestamp } from '../../utils/sorts';
 import { ListStyles } from '../../styles';
-import { Workout } from '../workout/workout';
+import { Workout } from '../workout';
 
 export default class WorkoutsView extends React.Component {
 	render() {

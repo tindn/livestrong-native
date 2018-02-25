@@ -114,12 +114,12 @@ export class Workout extends React.Component {
 					/>
 				}
 			>
-				{!this.state.workout.startTimestamp ? (
+				{/* {!this.state.workout.startTimestamp ? (
 					<DayPicker
 						updateDay={this._updateDay}
 						title={this.state.workout.planId ? 'Change Plan' : 'Pick from plan'}
 					/>
-				) : null}
+				) : null} */}
 				<View style={styles.exercises}>
 					{this.state.workout.exercises.map((exercise, index) => {
 						return (

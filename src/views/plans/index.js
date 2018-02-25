@@ -17,6 +17,7 @@ export default class PlansView extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+
 	render() {
 		return (
 			<NavigatorIOS

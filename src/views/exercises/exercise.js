@@ -19,13 +19,17 @@ export default class Exercise extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			exercise: props.exercise ? props.exercise : { name: '' }
+			exercise: this._getExercise(props)
 		};
 		this._updateName = this._updateName.bind(this);
 		this._updateExercise = this._updateExercise.bind(this);
 		this._deleteExercise = this._deleteExercise.bind(this);
 		this._createExercise = this._createExercise.bind(this);
 		this._updateType = this._updateType.bind(this);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({ exercise: this._getExercise(nextProps) });
 	}
 
 	render() {
@@ -79,6 +83,15 @@ export default class Exercise extends React.Component {
 		);
 	}
 
+	_getExercise(props) {
+		let exercise = props.navigation.getParam('exercise');
+		if (!exercise) {
+			exercise = { name: '' };
+		}
+
+		return exercise;
+	}
+
 	_updateName(name) {
 		if (name === '') {
 			return;
@@ -129,7 +142,7 @@ export default class Exercise extends React.Component {
 			buttonIndex => {
 				if (buttonIndex === 0) {
 					localData.deleteExercise(this.state.exercise);
-					this.props.navigator.pop();
+					this.props.navigation.pop();
 				}
 			}
 		);
@@ -137,7 +150,7 @@ export default class Exercise extends React.Component {
 
 	_createExercise() {
 		localData.saveExercise(this.state.exercise);
-		this.props.navigator.pop();
+		this.props.navigation.pop();
 	}
 }
 
@@ -157,7 +170,5 @@ const styles = StyleSheet.create({
 
 Exercise.propTypes = {
 	exercise: PropTypes.object,
-	navigator: PropTypes.shape({
-		pop: PropTypes.func
-	})
+	navigation: PropTypes.object
 };
