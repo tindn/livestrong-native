@@ -2,6 +2,7 @@ import React from 'react';
 import {
 	FlatList,
 	NavigatorIOS,
+	StyleSheet,
 	Text,
 	TouchableHighlight,
 	View
@@ -10,6 +11,7 @@ import Exercise from './exercise';
 import localData from '../../utils/localData';
 import { sortByDisplayName } from '../../utils/sorts';
 import { ListStyles } from '../../styles';
+import PropTypes from 'prop-types';
 
 export default class ExercisesView extends React.Component {
 	render() {
@@ -54,7 +56,7 @@ class ExerciseList extends React.Component {
 			});
 			let sortedExercises = exercises.sort(sortByDisplayName);
 			this.setState(prevState => {
-				prevState.exercises = exercises;
+				prevState.exercises = sortedExercises;
 				prevState.refreshing = false;
 				return prevState;
 			});
@@ -77,14 +79,7 @@ class ExerciseList extends React.Component {
 				refreshing={this.state.refreshing}
 				onRefresh={this._updateList.bind(this)}
 				ListEmptyComponent={() => (
-					<Text
-						style={{
-							textAlign: 'center',
-							marginTop: 10
-						}}
-					>
-						No exercises found
-					</Text>
+					<Text style={styles.emptyListText}>No exercises found</Text>
 				)}
 			/>
 		);
@@ -117,3 +112,17 @@ class ExerciseList extends React.Component {
 		});
 	}
 }
+
+const styles = StyleSheet.create({
+	emptyListText: {
+		textAlign: 'center',
+		marginTop: 10
+	}
+});
+
+ExerciseList.propTypes = {
+	navigator: PropTypes.shape({
+		push: PropTypes.func,
+		pop: PropTypes.func
+	})
+};

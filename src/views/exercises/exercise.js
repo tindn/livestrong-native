@@ -6,15 +6,14 @@ import {
 	StyleSheet,
 	ScrollView,
 	Text,
-	TextInput,
 	View
 } from 'react-native';
 import localData from '../../utils/localData';
 import TextInputGroup from '../shared/textinputgroup';
 import { TextInputGroupStyles, ActionButtonsStyles } from '../../styles';
 import { ExerciseTypes } from '../../globals';
-import PickerGroup from '../shared/pickerGroup';
 import CheckList from '../shared/checkList';
+import PropTypes from 'prop-types';
 
 export default class Exercise extends React.Component {
 	constructor(props) {
@@ -155,3 +154,10 @@ const styles = StyleSheet.create({
 		paddingLeft: 10
 	}
 });
+
+Exercise.propTypes = {
+	exercise: PropTypes.object,
+	navigator: PropTypes.shape({
+		pop: PropTypes.func
+	})
+};

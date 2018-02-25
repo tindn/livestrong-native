@@ -26,15 +26,6 @@ export default class ExerciseEntry extends React.Component {
 					<Text style={styles.headerText}>
 						{this.props.exercise.displayName}
 					</Text>
-					<View style={styles.headerEdit}>
-						<TouchableHighlight
-							onPress={() =>
-								this.props.removeExercise(this.props.exerciseIndex)
-							}
-						>
-							<Text style={styles.removeText}>Remove</Text>
-						</TouchableHighlight>
-					</View>
 				</View>
 				{this.props.exercise.heaviestSet ? (
 					<View style={styles.heaviestSetView}>
@@ -131,9 +122,6 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		fontWeight: 'bold',
 		flex: 8
-	},
-	headerEdit: {
-		flex: 3
 	},
 	heaviestSetView: {
 		paddingLeft: 10
