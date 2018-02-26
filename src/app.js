@@ -13,12 +13,12 @@ export default TabNavigator({
 			tabBarIcon: getTabBarIcon(require('../assets/list.png'))
 		}
 	},
-	// Plans: {
-	// 	screen: Plans,
-	// 	navigationOptions: {
-	// 		tabBarIcon: getTabBarIcon(require('../assets/calendar.png'))
-	// 	}
-	// },
+	Plans: {
+		screen: Plans,
+		navigationOptions: {
+			tabBarIcon: getTabBarIcon(require('../assets/calendar.png'))
+		}
+	},
 	Workout: {
 		screen: Workout,
 		navigationOptions: {
@@ -28,6 +28,7 @@ export default TabNavigator({
 	Workouts: {
 		screen: Workouts,
 		navigationOptions: {
+			title: 'Logs',
 			tabBarIcon: getTabBarIcon(require('../assets/chart.png'))
 		}
 	},

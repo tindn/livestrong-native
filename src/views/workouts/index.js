@@ -4,7 +4,10 @@ import WorkoutView from './workoutView';
 
 const WorkoutsView = StackNavigator({
 	Workouts: {
-		screen: WorkoutList
+		screen: WorkoutList,
+		navigationOptions: {
+			title: 'Workout Logs'
+		}
 	},
 	WorkoutView: {
 		screen: WorkoutView

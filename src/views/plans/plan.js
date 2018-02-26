@@ -1,24 +1,16 @@
 import React from 'react';
-import {
-	Alert,
-	View,
-	Text,
-	StyleSheet,
-	TextInput,
-	Button,
-	ActionSheetIOS,
-	ScrollView
-} from 'react-native';
+import { Alert, View, StyleSheet, Button, ScrollView } from 'react-native';
 import localData from '../../utils/localData';
 import Day from './day';
 import TextInputGroup from '../shared/textinputgroup';
-import { TextInputGroupStyles, ActionButtonsStyles } from '../../styles';
+import { ActionButtonsStyles } from '../../styles';
+import PropTypes from 'prop-types';
 
-export default class Plan extends React.Component {
+class Plan extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			plan: props.plan ? props.plan : { name: '', days: [] }
+			plan: this._getPlan(props)
 		};
 		this._updateName = this._updateName.bind(this);
 		this._updateDay = this._updateDay.bind(this);
@@ -29,6 +21,10 @@ export default class Plan extends React.Component {
 		this._addDay = this._addDay.bind(this);
 		this._removeDay = this._removeDay.bind(this);
 		this._createPlan = this._createPlan.bind(this);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({ plan: this._getPlan(nextProps) });
 	}
 
 	render() {
@@ -67,6 +63,14 @@ export default class Plan extends React.Component {
 				</View>
 			</ScrollView>
 		);
+	}
+
+	_getPlan(props) {
+		let plan = props.navigation.getParam('plan');
+		if (!plan) {
+			plan = { name: '', days: [] };
+		}
+		return plan;
 	}
 
 	_renderDays(days) {
@@ -138,28 +142,29 @@ export default class Plan extends React.Component {
 
 	_createPlan() {
 		localData.savePlan(this.state.plan);
-		this.props.navigator.pop();
+		this.props.navigation.pop();
 	}
 
 	_deletePlan() {
-		ActionSheetIOS.showActionSheetWithOptions(
+		Alert.alert('', 'Are you sure you want to delete this plan?', [
 			{
-				message: 'Are you sure you want to delete this plan?',
-				options: ['Delete', 'Cancel'],
-				destructiveButtonIndex: 0,
-				cancelButtonIndex: 1
+				text: 'Cancel',
+				style: 'cancel'
 			},
-			buttonIndex => {
-				if (buttonIndex === 0) {
-					localData.deletePlan(this.state.plan);
-					this.props.navigator.pop();
+			{
+				text: 'Delete',
+				style: 'Destructive',
+				onPress: () => {
+					localData.deletePlan(this.state.plan).then(() => {
+						this.props.navigation.pop();
+					});
 				}
 			}
-		);
+		]);
 	}
 
 	_addDay() {
-		this.setState((prevState, props) => {
+		this.setState(prevState => {
 			prevState.plan.days.push({
 				exercises: []
 			});
@@ -168,12 +173,16 @@ export default class Plan extends React.Component {
 	}
 
 	_removeDay(dayIndex) {
-		this.setState((prevState, props) => {
+		this.setState(prevState => {
 			prevState.plan.days.splice(dayIndex, 1);
 			return prevState;
 		});
 	}
 }
+
+Plan.propTypes = {
+	navigation: PropTypes.object
+};
 
 const styles = StyleSheet.create({
 	planView: {
@@ -184,3 +193,5 @@ const styles = StyleSheet.create({
 		marginBottom: 40
 	}
 });
+
+export default Plan;
