@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Button, Picker, StyleSheet } from 'react-native';
+import { View, Button, Picker, StyleSheet } from 'react-native';
 import localData from '../../utils/localData';
 import { sortByDisplayName } from '../../utils/sorts';
+import PropTypes from 'prop-types';
 
 export default class ExercisePicker extends React.Component {
 	constructor(props) {
@@ -41,7 +42,7 @@ export default class ExercisePicker extends React.Component {
 		if (this.props.addExercise) {
 			addButton = (
 				<Button
-					title="Add Exercise"
+					title="Add"
 					onPress={this._addExercise}
 					disabled={this.state.selectedValue === '-1'}
 					style={styles.addButton}
@@ -74,7 +75,7 @@ export default class ExercisePicker extends React.Component {
 		);
 	}
 
-	_updateSelectedValue(value, position) {
+	_updateSelectedValue(value) {
 		this.setState({
 			selectedValue: value
 		});
@@ -89,6 +90,9 @@ export default class ExercisePicker extends React.Component {
 }
 
 const styles = StyleSheet.create({
+	addButton: {
+		fontSize: 16
+	},
 	exercisePicker: {
 		paddingLeft: 25,
 		paddingRight: 25
@@ -98,3 +102,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between'
 	}
 });
+
+ExercisePicker.propTypes = {
+	cancelPicker: PropTypes.func,
+	addExercise: PropTypes.func,
+	allExercises: PropTypes.array
+};
